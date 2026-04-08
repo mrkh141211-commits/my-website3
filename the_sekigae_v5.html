@@ -1,0 +1,868 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pk:#ff6b9d;--yw:#ffd93d;--og:#ff9f43;--bl:#45b7d1;--pp:#a29bfe;--gn:#55efc4;--rd:#fd7272;--dkpp:#5c4a8a;--bg:#fff9f0}
+body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:#333;font-size:14px}
+.app{max-width:100%;overflow:hidden}
+
+.hdr{background:linear-gradient(135deg,#5c4a8a 0%,#8b5cf6 50%,#ff6b9d 100%);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.logo-text{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
+.logo-sub{font-size:10px;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-top:-2px}
+.teacher-badge{background:rgba(255,255,255,0.2);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid rgba(255,255,255,0.3)}
+.hdr-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.hdr-tab{padding:5px 10px;border-radius:16px;border:none;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);cursor:pointer;font-size:11px;font-family:inherit;font-weight:700;transition:all 0.2s}
+.hdr-tab.on,.hdr-tab:hover{background:#fff;color:#5c4a8a}
+
+.scr{display:none}.scr.on{display:block}
+.t-body{padding:12px}
+.t-panel{display:none}.t-panel.on{display:block}
+.card{background:#fff;border-radius:16px;border:2px solid #e8e0ff;padding:13px;margin-bottom:10px;box-shadow:0 3px 10px rgba(100,80,200,0.07)}
+.card h3{font-size:13px;color:#5c4a8a;margin-bottom:7px;font-weight:700}
+.hint{font-size:11px;color:#aaa;margin-bottom:8px}
+
+.lb-wrap{background:#eef6ff;border-radius:14px;padding:10px;overflow-x:auto;margin-bottom:8px;border:2px solid #cce0ff}
+.lb-inner{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content}
+.lb-row{display:flex;gap:4px;align-items:center}
+.blackboard{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:3px solid #1a3c1a}
+.lb-cell{width:62px;height:50px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all 0.18s;border:2px dashed #b0d0f0;background:#ddeeff;color:#6090c0;position:relative}
+.lb-cell:hover{border-color:#45b7d1;background:#c8eeff;transform:scale(1.07)}
+.lb-cell.seat{background:#fff8ee;border:2px solid #c8a870;font-size:11px;color:#5a3a00}
+.lb-cell.seat:hover{border-color:#ff6b9d;background:#fff0f8;transform:scale(1.05)}
+.lb-cell.seat.vision{background:#fffce6;border-color:#ffd93d}
+.lb-cell.has-name{background:#e8f5ff;border-color:#45b7d1}
+.lb-cell-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px;line-height:1}
+.lb-cell-name{font-size:11px;font-weight:700;color:#1a3a6a;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px;margin-top:4px}
+.add-c-btn{width:24px;height:50px;border-radius:6px;border:2px dashed #b0b0d0;background:#f5f5ff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9090c0;flex-shrink:0;transition:all 0.15s}
+.add-c-btn:hover{border-color:#a29bfe;color:#a29bfe;background:#eeeeff}
+.del-r-btn{width:18px;height:50px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#ddd;cursor:pointer;border-radius:4px;flex-shrink:0}
+.del-r-btn:hover{color:#ff6b9d;background:#fff0f5}
+.add-r-btn{margin-top:4px;padding:5px 18px;border-radius:20px;border:2px dashed #b0b0d0;background:#f8f8ff;cursor:pointer;font-size:12px;color:#9090c0;font-family:inherit;transition:all 0.15s}
+.add-r-btn:hover{border-color:#a29bfe;color:#a29bfe}
+
+.btn{padding:7px 16px;border-radius:18px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;transition:all 0.18s;display:inline-flex;align-items:center;gap:5px}
+.btn:active{transform:scale(0.95)}
+.btn-pp{background:#a29bfe;color:#fff}.btn-pp:hover{background:#8c85f0}
+.btn-gn{background:#55efc4;color:#1a5a40}.btn-gn:hover{background:#3dd8b0}
+.btn-yw{background:#ffd93d;color:#7a5a00}.btn-yw:hover{background:#f0cb30}
+.btn-pk{background:#ff6b9d;color:#fff}.btn-pk:hover{background:#f05585}
+.btn-rd{background:#fd7272;color:#fff}.btn-rd:hover{background:#e86060}
+.btn-wh{background:#fff;color:#5c4a8a;border:2px solid #a29bfe}.btn-wh:hover{background:#f5f0ff}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.sel{padding:5px 9px;border:2px solid #e0d8ff;border-radius:10px;font-size:13px;font-family:inherit;background:#fff;color:#333}
+.ta{width:100%;height:100px;border:2px solid #e0d8ff;border-radius:12px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;background:#fafaff;color:#333}
+.ta:focus{outline:none;border-color:#a29bfe}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:12px;margin:2px;font-weight:700}
+.tag-o{background:#fff3cd;color:#7a5a00;border:1.5px solid #ffd060}
+.tag-r{background:#ffe0e0;color:#8a2020;border:1.5px solid #ffb0b0}
+
+/* popup */
+.popup-bg{position:fixed;inset:0;background:rgba(30,10,60,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
+.popup-box{background:#fff;border-radius:20px;border:3px solid #a29bfe;padding:16px;width:100%;max-width:320px;box-shadow:0 8px 32px rgba(100,80,200,0.25);animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-title{font-size:14px;font-weight:700;color:#5c4a8a;margin-bottom:10px;text-align:center}
+.popup-list{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.popup-item{padding:8px 14px;border-radius:10px;border:2px solid #e0d8ff;background:#fafaff;cursor:pointer;font-size:13px;font-weight:700;color:#333;transition:all 0.15s;display:flex;align-items:center;gap:8px}
+.popup-item:hover{background:#f0eeff;border-color:#a29bfe;transform:scale(1.02)}
+.popup-item .pi-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.popup-cancel{margin-top:8px;width:100%;padding:8px;border-radius:10px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:13px;color:#888;font-family:inherit;font-weight:700}
+.popup-cancel:hover{background:#f0eeff;color:#5c4a8a}
+
+/* KID */
+.k-hdr{background:linear-gradient(135deg,#5c4a8a,#8b5cf6,#ff6b9d);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.k-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
+.k-body{background:linear-gradient(180deg,#e8f4ff 0%,#f8f0ff 100%);min-height:500px;padding:14px;position:relative;overflow:hidden}
+.chars{display:flex;justify-content:center;gap:20px;margin-bottom:8px;flex-wrap:wrap}
+.char{display:flex;flex-direction:column;align-items:center;gap:2px;animation:charFloat 2.5s ease-in-out infinite}
+.char:nth-child(2){animation-delay:.4s}.char:nth-child(3){animation-delay:.8s}.char:nth-child(4){animation-delay:1.2s}
+@keyframes charFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.char-body{font-size:48px;line-height:1}
+.char-name{font-size:10px;font-weight:700;color:#5c4a8a}
+.k-waiting{text-align:center;padding:10px 0 20px}
+.k-title-big{font-family:'Fredoka One',cursive;font-size:28px;color:#5c4a8a;letter-spacing:2px;margin-bottom:4px}
+.k-sub{font-size:14px;color:#888;margin-bottom:20px}
+.k-start-btn{padding:18px 44px;border-radius:35px;border:none;cursor:pointer;font-size:22px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#ff6b9d,#ffd93d);color:#fff;box-shadow:0 5px 0 rgba(200,80,100,0.3),0 8px 20px rgba(255,107,157,0.35);letter-spacing:2px;transition:all 0.2s;animation:startPulse 2s ease-in-out infinite}
+@keyframes startPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.k-start-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(200,80,100,0.3)}
+.k-overlay{background:rgba(20,10,60,0.9);border-radius:18px;padding:20px 14px;text-align:center;margin-bottom:12px}
+.cd-big{font-size:88px;font-weight:700;color:#ffd93d;text-shadow:0 0 30px rgba(255,220,60,0.7);animation:cdPop 0.4s cubic-bezier(0.36,0.07,0.19,0.97)}
+@keyframes cdPop{from{transform:scale(2);opacity:0}to{transform:scale(1);opacity:1}}
+.spin-nm{font-size:50px;font-weight:700;color:#ffd93d;min-height:62px;letter-spacing:2px;transition:color 0.08s}
+.prog-w{width:85%;height:10px;background:rgba(255,255,255,0.15);border-radius:8px;margin:8px auto}
+.prog-f{height:100%;background:linear-gradient(90deg,#ffd93d,#ff6b9d);border-radius:8px;transition:width 0.3s}
+.emo-row{font-size:22px;letter-spacing:4px;margin-top:4px}
+.k-class{display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px 0}
+.k-bb{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:14px;font-weight:700;letter-spacing:3px;margin-bottom:8px;border:3px solid #1a3c1a}
+.k-row{display:flex;gap:5px;align-items:center}
+.k-desk{width:68px;height:54px;border-radius:10px;border:3px solid #c8a870;background:#fff8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 0 #c0a060;transition:all 0.4s;position:relative}
+.k-desk.vision{border-color:#ffd93d;background:#fffce6}
+.k-desk.blank{background:#ede8df;border-color:#c0b890;box-shadow:0 3px 0 #b0a080}
+.k-desk-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px}
+.k-desk-name{font-size:11px;font-weight:700;color:#2d4a1e;text-align:center;word-break:break-all;line-height:1.2;padding:0 3px}
+.k-desk.hidden .k-desk-name{color:transparent;background:#e8dfc8;border-radius:4px;width:50px;height:13px;margin:0 auto}
+.k-desk.pop{animation:deskPop 0.55s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes deskPop{0%{transform:scale(0.5) rotate(-8deg)}70%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+.k-no-desk{width:68px;height:54px;visibility:hidden}
+.rv-cell{background:#2a5c2a;border:1.5px solid #4a9040;border-radius:8px;padding:4px 2px;text-align:center;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.35s}
+.rv-cell.flip{background:#fff8ee;border-color:#c8a870}
+.rv-num{font-size:9px;color:#5a8050;margin-bottom:1px}
+.rv-name{font-size:12px;font-weight:700;color:#7bc47f}
+.rv-cell.flip .rv-name{color:#2d4a1e}
+.reveal-ttl{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;text-shadow:2px 2px 0 #4a3a8a;margin-bottom:10px;letter-spacing:2px}
+.confetti-p{position:absolute;border-radius:2px;animation:cfall linear forwards;pointer-events:none}
+@keyframes cfall{to{transform:translateY(500px) rotate(720deg);opacity:0}}
+
+/* ===== STATS ===== */
+.stats-wrap{padding:12px}
+.stats-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stats-title{font-family:'Fredoka One',cursive;font-size:20px;color:#5c4a8a;letter-spacing:2px}
+.stats-round{background:#a29bfe;color:#fff;border-radius:12px;font-size:12px;padding:3px 10px;font-weight:700}
+.filter-sel{padding:5px 10px;border:2px solid #e0d8ff;border-radius:10px;font-size:12px;font-family:inherit;background:#fff;color:#333}
+
+/* heatmap */
+.heatmap-scroll{overflow-x:auto;margin-bottom:14px}
+.heatmap-table{border-collapse:collapse;font-size:11px;min-width:max-content}
+.heatmap-table th{padding:4px 6px;text-align:center;font-weight:700;color:#5c4a8a;white-space:nowrap;position:sticky}
+.heatmap-table th.row-header{left:0;background:#fff;z-index:2;text-align:left;padding-right:8px}
+.heatmap-table td{width:36px;height:36px;text-align:center;border-radius:6px;font-size:12px;font-weight:700;cursor:default;transition:transform 0.15s;position:relative}
+.heatmap-table td:hover{transform:scale(1.15);z-index:10}
+.hm-self{background:#f0eeff;color:#c0b0f0}
+.hm-0{background:#f8f4ff;color:#ccc}
+.hm-1{background:#d4e8ff;color:#1a5fa0}
+.hm-2{background:#a0c8ff;color:#0a3a80}
+.hm-3{background:#6ab0ff;color:#fff}
+.hm-4{background:#3a8fff;color:#fff}
+.hm-5{background:#ff6b9d;color:#fff}
+
+/* never-met list */
+.never-section{margin-bottom:14px}
+.never-title{font-size:13px;font-weight:700;color:#5c4a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.never-grid{display:flex;flex-wrap:wrap;gap:6px}
+.never-pill{background:#fff0f8;border:1.5px solid #ffb3d0;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#c0304a;display:flex;align-items:center;gap:5px;cursor:default}
+.never-pill .np-ico{font-size:14px}
+
+/* rank list */
+.rank-list{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.rank-item{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e8e0ff;border-radius:12px;padding:7px 12px}
+.rank-num{font-size:13px;font-weight:700;color:#a29bfe;width:22px;text-align:center}
+.rank-names{font-size:13px;font-weight:700;color:#333;flex:1}
+.rank-bar-wrap{width:80px;background:#f0eeff;border-radius:6px;height:10px}
+.rank-bar{height:100%;background:linear-gradient(90deg,#a29bfe,#ff6b9d);border-radius:6px}
+.rank-count{font-size:12px;color:#888;font-weight:700;min-width:28px;text-align:right}
+.rank-medal{font-size:16px}
+
+.tab-pills{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tab-pill{padding:6px 14px;border-radius:20px;border:2px solid #e0d8ff;background:#fff;color:#888;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.18s}
+.tab-pill.on{background:#5c4a8a;color:#fff;border-color:#5c4a8a}
+
+.legend-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#666}
+.legend-dot{width:16px;height:16px;border-radius:4px;flex-shrink:0}
+
+.stat-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:14px}
+.stat-card{background:var(--color-background-secondary,#f8f8f8);border-radius:12px;padding:10px;text-align:center}
+.stat-card .sc-val{font-size:24px;font-weight:700;color:#5c4a8a;line-height:1}
+.stat-card .sc-lbl{font-size:11px;color:#888;margin-top:3px}
+
+.empty-state{text-align:center;padding:30px;color:#bbb;font-size:13px}
+.empty-ico{font-size:40px;margin-bottom:8px}
+</style>
+
+<h2 class="sr-only">THE SEKIGAE — 席替えアプリ</h2>
+<div class="app">
+
+<!-- TEACHER -->
+<div class="scr on" id="scr-t">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div>
+      <div class="logo-text">THE SEKIGAE</div>
+      <div class="logo-sub">先生専用モード</div>
+    </div>
+    <span class="teacher-badge">TEACHER</span>
+  </div>
+  <div class="hdr-tabs">
+    <button class="hdr-tab on" id="ht-lay" onclick="hTab('lay')">① 座席</button>
+    <button class="hdr-tab" id="ht-ros" onclick="hTab('ros')">② 名簿</button>
+    <button class="hdr-tab" id="ht-cfg" onclick="hTab('cfg')">③ 配慮</button>
+    <button class="hdr-tab" id="ht-stat" onclick="hTab('stat')">📊 統計</button>
+  </div>
+</div>
+<div class="t-body">
+
+<!-- ① LAYOUT -->
+<div class="t-panel on" id="tp-lay">
+  <div class="card">
+    <h3>📐 座席レイアウト</h3>
+    <div class="hint">マス目クリック→座席追加 / 座席クリック→名簿から選択</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+      <select class="sel" id="preset-sel" onchange="applyPreset()">
+        <option value="">プリセット選択</option>
+        <option value="ko5x6">コの字 5行×6列</option>
+        <option value="ko4x6">コの字 4行×6列</option>
+        <option value="g5x6">グリッド 5行×6列</option>
+        <option value="g4x5">グリッド 4行×5列</option>
+        <option value="g6x6">グリッド 6行×6列</option>
+      </select>
+      <button class="btn btn-rd" onclick="clearGrid()" style="font-size:11px;padding:5px 10px">全クリア</button>
+    </div>
+    <div class="lb-wrap"><div class="lb-inner" id="lb"></div></div>
+    <div id="lb-stat" style="font-size:12px;color:#888"></div>
+  </div>
+</div>
+
+<!-- ② ROSTER -->
+<div class="t-panel" id="tp-ros">
+  <div class="card">
+    <h3>📋 名簿を貼り付け</h3>
+    <div class="hint">ExcelやメモからコピペOK（改行・スペース・タブ区切り）</div>
+    <textarea class="ta" id="roster-ta" placeholder="田中&#10;鈴木&#10;佐藤&#10;（Excelの列もそのままペーストできます）"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-pp" onclick="parseRoster()">📥 読み込む</button>
+      <button class="btn btn-wh" onclick="loadSample()">サンプル30名</button>
+    </div>
+    <div id="roster-stat" style="margin-top:8px;font-size:12px;color:#555"></div>
+  </div>
+  <div class="card">
+    <h3>✨ 自動配置</h3>
+    <div class="hint">配慮設定を反映して自動割り当て</div>
+    <div class="btn-row">
+      <button class="btn btn-gn" onclick="autoAssign()">自動配置を実行</button>
+      <button class="btn btn-wh" onclick="clearAllNames()">名前をクリア</button>
+    </div>
+    <div id="auto-stat" style="margin-top:8px;font-size:12px;color:#555"></div>
+  </div>
+</div>
+
+<!-- ③ CONFIG -->
+<div class="t-panel" id="tp-cfg">
+  <div class="card">
+    <h3>👁 視力配慮</h3>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <select class="sel" id="vision-sel"></select>
+      <button class="btn btn-yw" onclick="addVision()" style="font-size:12px;padding:5px 10px">前列固定</button>
+      <span style="font-size:12px;color:#888">前</span>
+      <select class="sel" id="vision-rows" style="width:50px"><option>1</option><option>2</option></select>
+      <span style="font-size:12px;color:#888">列</span>
+    </div>
+    <div id="vision-list"></div>
+  </div>
+  <div class="card">
+    <h3>🚫 隣にしないペア</h3>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <select class="sel" id="sep-a"></select>
+      <span style="font-size:12px;color:#888">と</span>
+      <select class="sel" id="sep-b"></select>
+      <button class="btn btn-rd" onclick="addSep()" style="font-size:12px;padding:5px 10px">追加</button>
+    </div>
+    <div id="sep-list"></div>
+  </div>
+  <div class="card">
+    <h3>🎭 演出設定</h3>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
+    </div>
+  </div>
+</div>
+
+<!-- ④ STATS -->
+<div class="t-panel" id="tp-stat">
+  <div id="stat-empty" class="empty-state">
+    <div class="empty-ico">📊</div>
+    <div>席替えを実行すると統計が表示されます</div>
+    <div style="font-size:11px;margin-top:4px;color:#ddd">（実行するたびに記録が積み重なります）</div>
+  </div>
+  <div id="stat-content" style="display:none">
+    <div class="stats-header">
+      <div class="stats-title">せきがえ 統計</div>
+      <div class="stats-round" id="stat-round-badge">0回分</div>
+      <button class="btn btn-rd" onclick="clearStats()" style="font-size:11px;padding:4px 10px">統計リセット</button>
+    </div>
+
+    <div class="stat-summary" id="stat-summary"></div>
+
+    <div class="tab-pills">
+      <button class="tab-pill on" id="pill-heat" onclick="statTab('heat')">🟦 隣になった回数</button>
+      <button class="tab-pill" id="pill-rank" onclick="statTab('rank')">🏆 ランキング</button>
+      <button class="tab-pill" id="pill-never" onclick="statTab('never')">💔 まだ隣になっていないペア</button>
+    </div>
+
+    <!-- HEATMAP -->
+    <div id="sp-heat" class="stat-pane">
+      <div class="legend-row">
+        <span style="font-size:11px;color:#888">回数：</span>
+        <div class="legend-item"><div class="legend-dot hm-0"></div>0回</div>
+        <div class="legend-item"><div class="legend-dot hm-1"></div>1回</div>
+        <div class="legend-item"><div class="legend-dot hm-2"></div>2回</div>
+        <div class="legend-item"><div class="legend-dot hm-3"></div>3回</div>
+        <div class="legend-item"><div class="legend-dot hm-4"></div>4回</div>
+        <div class="legend-item"><div class="legend-dot hm-5" style="min-width:16px"></div>5回+</div>
+      </div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:8px">名前をクリックするとその生徒の詳細が表示されます</div>
+      <div class="heatmap-scroll">
+        <table class="heatmap-table" id="heatmap-tbl"></table>
+      </div>
+      <div id="detail-box" style="display:none;margin-top:12px"></div>
+    </div>
+
+    <!-- RANK -->
+    <div id="sp-rank" class="stat-pane" style="display:none">
+      <div style="font-size:12px;color:#888;margin-bottom:10px">隣になった合計回数が多いペアトップ20</div>
+      <div class="rank-list" id="rank-list"></div>
+    </div>
+
+    <!-- NEVER -->
+    <div id="sp-never" class="stat-pane" style="display:none">
+      <div style="font-size:12px;color:#888;margin-bottom:10px">一度も隣になったことがないペア（同じクラスにいる生徒同士）</div>
+      <div id="never-filter" style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:12px;color:#666">絞り込み：</span>
+        <select class="filter-sel" id="never-filter-sel" onchange="renderNever()">
+          <option value="">全員</option>
+        </select>
+      </div>
+      <div class="never-grid" id="never-grid"></div>
+      <div id="never-count" style="font-size:12px;color:#888;margin-top:8px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-row">
+  <button class="btn btn-pk" onclick="toKid()" style="font-size:15px;padding:11px 26px;letter-spacing:1px">🎉 子ども画面へ GO!</button>
+</div>
+</div>
+</div>
+
+<!-- KID -->
+<div class="scr" id="scr-k">
+<div class="k-hdr">
+  <div class="k-logo">THE SEKIGAE</div>
+  <button class="btn btn-wh" onclick="toTeacher()" style="font-size:10px;padding:3px 9px;background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3)">先生</button>
+</div>
+<div class="k-body" id="k-body">
+  <div id="k-waiting">
+    <div class="chars">
+      <div class="char"><div class="char-body">🐱</div><div class="char-name">にゃんた</div></div>
+      <div class="char"><div class="char-body">🐶</div><div class="char-name">わんこ</div></div>
+      <div class="char"><div class="char-body">🐻</div><div class="char-name">くまお</div></div>
+      <div class="char"><div class="char-body">🐰</div><div class="char-name">ぴょん</div></div>
+    </div>
+    <div class="k-waiting">
+      <div class="k-title-big">THE SEKIGAE</div>
+      <div class="k-sub">きょうはどのせきになるかな〜？</div>
+      <button class="k-start-btn" onclick="startRoulette()">🎲 スタート！</button>
+    </div>
+  </div>
+  <div id="k-cd" style="display:none">
+    <div style="text-align:center;padding:8px 0 4px"><div style="font-size:40px;animation:charFloat 0.6s ease-in-out infinite alternate" id="cd-char">🎲</div></div>
+    <div class="k-overlay">
+      <div style="font-size:16px;color:#c8e0ff;font-weight:700;margin-bottom:4px">せきがえ スタート！</div>
+      <div class="cd-big" id="cd-num">3</div>
+    </div>
+  </div>
+  <div id="k-spin" style="display:none">
+    <div style="text-align:center;padding:4px 0"><div style="font-size:36px" id="spin-char">🌀</div></div>
+    <div class="k-overlay">
+      <div style="font-size:15px;color:#c8e0ff;font-weight:700;margin-bottom:4px">あたらしい せきは…</div>
+      <div class="prog-w"><div class="prog-f" id="spin-prog" style="width:0%"></div></div>
+      <div class="spin-nm" id="spin-nm">？？？</div>
+      <div class="emo-row" id="spin-emo">🎲 🎊 🌟</div>
+    </div>
+  </div>
+  <div id="k-reveal" style="display:none">
+    <div class="k-overlay" style="padding:16px 12px">
+      <div class="reveal-ttl">🎊 はっぴょう！ 🎊</div>
+      <div id="rv-grid" style="width:100%"></div>
+      <div style="margin-top:12px;display:flex;justify-content:center">
+        <button class="btn btn-pp" onclick="resetKid()" style="font-size:15px;padding:10px 24px">🔄 もういちど</button>
+      </div>
+    </div>
+  </div>
+  <div id="k-class" style="display:none">
+    <div class="k-class" id="k-cls"></div>
+  </div>
+</div>
+</div>
+
+<!-- POPUP -->
+<div class="popup-bg" id="popup" style="display:none" onclick="closePopup(event)">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-title" id="popup-title">だれをここに座らせる？</div>
+    <div class="popup-list" id="popup-list"></div>
+    <button class="popup-cancel" onclick="closePopup()">キャンセル</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const AC=new(window.AudioContext||window.webkitAudioContext)();
+function tone(f,d,t='sine',v=0.3){try{const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d);}catch(e){}}
+function drum(){try{const b=AC.createBuffer(1,AC.sampleRate*0.1,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2)*0.7;const s=AC.createBufferSource(),g=AC.createGain();s.buffer=b;s.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(0.4,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.1);s.start();}catch(e){}}
+function se(){return document.getElementById('chk-sound').checked;}
+function sndTick(){if(!se())return;tone(860+Math.random()*120,0.04,'square',0.1);drum();}
+function sndCD(n){if(!se())return;tone(n===0?1046:500,0.3,'triangle',0.45);}
+function sndFanfare(){if(!se())return;[523,659,784,1047,1318].forEach((n,i)=>setTimeout(()=>{tone(n,0.35,'triangle',0.38);tone(n*1.5,0.28,'sine',0.13)},i*85));setTimeout(()=>tone(1568,0.65,'triangle',0.48),500);}
+function sndFlip(){if(!se())return;tone(380+Math.random()*320,0.11,'sine',0.18);}
+function sndClick(){if(!se())return;tone(700,0.06,'sine',0.15);}
+function sndSelect(){if(!se())return;tone(880,0.08,'triangle',0.2);tone(1100,0.1,'sine',0.15);}
+
+let grid=[],students=[],visionStu=[],seps=[],assignment={};
+// adjMatrix[a][b] = 隣になった回数
+let adjMatrix={};
+let totalRounds=0;
+
+const avatarColors=['#ffb3c6','#b3d9ff','#b3ffdc','#ffd9b3','#d9b3ff','#fffbb3','#ffcdb3'];
+const avatarEmoji=['🐱','🐶','🐻','🐰','🐸','🐼','🦊','🐨','🐹','🐯','🦁','🐮','🐷','🐙','🐧'];
+
+function maxR(){return grid.length?Math.max(...grid.map(x=>x.r)):0;}
+function maxC(){return grid.length?Math.max(...grid.map(x=>x.c)):0;}
+function getCell(r,c){return grid.find(x=>x.r===r&&x.c===c);}
+function activeSeats(){return grid.filter(x=>x.on);}
+function seatNum(r,c){return activeSeats().findIndex(x=>x.r===r&&x.c===c)+1;}
+function isVR(r){return r<(parseInt(document.getElementById('vision-rows').value)||1);}
+function usedNames(){return activeSeats().map(s=>s.name).filter(n=>n&&n.trim());}
+function availableStudents(){return students.filter(s=>!usedNames().includes(s));}
+
+/* ===== GRID ===== */
+function applyPreset(){
+  const v=document.getElementById('preset-sel').value;if(!v)return;
+  let rows=5,cols=6,type='ko';
+  if(v==='ko4x6'){rows=4;cols=6;}else if(v==='g5x6'){rows=5;cols=6;type='g';}
+  else if(v==='g4x5'){rows=4;cols=5;type='g';}else if(v==='g6x6'){rows=6;cols=6;type='g';}
+  grid=[];
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=type==='g'||(r===0||c===0||c===cols-1);grid.push({r,c,on,name:''});}
+  document.getElementById('preset-sel').value='';renderLB();
+}
+function clearGrid(){grid=[];renderLB();}
+function clearAllNames(){grid.forEach(c=>c.name='');renderLB();}
+
+function renderLB(){
+  const el=document.getElementById('lb');el.innerHTML='';
+  const rows=maxR(),cols=maxC();
+  const bb=document.createElement('div');bb.className='blackboard';
+  bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);
+  for(let r=0;r<=rows;r++){
+    const rw=document.createElement('div');rw.className='lb-row';
+    for(let c=0;c<=cols;c++){
+      const cell=getCell(r,c);const d=document.createElement('div');d.className='lb-cell';
+      if(cell&&cell.on){
+        d.classList.add('seat');if(isVR(r))d.classList.add('vision');
+        if(cell.name)d.classList.add('has-name');
+        const num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
+        const nm=document.createElement('div');nm.className='lb-cell-name';
+        nm.textContent=cell.name||'＋';if(!cell.name)nm.style.fontSize='20px';
+        d.appendChild(num);d.appendChild(nm);
+        d.addEventListener('click',()=>openPopup(r,c));
+      } else {
+        d.innerHTML='<span style="font-size:16px">＋</span>';
+        d.addEventListener('click',()=>{
+          if(!cell){for(let rr=0;rr<=r;rr++)for(let cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});}
+          const nc=getCell(r,c);if(nc)nc.on=true;renderLB();
+        });
+      }
+      rw.appendChild(d);
+    }
+    const ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';
+    ac.addEventListener('click',()=>{const nc=cols+1;for(let rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});const nw=getCell(r,nc);if(nw)nw.on=true;renderLB();});
+    rw.appendChild(ac);
+    const dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';
+    dr.addEventListener('click',()=>{grid=grid.filter(x=>x.r!==r);grid.forEach(x=>{if(x.r>r)x.r--;});renderLB();});
+    rw.appendChild(dr);
+    el.appendChild(rw);
+  }
+  const ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';
+  ar.addEventListener('click',()=>{const nr=rows+1;for(let c=0;c<=cols;c++)grid.push({r:nr,c,on:false,name:''});renderLB();});
+  el.appendChild(ar);
+  document.getElementById('lb-stat').textContent=`${activeSeats().length}席 / ${usedNames().length}名入力済み`;
+}
+
+/* ===== POPUP ===== */
+let popupTarget={r:-1,c:-1};
+function openPopup(r,c){
+  sndClick();popupTarget={r,c};
+  const cell=getCell(r,c);const avail=availableStudents();const hasCur=cell&&cell.name;
+  document.getElementById('popup-title').textContent=`${seatNum(r,c)}番席 — だれにする？`;
+  const list=document.getElementById('popup-list');list.innerHTML='';
+  if(hasCur){
+    const d=document.createElement('div');d.className='popup-item';
+    d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';
+    d.innerHTML=`<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「${cell.name}」をはずす</span>`;
+    d.addEventListener('click',()=>{cell.name='';closePopup();renderLB();sndSelect();});
+    list.appendChild(d);
+  }
+  if(!avail.length&&!hasCur){
+    const d=document.createElement('div');d.className='popup-item';d.style.color='#aaa';d.textContent='名簿を読み込んでください';list.appendChild(d);
+  }
+  avail.forEach((s,i)=>{
+    const d=document.createElement('div');d.className='popup-item';
+    const emo=avatarEmoji[i%avatarEmoji.length];const col=avatarColors[i%avatarColors.length];
+    d.innerHTML=`<div class="pi-av" style="background:${col};font-size:16px">${emo}</div><span style="font-weight:700">${s}</span>`;
+    d.addEventListener('click',()=>{cell.name=s;closePopup();renderLB();sndSelect();});
+    list.appendChild(d);
+  });
+  document.getElementById('popup').style.display='flex';
+}
+function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
+
+/* ===== TABS ===== */
+function hTab(name){
+  ['lay','ros','cfg','stat'].forEach(t=>{
+    document.getElementById('tp-'+t).classList.toggle('on',t===name);
+    document.getElementById('ht-'+t).classList.toggle('on',t===name);
+  });
+  if(name==='stat')renderStats();
+}
+
+/* ===== ROSTER ===== */
+function parseRoster(){
+  const raw=document.getElementById('roster-ta').value;
+  const names=[...new Set(raw.split(/[\n\r\t,\s　]+/).map(s=>s.trim()).filter(s=>s))];
+  if(!names.length){document.getElementById('roster-stat').textContent='名前が見つかりませんでした';return;}
+  students=names;updateSels();
+  document.getElementById('roster-stat').innerHTML=`<span style="color:#5c4a8a;font-weight:700">${students.length}名 読み込み完了！</span> ${students.slice(0,5).join('・')}${students.length>5?' …':''}`;
+}
+function loadSample(){
+  students=['田中','鈴木','佐藤','高橋','伊藤','渡辺','山本','中村','小林','加藤','吉田','山田','佐々木','松本','井上','木村','林','斎藤','清水','山口','中島','小川','石川','前田','岡田','後藤','長谷川','村上','近藤','坂本'];
+  document.getElementById('roster-ta').value=students.join('\n');
+  updateSels();document.getElementById('roster-stat').innerHTML=`<span style="color:#5c4a8a;font-weight:700">30名 サンプル読み込み完了！</span>`;
+}
+function updateSels(){
+  ['vision-sel','sep-a','sep-b'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cur=el.value;el.innerHTML=students.map(s=>`<option>${s}</option>`).join('');if(students.includes(cur))el.value=cur;});
+}
+function addVision(){const s=document.getElementById('vision-sel').value;if(s&&!visionStu.includes(s)){visionStu.push(s);renderVision();}}
+function removeVision(s){visionStu=visionStu.filter(x=>x!==s);renderVision();}
+function renderVision(){document.getElementById('vision-list').innerHTML=visionStu.map(s=>`<span class="tag tag-o">${s} <button onclick="removeVision('${s}')" style="background:none;border:none;cursor:pointer;color:#7a5a00;font-size:12px">×</button></span>`).join('');}
+function addSep(){const a=document.getElementById('sep-a').value,b=document.getElementById('sep-b').value;if(!a||!b||a===b)return;const k=[a,b].sort().join('|');if(!seps.find(p=>p.sort().join('|')===k)){seps.push([a,b]);renderSeps();}}
+function removeSep(i){seps.splice(i,1);renderSeps();}
+function renderSeps(){document.getElementById('sep-list').innerHTML=seps.map((p,i)=>`<span class="tag tag-r">${p[0]} × ${p[1]} <button onclick="removeSep(${i})" style="background:none;border:none;cursor:pointer;color:#8a2020;font-size:12px">×</button></span>`).join('');}
+
+/* ===== ASSIGN ===== */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function isAdj(a,b){return(a.r===b.r&&Math.abs(a.c-b.c)===1)||(a.c===b.c&&Math.abs(a.r-b.r)===1);}
+
+function computeAssign(stuList){
+  const seats=activeSeats();
+  const vr=parseInt(document.getElementById('vision-rows').value)||1;
+  const assign={};const usedS=new Set();const usedStu=new Set();
+  const vStu=visionStu.filter(s=>stuList.includes(s));
+  shuffle(seats.filter(s=>s.r<vr)).forEach((s,i)=>{if(vStu[i]){const k=s.r+'_'+s.c;assign[vStu[i]]=k;usedS.add(k);usedStu.add(vStu[i]);}});
+  const rem=stuList.filter(s=>!usedStu.has(s));
+  const avail=seats.filter(s=>!usedS.has(s.r+'_'+s.c)).map(s=>s.r+'_'+s.c);
+  const idToS=id=>{const[r,c]=id.split('_').map(Number);return{r:+r,c:+c};};
+  let best=null;
+  for(let t=0;t<500;t++){
+    const sh=shuffle([...avail]);const trial={};rem.forEach((s,i)=>{trial[s]=sh[i];});
+    const merged={...assign,...trial};let ok=true;
+    for(const[a,b]of seps){const sa=idToS(merged[a]),sb=idToS(merged[b]);if(sa&&sb&&isAdj(sa,sb)){ok=false;break;}}
+    if(ok){best=trial;break;}
+  }
+  if(!best){best={};rem.forEach((s,i)=>{best[s]=shuffle([...avail])[i];});}
+  return{...assign,...best};
+}
+
+function autoAssign(){
+  const seats=activeSeats();
+  if(!students.length){document.getElementById('auto-stat').textContent='先に名簿を読み込んでください';return;}
+  if(!seats.length){document.getElementById('auto-stat').textContent='座席が設定されていません';return;}
+  const stuList=students.slice(0,seats.length);
+  const asgn=computeAssign(stuList);
+  Object.entries(asgn).forEach(([stu,id])=>{const[r,c]=id.split('_').map(Number);const s=getCell(r,c);if(s)s.name=stu;});
+  renderLB();
+  document.getElementById('auto-stat').innerHTML=`<span style="color:#2d6a2d;font-weight:700">✅ ${stuList.length}名の配置が完了しました！</span>`;
+}
+
+/* ===== STATS ENGINE ===== */
+function recordAdjacency(asgn){
+  // asgn: {name -> "r_c"}
+  const seats=activeSeats();
+  const idToStu={};Object.entries(asgn).forEach(([stu,id])=>idToStu[id]=stu);
+  const stuList=Object.keys(asgn);
+  // ensure matrix entries
+  stuList.forEach(a=>{if(!adjMatrix[a])adjMatrix[a]={};stuList.forEach(b=>{if(adjMatrix[a][b]===undefined)adjMatrix[a][b]=0;});});
+  // find adjacent pairs
+  seats.forEach(s=>{
+    const me=idToStu[s.r+'_'+s.c];if(!me)return;
+    [[0,1],[1,0]].forEach(([dr,dc])=>{
+      const nb=seats.find(x=>x.r===s.r+dr&&x.c===s.c+dc);
+      if(!nb)return;
+      const them=idToStu[nb.r+'_'+nb.c];if(!them)return;
+      if(!adjMatrix[me])adjMatrix[me]={};
+      if(!adjMatrix[them])adjMatrix[them]={};
+      if(adjMatrix[me][them]===undefined)adjMatrix[me][them]=0;
+      if(adjMatrix[them][me]===undefined)adjMatrix[them][me]=0;
+      adjMatrix[me][them]++;
+      adjMatrix[them][me]++;
+    });
+  });
+  totalRounds++;
+}
+
+function clearStats(){
+  if(!confirm('統計データをリセットしますか？'))return;
+  adjMatrix={};totalRounds=0;renderStats();
+}
+
+/* ===== RENDER STATS ===== */
+function renderStats(){
+  const names=Object.keys(adjMatrix);
+  if(!names.length||totalRounds===0){
+    document.getElementById('stat-empty').style.display='block';
+    document.getElementById('stat-content').style.display='none';
+    return;
+  }
+  document.getElementById('stat-empty').style.display='none';
+  document.getElementById('stat-content').style.display='block';
+  document.getElementById('stat-round-badge').textContent=`${totalRounds}回分`;
+
+  // summary cards
+  let totalPairs=0,maxCount=0,neverCount=0;
+  const allStu=[...new Set([...Object.keys(adjMatrix)])];
+  for(let i=0;i<allStu.length;i++)for(let j=i+1;j<allStu.length;j++){
+    const v=(adjMatrix[allStu[i]]||{})[allStu[j]]||0;
+    totalPairs++;if(v>maxCount)maxCount=v;if(v===0)neverCount++;
+  }
+  document.getElementById('stat-summary').innerHTML=`
+    <div class="stat-card"><div class="sc-val">${totalRounds}</div><div class="sc-lbl">実施回数</div></div>
+    <div class="stat-card"><div class="sc-val">${allStu.length}</div><div class="sc-lbl">登録人数</div></div>
+    <div class="stat-card"><div class="sc-val" style="color:#ff6b9d">${neverCount}</div><div class="sc-lbl">未ペア数</div></div>
+    <div class="stat-card"><div class="sc-val" style="color:#45b7d1">${maxCount}</div><div class="sc-lbl">最多回数</div></div>`;
+
+  renderHeatmap();renderRank();renderNever();
+
+  // never filter
+  const nf=document.getElementById('never-filter-sel');
+  const nfv=nf.value;nf.innerHTML='<option value="">全員</option>'+allStu.map(s=>`<option>${s}</option>`).join('');
+  if(allStu.includes(nfv))nf.value=nfv;
+}
+
+function hmClass(v,max){
+  if(v<0)return'hm-self';
+  if(v===0)return'hm-0';
+  if(v===1)return'hm-1';
+  if(v===2)return'hm-2';
+  if(v===3)return'hm-3';
+  if(v===4)return'hm-4';
+  return'hm-5';
+}
+
+function renderHeatmap(){
+  const names=Object.keys(adjMatrix);
+  const tbl=document.getElementById('heatmap-tbl');tbl.innerHTML='';
+  if(!names.length)return;
+  const max=Math.max(...names.flatMap(a=>names.map(b=>a===b?0:(adjMatrix[a]||{})[b]||0)));
+
+  // header row
+  const thead=document.createElement('tr');
+  const th0=document.createElement('th');th0.className='row-header';th0.textContent='';thead.appendChild(th0);
+  names.forEach(b=>{
+    const th=document.createElement('th');
+    th.style.cssText='writing-mode:vertical-rl;transform:rotate(180deg);padding:4px 2px;max-height:70px;font-size:10px;cursor:pointer;color:#5c4a8a';
+    th.textContent=b;th.title=b;
+    th.addEventListener('click',()=>showDetail(b));
+    thead.appendChild(th);
+  });
+  tbl.appendChild(thead);
+
+  names.forEach(a=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th');th.className='row-header';
+    th.style.cssText='cursor:pointer;font-size:11px;color:#5c4a8a';th.textContent=a;
+    th.addEventListener('click',()=>showDetail(a));
+    tr.appendChild(th);
+    names.forEach(b=>{
+      const td=document.createElement('td');
+      if(a===b){td.className='hm-self';td.textContent='—';}
+      else{
+        const v=(adjMatrix[a]||{})[b]||0;
+        td.className=hmClass(v,max);td.textContent=v>0?v:'';
+        td.title=`${a} ↔ ${b}: ${v}回`;
+      }
+      tr.appendChild(td);
+    });
+    tbl.appendChild(tr);
+  });
+}
+
+function showDetail(name){
+  const box=document.getElementById('detail-box');
+  const others=Object.keys(adjMatrix).filter(x=>x!==name);
+  const sorted=others.map(o=>({name:o,count:(adjMatrix[name]||{})[o]||0})).sort((a,b)=>b.count-a.count);
+  const maxC=sorted[0]?.count||1;
+  box.style.display='block';
+  box.innerHTML=`<div class="card" style="margin-bottom:0">
+    <h3>👤 ${name} の隣になった人</h3>
+    <div style="display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto">
+      ${sorted.map(({name:o,count:v})=>`
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:12px;font-weight:700;width:70px;color:#333;flex-shrink:0">${o}</span>
+          <div style="flex:1;background:#f0eeff;border-radius:6px;height:14px;position:relative">
+            <div style="width:${maxC>0?Math.round(v/maxC*100):0}%;height:100%;background:${v===0?'#f0eeff':'linear-gradient(90deg,#a29bfe,#ff6b9d)'};border-radius:6px;transition:width 0.3s"></div>
+          </div>
+          <span style="font-size:12px;font-weight:700;min-width:26px;text-align:right;color:${v===0?'#ccc':v>=3?'#ff6b9d':'#5c4a8a'}">${v}回</span>
+          ${v===0?'<span style="font-size:10px;color:#ff9f43;flex-shrink:0">未</span>':''}
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderRank(){
+  const names=Object.keys(adjMatrix);
+  const pairs=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
+    const v=(adjMatrix[names[i]]||{})[names[j]]||0;
+    pairs.push({a:names[i],b:names[j],count:v});
+  }
+  pairs.sort((x,y)=>y.count-x.count);
+  const top=pairs.filter(p=>p.count>0).slice(0,20);
+  const maxC=top[0]?.count||1;
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('rank-list').innerHTML=top.map((p,i)=>`
+    <div class="rank-item">
+      <div class="rank-medal">${i<3?medals[i]:'　'}</div>
+      <div class="rank-num">${i+1}</div>
+      <div class="rank-names">${p.a} ↔ ${p.b}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(p.count/maxC*100)}%"></div></div>
+      <div class="rank-count">${p.count}回</div>
+    </div>`).join('')||'<div class="empty-state" style="padding:16px"><div>まだ記録がありません</div></div>';
+}
+
+function renderNever(){
+  const names=Object.keys(adjMatrix);
+  const filter=document.getElementById('never-filter-sel').value;
+  const pairs=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
+    const v=(adjMatrix[names[i]]||{})[names[j]]||0;
+    if(v===0){
+      if(!filter||names[i]===filter||names[j]===filter)
+        pairs.push({a:names[i],b:names[j]});
+    }
+  }
+  document.getElementById('never-grid').innerHTML=pairs.map(p=>`
+    <div class="never-pill"><span class="np-ico">💔</span>${p.a} & ${p.b}</div>`).join('')||
+    '<div style="color:#aaa;font-size:13px;padding:8px">まだ隣になっていないペアはありません！とても良い交流ができています✨</div>';
+  document.getElementById('never-count').textContent=`${pairs.length}ペアが未交流`;
+}
+
+function statTab(name){
+  ['heat','rank','never'].forEach(t=>{
+    document.getElementById('sp-'+t).style.display=t===name?'block':'none';
+    document.getElementById('pill-'+t).classList.toggle('on',t===name);
+  });
+}
+
+/* ===== SCREENS ===== */
+function toKid(){document.getElementById('scr-t').classList.remove('on');document.getElementById('scr-k').classList.add('on');showKS('waiting');}
+function toTeacher(){document.getElementById('scr-k').classList.remove('on');document.getElementById('scr-t').classList.add('on');}
+function showKS(name){['waiting','cd','spin','reveal','class'].forEach(s=>{const el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});}
+
+/* ===== ROULETTE ===== */
+const spinChars=['🌀','🎲','⭐','🎊','🌈','🎯','🎠','🎡'];
+const cdChars=['🐱','🐶','🐻','🐰'];
+
+function startRoulette(){
+  AC.resume();
+  const seats=activeSeats().filter(s=>s.name&&s.name.trim());
+  if(!seats.length){alert('座席に名前が入力されていません！');return;}
+  const stuList=seats.map(s=>s.name);
+  assignment=computeAssign(stuList);
+  renderKidClassHidden();showKS('cd');
+  let cnt=3;
+  document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[0];sndCD(cnt);
+  const iv=setInterval(()=>{cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(()=>spinPhase(stuList),650);}},900);
+}
+
+function spinPhase(stuList){
+  showKS('spin');
+  const nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');
+  const emojis=['🎲','🌟','🎊','🎯','🌈','🎉','🎪','⭐'];
+  let t=0;const total=60+Math.floor(Math.random()*28);
+  const colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1'];
+  const iv=setInterval(()=>{
+    nm.textContent=stuList[t%stuList.length];nm.style.color=colors[t%colors.length];
+    sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';
+    emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];
+    sndTick();t++;
+    if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhase,680);}
+  },75);
+}
+
+function revealPhase(){
+  showKS('reveal');sndFanfare();spawnConfetti();
+  const seats=activeSeats();
+  const idToStu={};Object.entries(assignment).forEach(([stu,id])=>idToStu[id]=stu);
+  const rows=maxR(),cols=maxC();
+  const g=document.getElementById('rv-grid');
+  g.style.cssText=`display:grid;grid-template-columns:repeat(${cols+1},1fr);gap:4px;width:100%`;g.innerHTML='';
+  for(let r=0;r<=rows;r++)for(let c=0;c<=cols;c++){
+    const cell=getCell(r,c);const d=document.createElement('div');
+    if(cell&&cell.on){
+      d.className='rv-cell';d.id='rv-'+r+'_'+c;
+      const rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';
+      const rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';
+      d.appendChild(rn);d.appendChild(rm);
+    } else {d.style.cssText='visibility:hidden;height:44px';}
+    g.appendChild(d);
+  }
+  const shuf=shuffle([...seats.map(s=>s.r+'_'+s.c)]);let i=0;
+  const iv=setInterval(()=>{
+    if(i>=shuf.length){clearInterval(iv);
+      // RECORD adjacency after reveal
+      recordAdjacency(assignment);
+      setTimeout(()=>afterReveal(idToStu),1100);return;}
+    const id=shuf[i];const stu=idToStu[id];const cell=document.getElementById('rv-'+id);
+    if(cell&&stu){cell.classList.add('flip');const rm=cell.querySelector('.rv-name');if(rm)rm.textContent=stu;sndFlip();}
+    i++;
+  },95);
+}
+
+function afterReveal(idToStu){revealKidClass(idToStu);showKS('class');}
+
+function renderKidClassHidden(){
+  const el=document.getElementById('k-cls');el.innerHTML='';
+  const rows=maxR(),cols=maxC();
+  const bb=document.createElement('div');bb.className='k-bb';bb.style.width=((cols+1)*73+10)+'px';bb.textContent='黒 板';el.appendChild(bb);
+  for(let r=0;r<=rows;r++){
+    const rw=document.createElement('div');rw.className='k-row';
+    for(let c=0;c<=cols;c++){
+      const cell=getCell(r,c);const d=document.createElement('div');
+      if(cell&&cell.on){
+        d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id='kd-'+r+'_'+c;
+        const num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
+        const nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
+        d.appendChild(num);d.appendChild(nm);
+      } else {d.className='k-no-desk';}
+      rw.appendChild(d);
+    }
+    el.appendChild(rw);
+  }
+}
+
+function revealKidClass(idToStu){
+  activeSeats().forEach(s=>{
+    const d=document.getElementById('kd-'+s.r+'_'+s.c);if(!d)return;
+    const stu=idToStu[s.r+'_'+s.c]||'';
+    d.classList.remove('hidden');d.classList.add('pop');
+    const nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=stu||'空席';
+  });
+}
+
+function resetKid(){showKS('waiting');}
+
+function spawnConfetti(){
+  const colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];
+  const kb=document.getElementById('k-body');
+  for(let i=0;i<50;i++){
+    const c=document.createElement('div');c.className='confetti-p';
+    const sz=6+Math.random()*10;
+    c.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[i%colors.length]};width:${sz}px;height:${sz}px;transform:rotate(${Math.random()*360}deg);animation-duration:${1.4+Math.random()*1.4}s;animation-delay:${Math.random()*0.4}s`;
+    kb.appendChild(c);setTimeout(()=>c.remove(),3200);
+  }
+}
+
+/* init */
+(function(){
+  let rows=5,cols=6;grid=[];
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=r===0||c===0||c===cols-1;grid.push({r,c,on,name:''});}
+  renderLB();
+})();
+</script>
