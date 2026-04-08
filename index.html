@@ -5,7 +5,6 @@
 :root{--pk:#ff6b9d;--yw:#ffd93d;--og:#ff9f43;--bl:#45b7d1;--pp:#a29bfe;--gn:#55efc4;--rd:#fd7272;--dkpp:#5c4a8a;--bg:#fff9f0}
 body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:#333;font-size:14px}
 .app{max-width:100%;overflow:hidden}
-
 .hdr{background:linear-gradient(135deg,#5c4a8a 0%,#8b5cf6 50%,#ff6b9d 100%);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .logo-text{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
 .logo-sub{font-size:10px;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-top:-2px}
@@ -13,26 +12,37 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .hdr-tabs{display:flex;gap:4px;flex-wrap:wrap}
 .hdr-tab{padding:5px 10px;border-radius:16px;border:none;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);cursor:pointer;font-size:11px;font-family:inherit;font-weight:700;transition:all 0.2s}
 .hdr-tab.on,.hdr-tab:hover{background:#fff;color:#5c4a8a}
-
 .scr{display:none}.scr.on{display:block}
 .t-body{padding:12px}
 .t-panel{display:none}.t-panel.on{display:block}
 .card{background:#fff;border-radius:16px;border:2px solid #e8e0ff;padding:13px;margin-bottom:10px;box-shadow:0 3px 10px rgba(100,80,200,0.07)}
 .card h3{font-size:13px;color:#5c4a8a;margin-bottom:7px;font-weight:700}
 .hint{font-size:11px;color:#aaa;margin-bottom:8px}
-
 .lb-wrap{background:#eef6ff;border-radius:14px;padding:10px;overflow-x:auto;margin-bottom:8px;border:2px solid #cce0ff}
 .lb-inner{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content}
 .lb-row{display:flex;gap:4px;align-items:center}
 .blackboard{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:3px solid #1a3c1a}
+
+/* セル — 通常 */
 .lb-cell{width:62px;height:50px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all 0.18s;border:2px dashed #b0d0f0;background:#ddeeff;color:#6090c0;position:relative}
 .lb-cell:hover{border-color:#45b7d1;background:#c8eeff;transform:scale(1.07)}
+
+/* セル — 座席あり */
 .lb-cell.seat{background:#fff8ee;border:2px solid #c8a870;font-size:11px;color:#5a3a00}
-.lb-cell.seat:hover{border-color:#ff6b9d;background:#fff0f8;transform:scale(1.05)}
 .lb-cell.seat.vision{background:#fffce6;border-color:#ffd93d}
 .lb-cell.has-name{background:#e8f5ff;border-color:#45b7d1}
+
+/* 削除モード */
+.lb-cell.seat.del-mode{border-color:#fd7272;background:#fff0f0;animation:delShake 0.4s ease-in-out}
+.lb-cell.seat.del-mode:hover{background:#ffe0e0;border-color:#e03030;transform:scale(1.05)}
+@keyframes delShake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+
 .lb-cell-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px;line-height:1}
 .lb-cell-name{font-size:11px;font-weight:700;color:#1a3a6a;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px;margin-top:4px}
+
+/* 削除バッジ */
+.del-badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#fd7272;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;line-height:1;z-index:2}
+
 .add-c-btn{width:24px;height:50px;border-radius:6px;border:2px dashed #b0b0d0;background:#f5f5ff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9090c0;flex-shrink:0;transition:all 0.15s}
 .add-c-btn:hover{border-color:#a29bfe;color:#a29bfe;background:#eeeeff}
 .del-r-btn{width:18px;height:50px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#ddd;cursor:pointer;border-radius:4px;flex-shrink:0}
@@ -48,6 +58,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .btn-pk{background:#ff6b9d;color:#fff}.btn-pk:hover{background:#f05585}
 .btn-rd{background:#fd7272;color:#fff}.btn-rd:hover{background:#e86060}
 .btn-wh{background:#fff;color:#5c4a8a;border:2px solid #a29bfe}.btn-wh:hover{background:#f5f0ff}
+.btn-rd-wh{background:#fff;color:#c0304a;border:2px solid #fd7272}.btn-rd-wh:hover{background:#fff0f5}
 .btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
 .sel{padding:5px 9px;border:2px solid #e0d8ff;border-radius:10px;font-size:13px;font-family:inherit;background:#fff;color:#333}
 .ta{width:100%;height:100px;border:2px solid #e0d8ff;border-radius:12px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;background:#fafaff;color:#333}
@@ -56,7 +67,12 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .tag-o{background:#fff3cd;color:#7a5a00;border:1.5px solid #ffd060}
 .tag-r{background:#ffe0e0;color:#8a2020;border:1.5px solid #ffb0b0}
 
-/* popup */
+/* 削除モードバー */
+.del-mode-bar{background:#fff0f0;border:2px solid #fd7272;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.del-mode-bar-text{font-size:13px;font-weight:700;color:#c0304a;flex:1}
+.del-mode-bar-sub{font-size:11px;color:#e08080;margin-top:2px}
+
 .popup-bg{position:fixed;inset:0;background:rgba(30,10,60,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
 .popup-box{background:#fff;border-radius:20px;border:3px solid #a29bfe;padding:16px;width:100%;max-width:320px;box-shadow:0 8px 32px rgba(100,80,200,0.25);animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
@@ -68,7 +84,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .popup-cancel{margin-top:8px;width:100%;padding:8px;border-radius:10px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:13px;color:#888;font-family:inherit;font-weight:700}
 .popup-cancel:hover{background:#f0eeff;color:#5c4a8a}
 
-/* KID */
 .k-hdr{background:linear-gradient(135deg,#5c4a8a,#8b5cf6,#ff6b9d);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
 .k-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
 .k-body{background:linear-gradient(180deg,#e8f4ff 0%,#f8f0ff 100%);min-height:500px;padding:14px;position:relative;overflow:hidden}
@@ -81,7 +96,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .k-waiting{text-align:center;padding:10px 0 20px}
 .k-title-big{font-family:'Fredoka One',cursive;font-size:28px;color:#5c4a8a;letter-spacing:2px;margin-bottom:4px}
 .k-sub{font-size:14px;color:#888;margin-bottom:20px}
-.k-start-btn{padding:18px 44px;border-radius:35px;border:none;cursor:pointer;font-size:22px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#ff6b9d,#ffd93d);color:#fff;box-shadow:0 5px 0 rgba(200,80,100,0.3),0 8px 20px rgba(255,107,157,0.35);letter-spacing:2px;transition:all 0.2s;animation:startPulse 2s ease-in-out infinite}
+.k-start-btn{padding:18px 44px;border-radius:35px;border:none;cursor:pointer;font-size:22px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#ff6b9d,#ffd93d);color:#fff;box-shadow:0 5px 0 rgba(200,80,100,0.3);letter-spacing:2px;transition:all 0.2s;animation:startPulse 2s ease-in-out infinite}
 @keyframes startPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .k-start-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(200,80,100,0.3)}
 .k-overlay{background:rgba(20,10,60,0.9);border-radius:18px;padding:20px 14px;text-align:center;margin-bottom:12px}
@@ -96,7 +111,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .k-row{display:flex;gap:5px;align-items:center}
 .k-desk{width:68px;height:54px;border-radius:10px;border:3px solid #c8a870;background:#fff8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 0 #c0a060;transition:all 0.4s;position:relative}
 .k-desk.vision{border-color:#ffd93d;background:#fffce6}
-.k-desk.blank{background:#ede8df;border-color:#c0b890;box-shadow:0 3px 0 #b0a080}
 .k-desk-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px}
 .k-desk-name{font-size:11px;font-weight:700;color:#2d4a1e;text-align:center;word-break:break-all;line-height:1.2;padding:0 3px}
 .k-desk.hidden .k-desk-name{color:transparent;background:#e8dfc8;border-radius:4px;width:50px;height:13px;margin:0 auto}
@@ -111,59 +125,28 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .reveal-ttl{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;text-shadow:2px 2px 0 #4a3a8a;margin-bottom:10px;letter-spacing:2px}
 .confetti-p{position:absolute;border-radius:2px;animation:cfall linear forwards;pointer-events:none}
 @keyframes cfall{to{transform:translateY(500px) rotate(720deg);opacity:0}}
-
-/* ===== STATS ===== */
-.stats-wrap{padding:12px}
-.stats-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.stats-title{font-family:'Fredoka One',cursive;font-size:20px;color:#5c4a8a;letter-spacing:2px}
-.stats-round{background:#a29bfe;color:#fff;border-radius:12px;font-size:12px;padding:3px 10px;font-weight:700}
-.filter-sel{padding:5px 10px;border:2px solid #e0d8ff;border-radius:10px;font-size:12px;font-family:inherit;background:#fff;color:#333}
-
-/* heatmap */
-.heatmap-scroll{overflow-x:auto;margin-bottom:14px}
-.heatmap-table{border-collapse:collapse;font-size:11px;min-width:max-content}
-.heatmap-table th{padding:4px 6px;text-align:center;font-weight:700;color:#5c4a8a;white-space:nowrap;position:sticky}
-.heatmap-table th.row-header{left:0;background:#fff;z-index:2;text-align:left;padding-right:8px}
-.heatmap-table td{width:36px;height:36px;text-align:center;border-radius:6px;font-size:12px;font-weight:700;cursor:default;transition:transform 0.15s;position:relative}
-.heatmap-table td:hover{transform:scale(1.15);z-index:10}
-.hm-self{background:#f0eeff;color:#c0b0f0}
-.hm-0{background:#f8f4ff;color:#ccc}
-.hm-1{background:#d4e8ff;color:#1a5fa0}
-.hm-2{background:#a0c8ff;color:#0a3a80}
-.hm-3{background:#6ab0ff;color:#fff}
-.hm-4{background:#3a8fff;color:#fff}
-.hm-5{background:#ff6b9d;color:#fff}
-
-/* never-met list */
-.never-section{margin-bottom:14px}
-.never-title{font-size:13px;font-weight:700;color:#5c4a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.never-grid{display:flex;flex-wrap:wrap;gap:6px}
-.never-pill{background:#fff0f8;border:1.5px solid #ffb3d0;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#c0304a;display:flex;align-items:center;gap:5px;cursor:default}
-.never-pill .np-ico{font-size:14px}
-
-/* rank list */
-.rank-list{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.rank-item{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e8e0ff;border-radius:12px;padding:7px 12px}
-.rank-num{font-size:13px;font-weight:700;color:#a29bfe;width:22px;text-align:center}
-.rank-names{font-size:13px;font-weight:700;color:#333;flex:1}
-.rank-bar-wrap{width:80px;background:#f0eeff;border-radius:6px;height:10px}
-.rank-bar{height:100%;background:linear-gradient(90deg,#a29bfe,#ff6b9d);border-radius:6px}
-.rank-count{font-size:12px;color:#888;font-weight:700;min-width:28px;text-align:right}
-.rank-medal{font-size:16px}
-
+.stat-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:14px}
+.stat-card{background:#f8f8f8;border-radius:12px;padding:10px;text-align:center}
+.stat-card .sc-val{font-size:24px;font-weight:700;color:#5c4a8a;line-height:1}
+.stat-card .sc-lbl{font-size:11px;color:#888;margin-top:3px}
 .tab-pills{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .tab-pill{padding:6px 14px;border-radius:20px;border:2px solid #e0d8ff;background:#fff;color:#888;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.18s}
 .tab-pill.on{background:#5c4a8a;color:#fff;border-color:#5c4a8a}
-
+.heatmap-scroll{overflow-x:auto;margin-bottom:14px}
+.heatmap-table{border-collapse:collapse;font-size:11px;min-width:max-content}
+.heatmap-table th{padding:4px 6px;text-align:center;font-weight:700;color:#5c4a8a;white-space:nowrap}
+.heatmap-table th.row-header{background:#fff;text-align:left;padding-right:8px}
+.heatmap-table td{width:36px;height:36px;text-align:center;border-radius:6px;font-size:12px;font-weight:700;transition:transform 0.15s}
+.heatmap-table td:hover{transform:scale(1.15);z-index:10;position:relative}
+.hm-self{background:#f0eeff;color:#c0b0f0}.hm-0{background:#f8f4ff;color:#ccc}.hm-1{background:#d4e8ff;color:#1a5fa0}.hm-2{background:#a0c8ff;color:#0a3a80}.hm-3{background:#6ab0ff;color:#fff}.hm-4{background:#3a8fff;color:#fff}.hm-5{background:#ff6b9d;color:#fff}
+.rank-item{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e8e0ff;border-radius:12px;padding:7px 12px;margin-bottom:5px}
+.rank-bar-wrap{width:80px;background:#f0eeff;border-radius:6px;height:10px}
+.rank-bar{height:100%;background:linear-gradient(90deg,#a29bfe,#ff6b9d);border-radius:6px}
+.never-pill{background:#fff0f8;border:1.5px solid #ffb3d0;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#c0304a;display:inline-flex;align-items:center;gap:5px;margin:3px}
+.filter-sel{padding:5px 10px;border:2px solid #e0d8ff;border-radius:10px;font-size:12px;font-family:inherit;background:#fff;color:#333}
 .legend-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#666}
 .legend-dot{width:16px;height:16px;border-radius:4px;flex-shrink:0}
-
-.stat-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:14px}
-.stat-card{background:var(--color-background-secondary,#f8f8f8);border-radius:12px;padding:10px;text-align:center}
-.stat-card .sc-val{font-size:24px;font-weight:700;color:#5c4a8a;line-height:1}
-.stat-card .sc-lbl{font-size:11px;color:#888;margin-top:3px}
-
 .empty-state{text-align:center;padding:30px;color:#bbb;font-size:13px}
 .empty-ico{font-size:40px;margin-bottom:8px}
 </style>
@@ -171,14 +154,10 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 <h2 class="sr-only">THE SEKIGAE — 席替えアプリ</h2>
 <div class="app">
 
-<!-- TEACHER -->
 <div class="scr on" id="scr-t">
 <div class="hdr">
   <div style="display:flex;align-items:center;gap:8px">
-    <div>
-      <div class="logo-text">THE SEKIGAE</div>
-      <div class="logo-sub">先生専用モード</div>
-    </div>
+    <div><div class="logo-text">THE SEKIGAE</div><div class="logo-sub">先生専用モード</div></div>
     <span class="teacher-badge">TEACHER</span>
   </div>
   <div class="hdr-tabs">
@@ -190,12 +169,11 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 </div>
 <div class="t-body">
 
-<!-- ① LAYOUT -->
 <div class="t-panel on" id="tp-lay">
   <div class="card">
     <h3>📐 座席レイアウト</h3>
-    <div class="hint">マス目クリック→座席追加 / 座席クリック→名簿から選択</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+    <div class="hint">マス目クリック→座席追加 / 座席クリック→名簿から選択 / 🗑削除モードで座席を削除</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
       <select class="sel" id="preset-sel" onchange="applyPreset()">
         <option value="">プリセット選択</option>
         <option value="ko5x6">コの字 5行×6列</option>
@@ -204,14 +182,23 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
         <option value="g4x5">グリッド 4行×5列</option>
         <option value="g6x6">グリッド 6行×6列</option>
       </select>
+      <button class="btn btn-rd-wh" id="del-mode-btn" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px">🗑 削除モード</button>
       <button class="btn btn-rd" onclick="clearGrid()" style="font-size:11px;padding:5px 10px">全クリア</button>
     </div>
+
+    <div class="del-mode-bar" id="del-mode-bar" style="display:none">
+      <div>
+        <div class="del-mode-bar-text">🗑 削除モード ON — 消したい座席をタップ！</div>
+        <div class="del-mode-bar-sub">もう一度「削除モード」を押すと終了します</div>
+      </div>
+      <button class="btn btn-wh" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px;flex-shrink:0">✅ 完了</button>
+    </div>
+
     <div class="lb-wrap"><div class="lb-inner" id="lb"></div></div>
     <div id="lb-stat" style="font-size:12px;color:#888"></div>
   </div>
 </div>
 
-<!-- ② ROSTER -->
 <div class="t-panel" id="tp-ros">
   <div class="card">
     <h3>📋 名簿を貼り付け</h3>
@@ -234,7 +221,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
   </div>
 </div>
 
-<!-- ③ CONFIG -->
 <div class="t-panel" id="tp-cfg">
   <div class="card">
     <h3>👁 視力配慮</h3>
@@ -259,36 +245,25 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
   </div>
   <div class="card">
     <h3>🎭 演出設定</h3>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
-    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
   </div>
 </div>
 
-<!-- ④ STATS -->
 <div class="t-panel" id="tp-stat">
-  <div id="stat-empty" class="empty-state">
-    <div class="empty-ico">📊</div>
-    <div>席替えを実行すると統計が表示されます</div>
-    <div style="font-size:11px;margin-top:4px;color:#ddd">（実行するたびに記録が積み重なります）</div>
-  </div>
+  <div id="stat-empty" class="empty-state"><div class="empty-ico">📊</div><div>席替えを実行すると統計が表示されます</div></div>
   <div id="stat-content" style="display:none">
-    <div class="stats-header">
-      <div class="stats-title">せきがえ 統計</div>
-      <div class="stats-round" id="stat-round-badge">0回分</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#5c4a8a;letter-spacing:2px">せきがえ 統計</div>
+      <div style="background:#a29bfe;color:#fff;border-radius:12px;font-size:12px;padding:3px 10px;font-weight:700" id="stat-round-badge">0回分</div>
       <button class="btn btn-rd" onclick="clearStats()" style="font-size:11px;padding:4px 10px">統計リセット</button>
     </div>
-
     <div class="stat-summary" id="stat-summary"></div>
-
     <div class="tab-pills">
       <button class="tab-pill on" id="pill-heat" onclick="statTab('heat')">🟦 隣になった回数</button>
       <button class="tab-pill" id="pill-rank" onclick="statTab('rank')">🏆 ランキング</button>
-      <button class="tab-pill" id="pill-never" onclick="statTab('never')">💔 まだ隣になっていないペア</button>
+      <button class="tab-pill" id="pill-never" onclick="statTab('never')">💔 未ペア</button>
     </div>
-
-    <!-- HEATMAP -->
-    <div id="sp-heat" class="stat-pane">
+    <div id="sp-heat">
       <div class="legend-row">
         <span style="font-size:11px;color:#888">回数：</span>
         <div class="legend-item"><div class="legend-dot hm-0"></div>0回</div>
@@ -296,31 +271,18 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
         <div class="legend-item"><div class="legend-dot hm-2"></div>2回</div>
         <div class="legend-item"><div class="legend-dot hm-3"></div>3回</div>
         <div class="legend-item"><div class="legend-dot hm-4"></div>4回</div>
-        <div class="legend-item"><div class="legend-dot hm-5" style="min-width:16px"></div>5回+</div>
+        <div class="legend-item"><div class="legend-dot hm-5"></div>5回+</div>
       </div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:8px">名前をクリックするとその生徒の詳細が表示されます</div>
-      <div class="heatmap-scroll">
-        <table class="heatmap-table" id="heatmap-tbl"></table>
-      </div>
+      <div class="heatmap-scroll"><table class="heatmap-table" id="heatmap-tbl"></table></div>
       <div id="detail-box" style="display:none;margin-top:12px"></div>
     </div>
-
-    <!-- RANK -->
-    <div id="sp-rank" class="stat-pane" style="display:none">
-      <div style="font-size:12px;color:#888;margin-bottom:10px">隣になった合計回数が多いペアトップ20</div>
-      <div class="rank-list" id="rank-list"></div>
-    </div>
-
-    <!-- NEVER -->
-    <div id="sp-never" class="stat-pane" style="display:none">
-      <div style="font-size:12px;color:#888;margin-bottom:10px">一度も隣になったことがないペア（同じクラスにいる生徒同士）</div>
-      <div id="never-filter" style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <div id="sp-rank" style="display:none"><div id="rank-list"></div></div>
+    <div id="sp-never" style="display:none">
+      <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span style="font-size:12px;color:#666">絞り込み：</span>
-        <select class="filter-sel" id="never-filter-sel" onchange="renderNever()">
-          <option value="">全員</option>
-        </select>
+        <select class="filter-sel" id="never-filter-sel" onchange="renderNever()"><option value="">全員</option></select>
       </div>
-      <div class="never-grid" id="never-grid"></div>
+      <div id="never-grid"></div>
       <div id="never-count" style="font-size:12px;color:#888;margin-top:8px"></div>
     </div>
   </div>
@@ -332,7 +294,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 </div>
 </div>
 
-<!-- KID -->
 <div class="scr" id="scr-k">
 <div class="k-hdr">
   <div class="k-logo">THE SEKIGAE</div>
@@ -354,10 +315,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
   </div>
   <div id="k-cd" style="display:none">
     <div style="text-align:center;padding:8px 0 4px"><div style="font-size:40px;animation:charFloat 0.6s ease-in-out infinite alternate" id="cd-char">🎲</div></div>
-    <div class="k-overlay">
-      <div style="font-size:16px;color:#c8e0ff;font-weight:700;margin-bottom:4px">せきがえ スタート！</div>
-      <div class="cd-big" id="cd-num">3</div>
-    </div>
+    <div class="k-overlay"><div style="font-size:16px;color:#c8e0ff;font-weight:700;margin-bottom:4px">せきがえ スタート！</div><div class="cd-big" id="cd-num">3</div></div>
   </div>
   <div id="k-spin" style="display:none">
     <div style="text-align:center;padding:4px 0"><div style="font-size:36px" id="spin-char">🌀</div></div>
@@ -377,13 +335,10 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
       </div>
     </div>
   </div>
-  <div id="k-class" style="display:none">
-    <div class="k-class" id="k-cls"></div>
-  </div>
+  <div id="k-class" style="display:none"><div class="k-class" id="k-cls"></div></div>
 </div>
 </div>
 
-<!-- POPUP -->
 <div class="popup-bg" id="popup" style="display:none" onclick="closePopup(event)">
   <div class="popup-box" onclick="event.stopPropagation()">
     <div class="popup-title" id="popup-title">だれをここに座らせる？</div>
@@ -405,12 +360,11 @@ function sndFanfare(){if(!se())return;[523,659,784,1047,1318].forEach((n,i)=>set
 function sndFlip(){if(!se())return;tone(380+Math.random()*320,0.11,'sine',0.18);}
 function sndClick(){if(!se())return;tone(700,0.06,'sine',0.15);}
 function sndSelect(){if(!se())return;tone(880,0.08,'triangle',0.2);tone(1100,0.1,'sine',0.15);}
+function sndDelete(){if(!se())return;tone(300,0.15,'sawtooth',0.2);tone(200,0.1,'sine',0.1);}
 
 let grid=[],students=[],visionStu=[],seps=[],assignment={};
-// adjMatrix[a][b] = 隣になった回数
-let adjMatrix={};
-let totalRounds=0;
-
+let adjMatrix={},totalRounds=0;
+let delMode=false;
 const avatarColors=['#ffb3c6','#b3d9ff','#b3ffdc','#ffd9b3','#d9b3ff','#fffbb3','#ffcdb3'];
 const avatarEmoji=['🐱','🐶','🐻','🐰','🐸','🐼','🦊','🐨','🐹','🐯','🦁','🐮','🐷','🐙','🐧'];
 
@@ -423,6 +377,32 @@ function isVR(r){return r<(parseInt(document.getElementById('vision-rows').value
 function usedNames(){return activeSeats().map(s=>s.name).filter(n=>n&&n.trim());}
 function availableStudents(){return students.filter(s=>!usedNames().includes(s));}
 
+/* ===== 削除モード ===== */
+function toggleDelMode(){
+  delMode=!delMode;
+  const btn=document.getElementById('del-mode-btn');
+  const bar=document.getElementById('del-mode-bar');
+  if(delMode){
+    btn.style.background='#fd7272';btn.style.color='#fff';btn.style.borderColor='#fd7272';
+    btn.textContent='🗑 削除モード ON';
+    bar.style.display='flex';
+  } else {
+    btn.style.background='';btn.style.color='';btn.style.borderColor='';
+    btn.textContent='🗑 削除モード';
+    bar.style.display='none';
+  }
+  renderLB();
+}
+
+function deleteSeat(r,c){
+  const cell=getCell(r,c);
+  if(!cell)return;
+  cell.on=false;
+  cell.name='';
+  sndDelete();
+  renderLB();
+}
+
 /* ===== GRID ===== */
 function applyPreset(){
   const v=document.getElementById('preset-sel').value;if(!v)return;
@@ -431,9 +411,14 @@ function applyPreset(){
   else if(v==='g4x5'){rows=4;cols=5;type='g';}else if(v==='g6x6'){rows=6;cols=6;type='g';}
   grid=[];
   for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=type==='g'||(r===0||c===0||c===cols-1);grid.push({r,c,on,name:''});}
-  document.getElementById('preset-sel').value='';renderLB();
+  document.getElementById('preset-sel').value='';
+  delMode=false;
+  document.getElementById('del-mode-bar').style.display='none';
+  const btn=document.getElementById('del-mode-btn');
+  btn.style.background='';btn.style.color='';btn.style.borderColor='';btn.textContent='🗑 削除モード';
+  renderLB();
 }
-function clearGrid(){grid=[];renderLB();}
+function clearGrid(){grid=[];delMode=false;renderLB();}
 function clearAllNames(){grid.forEach(c=>c.name='');renderLB();}
 
 function renderLB(){
@@ -441,44 +426,72 @@ function renderLB(){
   const rows=maxR(),cols=maxC();
   const bb=document.createElement('div');bb.className='blackboard';
   bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);
+
   for(let r=0;r<=rows;r++){
     const rw=document.createElement('div');rw.className='lb-row';
     for(let c=0;c<=cols;c++){
       const cell=getCell(r,c);const d=document.createElement('div');d.className='lb-cell';
       if(cell&&cell.on){
-        d.classList.add('seat');if(isVR(r))d.classList.add('vision');
+        d.classList.add('seat');
+        if(isVR(r))d.classList.add('vision');
         if(cell.name)d.classList.add('has-name');
+        if(delMode)d.classList.add('del-mode');
+
         const num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
         const nm=document.createElement('div');nm.className='lb-cell-name';
         nm.textContent=cell.name||'＋';if(!cell.name)nm.style.fontSize='20px';
         d.appendChild(num);d.appendChild(nm);
-        d.addEventListener('click',()=>openPopup(r,c));
+
+        if(delMode){
+          // 削除バッジ
+          const badge=document.createElement('div');badge.className='del-badge';badge.textContent='✕';
+          d.appendChild(badge);
+          d.addEventListener('click',()=>deleteSeat(r,c));
+          d.title='タップして削除';
+        } else {
+          d.addEventListener('click',()=>openPopup(r,c));
+          d.title='クリックして名前を選択';
+        }
       } else {
-        d.innerHTML='<span style="font-size:16px">＋</span>';
-        d.addEventListener('click',()=>{
-          if(!cell){for(let rr=0;rr<=r;rr++)for(let cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});}
-          const nc=getCell(r,c);if(nc)nc.on=true;renderLB();
-        });
+        // 空セル：削除モード中はクリック無効
+        if(!delMode){
+          d.innerHTML='<span style="font-size:16px">＋</span>';
+          d.addEventListener('click',()=>{
+            if(!cell){for(let rr=0;rr<=r;rr++)for(let cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});}
+            const nc=getCell(r,c);if(nc)nc.on=true;renderLB();
+          });
+        } else {
+          d.style.opacity='0.3';
+          d.style.pointerEvents='none';
+        }
       }
       rw.appendChild(d);
     }
-    const ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';
-    ac.addEventListener('click',()=>{const nc=cols+1;for(let rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});const nw=getCell(r,nc);if(nw)nw.on=true;renderLB();});
-    rw.appendChild(ac);
-    const dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';
-    dr.addEventListener('click',()=>{grid=grid.filter(x=>x.r!==r);grid.forEach(x=>{if(x.r>r)x.r--;});renderLB();});
-    rw.appendChild(dr);
+
+    if(!delMode){
+      const ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';
+      ac.addEventListener('click',()=>{const nc=cols+1;for(let rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});const nw=getCell(r,nc);if(nw)nw.on=true;renderLB();});
+      rw.appendChild(ac);
+      const dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';dr.title='この行を削除';
+      dr.addEventListener('click',()=>{grid=grid.filter(x=>x.r!==r);grid.forEach(x=>{if(x.r>r)x.r--;});renderLB();});
+      rw.appendChild(dr);
+    }
     el.appendChild(rw);
   }
-  const ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';
-  ar.addEventListener('click',()=>{const nr=rows+1;for(let c=0;c<=cols;c++)grid.push({r:nr,c,on:false,name:''});renderLB();});
-  el.appendChild(ar);
-  document.getElementById('lb-stat').textContent=`${activeSeats().length}席 / ${usedNames().length}名入力済み`;
+
+  if(!delMode){
+    const ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';
+    ar.addEventListener('click',()=>{const nr=rows+1;for(let c=0;c<=cols;c++)grid.push({r:nr,c,on:false,name:''});renderLB();});
+    el.appendChild(ar);
+  }
+
+  document.getElementById('lb-stat').textContent=`${activeSeats().length}席 / ${usedNames().length}名入力済み${delMode?' — 🗑 削除モード中':''}`;
 }
 
 /* ===== POPUP ===== */
 let popupTarget={r:-1,c:-1};
 function openPopup(r,c){
+  if(delMode)return;
   sndClick();popupTarget={r,c};
   const cell=getCell(r,c);const avail=availableStudents();const hasCur=cell&&cell.name;
   document.getElementById('popup-title').textContent=`${seatNum(r,c)}番席 — だれにする？`;
@@ -495,8 +508,7 @@ function openPopup(r,c){
   }
   avail.forEach((s,i)=>{
     const d=document.createElement('div');d.className='popup-item';
-    const emo=avatarEmoji[i%avatarEmoji.length];const col=avatarColors[i%avatarColors.length];
-    d.innerHTML=`<div class="pi-av" style="background:${col};font-size:16px">${emo}</div><span style="font-weight:700">${s}</span>`;
+    d.innerHTML=`<div class="pi-av" style="background:${avatarColors[i%avatarColors.length]};font-size:16px">${avatarEmoji[i%avatarEmoji.length]}</div><span style="font-weight:700">${s}</span>`;
     d.addEventListener('click',()=>{cell.name=s;closePopup();renderLB();sndSelect();});
     list.appendChild(d);
   });
@@ -539,10 +551,8 @@ function renderSeps(){document.getElementById('sep-list').innerHTML=seps.map((p,
 /* ===== ASSIGN ===== */
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
 function isAdj(a,b){return(a.r===b.r&&Math.abs(a.c-b.c)===1)||(a.c===b.c&&Math.abs(a.r-b.r)===1);}
-
 function computeAssign(stuList){
-  const seats=activeSeats();
-  const vr=parseInt(document.getElementById('vision-rows').value)||1;
+  const seats=activeSeats();const vr=parseInt(document.getElementById('vision-rows').value)||1;
   const assign={};const usedS=new Set();const usedStu=new Set();
   const vStu=visionStu.filter(s=>stuList.includes(s));
   shuffle(seats.filter(s=>s.r<vr)).forEach((s,i)=>{if(vStu[i]){const k=s.r+'_'+s.c;assign[vStu[i]]=k;usedS.add(k);usedStu.add(vStu[i]);}});
@@ -559,7 +569,6 @@ function computeAssign(stuList){
   if(!best){best={};rem.forEach((s,i)=>{best[s]=shuffle([...avail])[i];});}
   return{...assign,...best};
 }
-
 function autoAssign(){
   const seats=activeSeats();
   if(!students.length){document.getElementById('auto-stat').textContent='先に名簿を読み込んでください';return;}
@@ -571,183 +580,79 @@ function autoAssign(){
   document.getElementById('auto-stat').innerHTML=`<span style="color:#2d6a2d;font-weight:700">✅ ${stuList.length}名の配置が完了しました！</span>`;
 }
 
-/* ===== STATS ENGINE ===== */
+/* ===== STATS ===== */
 function recordAdjacency(asgn){
-  // asgn: {name -> "r_c"}
-  const seats=activeSeats();
-  const idToStu={};Object.entries(asgn).forEach(([stu,id])=>idToStu[id]=stu);
+  const seats=activeSeats();const idToStu={};Object.entries(asgn).forEach(([stu,id])=>idToStu[id]=stu);
   const stuList=Object.keys(asgn);
-  // ensure matrix entries
   stuList.forEach(a=>{if(!adjMatrix[a])adjMatrix[a]={};stuList.forEach(b=>{if(adjMatrix[a][b]===undefined)adjMatrix[a][b]=0;});});
-  // find adjacent pairs
   seats.forEach(s=>{
     const me=idToStu[s.r+'_'+s.c];if(!me)return;
     [[0,1],[1,0]].forEach(([dr,dc])=>{
-      const nb=seats.find(x=>x.r===s.r+dr&&x.c===s.c+dc);
-      if(!nb)return;
+      const nb=seats.find(x=>x.r===s.r+dr&&x.c===s.c+dc);if(!nb)return;
       const them=idToStu[nb.r+'_'+nb.c];if(!them)return;
-      if(!adjMatrix[me])adjMatrix[me]={};
-      if(!adjMatrix[them])adjMatrix[them]={};
+      if(!adjMatrix[me])adjMatrix[me]={};if(!adjMatrix[them])adjMatrix[them]={};
       if(adjMatrix[me][them]===undefined)adjMatrix[me][them]=0;
       if(adjMatrix[them][me]===undefined)adjMatrix[them][me]=0;
-      adjMatrix[me][them]++;
-      adjMatrix[them][me]++;
+      adjMatrix[me][them]++;adjMatrix[them][me]++;
     });
   });
   totalRounds++;
 }
-
-function clearStats(){
-  if(!confirm('統計データをリセットしますか？'))return;
-  adjMatrix={};totalRounds=0;renderStats();
-}
-
-/* ===== RENDER STATS ===== */
+function clearStats(){if(!confirm('統計データをリセットしますか？'))return;adjMatrix={};totalRounds=0;renderStats();}
 function renderStats(){
   const names=Object.keys(adjMatrix);
-  if(!names.length||totalRounds===0){
-    document.getElementById('stat-empty').style.display='block';
-    document.getElementById('stat-content').style.display='none';
-    return;
-  }
-  document.getElementById('stat-empty').style.display='none';
-  document.getElementById('stat-content').style.display='block';
+  if(!names.length||totalRounds===0){document.getElementById('stat-empty').style.display='block';document.getElementById('stat-content').style.display='none';return;}
+  document.getElementById('stat-empty').style.display='none';document.getElementById('stat-content').style.display='block';
   document.getElementById('stat-round-badge').textContent=`${totalRounds}回分`;
-
-  // summary cards
-  let totalPairs=0,maxCount=0,neverCount=0;
-  const allStu=[...new Set([...Object.keys(adjMatrix)])];
-  for(let i=0;i<allStu.length;i++)for(let j=i+1;j<allStu.length;j++){
-    const v=(adjMatrix[allStu[i]]||{})[allStu[j]]||0;
-    totalPairs++;if(v>maxCount)maxCount=v;if(v===0)neverCount++;
-  }
+  let maxCount=0,neverCount=0;const allStu=[...new Set(Object.keys(adjMatrix))];
+  for(let i=0;i<allStu.length;i++)for(let j=i+1;j<allStu.length;j++){const v=(adjMatrix[allStu[i]]||{})[allStu[j]]||0;if(v>maxCount)maxCount=v;if(v===0)neverCount++;}
   document.getElementById('stat-summary').innerHTML=`
     <div class="stat-card"><div class="sc-val">${totalRounds}</div><div class="sc-lbl">実施回数</div></div>
     <div class="stat-card"><div class="sc-val">${allStu.length}</div><div class="sc-lbl">登録人数</div></div>
     <div class="stat-card"><div class="sc-val" style="color:#ff6b9d">${neverCount}</div><div class="sc-lbl">未ペア数</div></div>
     <div class="stat-card"><div class="sc-val" style="color:#45b7d1">${maxCount}</div><div class="sc-lbl">最多回数</div></div>`;
-
   renderHeatmap();renderRank();renderNever();
-
-  // never filter
-  const nf=document.getElementById('never-filter-sel');
-  const nfv=nf.value;nf.innerHTML='<option value="">全員</option>'+allStu.map(s=>`<option>${s}</option>`).join('');
+  const nf=document.getElementById('never-filter-sel');const nfv=nf.value;
+  nf.innerHTML='<option value="">全員</option>'+allStu.map(s=>`<option>${s}</option>`).join('');
   if(allStu.includes(nfv))nf.value=nfv;
 }
-
-function hmClass(v,max){
-  if(v<0)return'hm-self';
-  if(v===0)return'hm-0';
-  if(v===1)return'hm-1';
-  if(v===2)return'hm-2';
-  if(v===3)return'hm-3';
-  if(v===4)return'hm-4';
-  return'hm-5';
-}
-
 function renderHeatmap(){
-  const names=Object.keys(adjMatrix);
-  const tbl=document.getElementById('heatmap-tbl');tbl.innerHTML='';
-  if(!names.length)return;
-  const max=Math.max(...names.flatMap(a=>names.map(b=>a===b?0:(adjMatrix[a]||{})[b]||0)));
-
-  // header row
-  const thead=document.createElement('tr');
-  const th0=document.createElement('th');th0.className='row-header';th0.textContent='';thead.appendChild(th0);
-  names.forEach(b=>{
-    const th=document.createElement('th');
-    th.style.cssText='writing-mode:vertical-rl;transform:rotate(180deg);padding:4px 2px;max-height:70px;font-size:10px;cursor:pointer;color:#5c4a8a';
-    th.textContent=b;th.title=b;
-    th.addEventListener('click',()=>showDetail(b));
-    thead.appendChild(th);
-  });
+  const names=Object.keys(adjMatrix);const tbl=document.getElementById('heatmap-tbl');tbl.innerHTML='';if(!names.length)return;
+  const thead=document.createElement('tr');const th0=document.createElement('th');th0.className='row-header';th0.textContent='';thead.appendChild(th0);
+  names.forEach(b=>{const th=document.createElement('th');th.style.cssText='writing-mode:vertical-rl;transform:rotate(180deg);padding:4px 2px;max-height:70px;font-size:10px;cursor:pointer;color:#5c4a8a';th.textContent=b;th.addEventListener('click',()=>showDetail(b));thead.appendChild(th);});
   tbl.appendChild(thead);
-
   names.forEach(a=>{
-    const tr=document.createElement('tr');
-    const th=document.createElement('th');th.className='row-header';
-    th.style.cssText='cursor:pointer;font-size:11px;color:#5c4a8a';th.textContent=a;
-    th.addEventListener('click',()=>showDetail(a));
-    tr.appendChild(th);
+    const tr=document.createElement('tr');const th=document.createElement('th');th.className='row-header';th.style.cssText='cursor:pointer;font-size:11px;color:#5c4a8a';th.textContent=a;th.addEventListener('click',()=>showDetail(a));tr.appendChild(th);
     names.forEach(b=>{
       const td=document.createElement('td');
       if(a===b){td.className='hm-self';td.textContent='—';}
-      else{
-        const v=(adjMatrix[a]||{})[b]||0;
-        td.className=hmClass(v,max);td.textContent=v>0?v:'';
-        td.title=`${a} ↔ ${b}: ${v}回`;
-      }
+      else{const v=(adjMatrix[a]||{})[b]||0;const cls=v===0?'hm-0':v===1?'hm-1':v===2?'hm-2':v===3?'hm-3':v===4?'hm-4':'hm-5';td.className=cls;td.textContent=v>0?v:'';td.title=`${a} ↔ ${b}: ${v}回`;}
       tr.appendChild(td);
     });
     tbl.appendChild(tr);
   });
 }
-
 function showDetail(name){
-  const box=document.getElementById('detail-box');
-  const others=Object.keys(adjMatrix).filter(x=>x!==name);
+  const box=document.getElementById('detail-box');const others=Object.keys(adjMatrix).filter(x=>x!==name);
   const sorted=others.map(o=>({name:o,count:(adjMatrix[name]||{})[o]||0})).sort((a,b)=>b.count-a.count);
   const maxC=sorted[0]?.count||1;
   box.style.display='block';
-  box.innerHTML=`<div class="card" style="margin-bottom:0">
-    <h3>👤 ${name} の隣になった人</h3>
-    <div style="display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto">
-      ${sorted.map(({name:o,count:v})=>`
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:12px;font-weight:700;width:70px;color:#333;flex-shrink:0">${o}</span>
-          <div style="flex:1;background:#f0eeff;border-radius:6px;height:14px;position:relative">
-            <div style="width:${maxC>0?Math.round(v/maxC*100):0}%;height:100%;background:${v===0?'#f0eeff':'linear-gradient(90deg,#a29bfe,#ff6b9d)'};border-radius:6px;transition:width 0.3s"></div>
-          </div>
-          <span style="font-size:12px;font-weight:700;min-width:26px;text-align:right;color:${v===0?'#ccc':v>=3?'#ff6b9d':'#5c4a8a'}">${v}回</span>
-          ${v===0?'<span style="font-size:10px;color:#ff9f43;flex-shrink:0">未</span>':''}
-        </div>`).join('')}
-    </div>
-  </div>`;
+  box.innerHTML=`<div class="card" style="margin-bottom:0"><h3>👤 ${name} の隣になった人</h3><div style="display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto">${sorted.map(({name:o,count:v})=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;width:70px;color:#333;flex-shrink:0">${o}</span><div style="flex:1;background:#f0eeff;border-radius:6px;height:14px"><div style="width:${maxC>0?Math.round(v/maxC*100):0}%;height:100%;background:${v===0?'#f0eeff':'linear-gradient(90deg,#a29bfe,#ff6b9d)'};border-radius:6px"></div></div><span style="font-size:12px;font-weight:700;min-width:26px;text-align:right;color:${v===0?'#ccc':v>=3?'#ff6b9d':'#5c4a8a'}">${v}回</span>${v===0?'<span style="font-size:10px;color:#ff9f43;flex-shrink:0">未</span>':''}</div>`).join('')}</div></div>`;
 }
-
 function renderRank(){
-  const names=Object.keys(adjMatrix);
-  const pairs=[];
-  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
-    const v=(adjMatrix[names[i]]||{})[names[j]]||0;
-    pairs.push({a:names[i],b:names[j],count:v});
-  }
-  pairs.sort((x,y)=>y.count-x.count);
-  const top=pairs.filter(p=>p.count>0).slice(0,20);
-  const maxC=top[0]?.count||1;
-  const medals=['🥇','🥈','🥉'];
-  document.getElementById('rank-list').innerHTML=top.map((p,i)=>`
-    <div class="rank-item">
-      <div class="rank-medal">${i<3?medals[i]:'　'}</div>
-      <div class="rank-num">${i+1}</div>
-      <div class="rank-names">${p.a} ↔ ${p.b}</div>
-      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(p.count/maxC*100)}%"></div></div>
-      <div class="rank-count">${p.count}回</div>
-    </div>`).join('')||'<div class="empty-state" style="padding:16px"><div>まだ記録がありません</div></div>';
+  const names=Object.keys(adjMatrix);const pairs=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){const v=(adjMatrix[names[i]]||{})[names[j]]||0;pairs.push({a:names[i],b:names[j],count:v});}
+  pairs.sort((x,y)=>y.count-x.count);const top=pairs.filter(p=>p.count>0).slice(0,20);const maxC=top[0]?.count||1;const medals=['🥇','🥈','🥉'];
+  document.getElementById('rank-list').innerHTML=top.map((p,i)=>`<div class="rank-item"><div style="font-size:16px">${i<3?medals[i]:'　'}</div><div style="font-size:13px;font-weight:700;color:#a29bfe;width:22px;text-align:center">${i+1}</div><div style="font-size:13px;font-weight:700;color:#333;flex:1">${p.a} ↔ ${p.b}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(p.count/maxC*100)}%"></div></div><div style="font-size:12px;color:#888;font-weight:700;min-width:28px;text-align:right">${p.count}回</div></div>`).join('')||'<div class="empty-state" style="padding:16px"><div>まだ記録がありません</div></div>';
 }
-
 function renderNever(){
-  const names=Object.keys(adjMatrix);
-  const filter=document.getElementById('never-filter-sel').value;
-  const pairs=[];
-  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
-    const v=(adjMatrix[names[i]]||{})[names[j]]||0;
-    if(v===0){
-      if(!filter||names[i]===filter||names[j]===filter)
-        pairs.push({a:names[i],b:names[j]});
-    }
-  }
-  document.getElementById('never-grid').innerHTML=pairs.map(p=>`
-    <div class="never-pill"><span class="np-ico">💔</span>${p.a} & ${p.b}</div>`).join('')||
-    '<div style="color:#aaa;font-size:13px;padding:8px">まだ隣になっていないペアはありません！とても良い交流ができています✨</div>';
+  const names=Object.keys(adjMatrix);const filter=document.getElementById('never-filter-sel').value;const pairs=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){const v=(adjMatrix[names[i]]||{})[names[j]]||0;if(v===0&&(!filter||names[i]===filter||names[j]===filter))pairs.push({a:names[i],b:names[j]});}
+  document.getElementById('never-grid').innerHTML=pairs.map(p=>`<span class="never-pill">💔 ${p.a} & ${p.b}</span>`).join('')||'<div style="color:#aaa;font-size:13px;padding:8px">まだ隣になっていないペアはありません！✨</div>';
   document.getElementById('never-count').textContent=`${pairs.length}ペアが未交流`;
 }
-
 function statTab(name){
-  ['heat','rank','never'].forEach(t=>{
-    document.getElementById('sp-'+t).style.display=t===name?'block':'none';
-    document.getElementById('pill-'+t).classList.toggle('on',t===name);
-  });
+  ['heat','rank','never'].forEach(t=>{document.getElementById('sp-'+t).style.display=t===name?'block':'none';document.getElementById('pill-'+t).classList.toggle('on',t===name);});
 }
 
 /* ===== SCREENS ===== */
@@ -756,113 +661,62 @@ function toTeacher(){document.getElementById('scr-k').classList.remove('on');doc
 function showKS(name){['waiting','cd','spin','reveal','class'].forEach(s=>{const el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});}
 
 /* ===== ROULETTE ===== */
-const spinChars=['🌀','🎲','⭐','🎊','🌈','🎯','🎠','🎡'];
-const cdChars=['🐱','🐶','🐻','🐰'];
-
+const spinChars=['🌀','🎲','⭐','🎊','🌈','🎯','🎠','🎡'];const cdChars=['🐱','🐶','🐻','🐰'];
 function startRoulette(){
-  AC.resume();
-  const seats=activeSeats().filter(s=>s.name&&s.name.trim());
+  AC.resume();const seats=activeSeats().filter(s=>s.name&&s.name.trim());
   if(!seats.length){alert('座席に名前が入力されていません！');return;}
-  const stuList=seats.map(s=>s.name);
-  assignment=computeAssign(stuList);
-  renderKidClassHidden();showKS('cd');
-  let cnt=3;
+  const stuList=seats.map(s=>s.name);assignment=computeAssign(stuList);
+  renderKidClassHidden();showKS('cd');let cnt=3;
   document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[0];sndCD(cnt);
   const iv=setInterval(()=>{cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(()=>spinPhase(stuList),650);}},900);
 }
-
 function spinPhase(stuList){
-  showKS('spin');
-  const nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');
-  const emojis=['🎲','🌟','🎊','🎯','🌈','🎉','🎪','⭐'];
-  let t=0;const total=60+Math.floor(Math.random()*28);
-  const colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1'];
-  const iv=setInterval(()=>{
-    nm.textContent=stuList[t%stuList.length];nm.style.color=colors[t%colors.length];
-    sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';
-    emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];
-    sndTick();t++;
-    if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhase,680);}
-  },75);
+  showKS('spin');const nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');
+  const emojis=['🎲','🌟','🎊','🎯','🌈','🎉','🎪','⭐'];let t=0;const total=60+Math.floor(Math.random()*28);const colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1'];
+  const iv=setInterval(()=>{nm.textContent=stuList[t%stuList.length];nm.style.color=colors[t%colors.length];sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];sndTick();t++;if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhase,680);}},75);
 }
-
 function revealPhase(){
   showKS('reveal');sndFanfare();spawnConfetti();
-  const seats=activeSeats();
-  const idToStu={};Object.entries(assignment).forEach(([stu,id])=>idToStu[id]=stu);
-  const rows=maxR(),cols=maxC();
-  const g=document.getElementById('rv-grid');
+  const seats=activeSeats();const idToStu={};Object.entries(assignment).forEach(([stu,id])=>idToStu[id]=stu);
+  const rows=maxR(),cols=maxC();const g=document.getElementById('rv-grid');
   g.style.cssText=`display:grid;grid-template-columns:repeat(${cols+1},1fr);gap:4px;width:100%`;g.innerHTML='';
   for(let r=0;r<=rows;r++)for(let c=0;c<=cols;c++){
     const cell=getCell(r,c);const d=document.createElement('div');
-    if(cell&&cell.on){
-      d.className='rv-cell';d.id='rv-'+r+'_'+c;
-      const rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';
-      const rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';
-      d.appendChild(rn);d.appendChild(rm);
-    } else {d.style.cssText='visibility:hidden;height:44px';}
+    if(cell&&cell.on){d.className='rv-cell';d.id='rv-'+r+'_'+c;const rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';const rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';d.appendChild(rn);d.appendChild(rm);}
+    else{d.style.cssText='visibility:hidden;height:44px';}
     g.appendChild(d);
   }
   const shuf=shuffle([...seats.map(s=>s.r+'_'+s.c)]);let i=0;
   const iv=setInterval(()=>{
-    if(i>=shuf.length){clearInterval(iv);
-      // RECORD adjacency after reveal
-      recordAdjacency(assignment);
-      setTimeout(()=>afterReveal(idToStu),1100);return;}
+    if(i>=shuf.length){clearInterval(iv);recordAdjacency(assignment);setTimeout(()=>afterReveal(idToStu),1100);return;}
     const id=shuf[i];const stu=idToStu[id];const cell=document.getElementById('rv-'+id);
     if(cell&&stu){cell.classList.add('flip');const rm=cell.querySelector('.rv-name');if(rm)rm.textContent=stu;sndFlip();}
     i++;
   },95);
 }
-
 function afterReveal(idToStu){revealKidClass(idToStu);showKS('class');}
-
 function renderKidClassHidden(){
-  const el=document.getElementById('k-cls');el.innerHTML='';
-  const rows=maxR(),cols=maxC();
+  const el=document.getElementById('k-cls');el.innerHTML='';const rows=maxR(),cols=maxC();
   const bb=document.createElement('div');bb.className='k-bb';bb.style.width=((cols+1)*73+10)+'px';bb.textContent='黒 板';el.appendChild(bb);
   for(let r=0;r<=rows;r++){
     const rw=document.createElement('div');rw.className='k-row';
     for(let c=0;c<=cols;c++){
       const cell=getCell(r,c);const d=document.createElement('div');
-      if(cell&&cell.on){
-        d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id='kd-'+r+'_'+c;
-        const num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
-        const nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
-        d.appendChild(num);d.appendChild(nm);
-      } else {d.className='k-no-desk';}
+      if(cell&&cell.on){d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id='kd-'+r+'_'+c;const num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';const nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';d.appendChild(num);d.appendChild(nm);}
+      else{d.className='k-no-desk';}
       rw.appendChild(d);
     }
     el.appendChild(rw);
   }
 }
-
 function revealKidClass(idToStu){
-  activeSeats().forEach(s=>{
-    const d=document.getElementById('kd-'+s.r+'_'+s.c);if(!d)return;
-    const stu=idToStu[s.r+'_'+s.c]||'';
-    d.classList.remove('hidden');d.classList.add('pop');
-    const nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=stu||'空席';
-  });
+  activeSeats().forEach(s=>{const d=document.getElementById('kd-'+s.r+'_'+s.c);if(!d)return;const stu=idToStu[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');const nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=stu||'空席';});
 }
-
 function resetKid(){showKS('waiting');}
-
 function spawnConfetti(){
-  const colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];
-  const kb=document.getElementById('k-body');
-  for(let i=0;i<50;i++){
-    const c=document.createElement('div');c.className='confetti-p';
-    const sz=6+Math.random()*10;
-    c.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[i%colors.length]};width:${sz}px;height:${sz}px;transform:rotate(${Math.random()*360}deg);animation-duration:${1.4+Math.random()*1.4}s;animation-delay:${Math.random()*0.4}s`;
-    kb.appendChild(c);setTimeout(()=>c.remove(),3200);
-  }
+  const colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];const kb=document.getElementById('k-body');
+  for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti-p';const sz=6+Math.random()*10;c.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[i%colors.length]};width:${sz}px;height:${sz}px;transform:rotate(${Math.random()*360}deg);animation-duration:${1.4+Math.random()*1.4}s;animation-delay:${Math.random()*0.4}s`;kb.appendChild(c);setTimeout(()=>c.remove(),3200);}
 }
 
-/* init */
-(function(){
-  let rows=5,cols=6;grid=[];
-  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=r===0||c===0||c===cols-1;grid.push({r,c,on,name:''});}
-  renderLB();
-})();
+(function(){let rows=5,cols=6;grid=[];for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=r===0||c===0||c===cols-1;grid.push({r,c,on,name:''});}renderLB();})();
 </script>
