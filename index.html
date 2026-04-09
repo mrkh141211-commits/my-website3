@@ -2,8 +2,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--pk:#ff6b9d;--yw:#ffd93d;--og:#ff9f43;--bl:#45b7d1;--pp:#a29bfe;--gn:#55efc4;--rd:#fd7272;--dkpp:#5c4a8a;--bg:#fff9f0}
-body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:#333;font-size:14px}
+body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff9f0;color:#333;font-size:14px}
 .app{max-width:100%;overflow:hidden}
 .hdr{background:linear-gradient(135deg,#5c4a8a 0%,#8b5cf6 50%,#ff6b9d 100%);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .logo-text{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
@@ -22,34 +21,23 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .lb-inner{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content}
 .lb-row{display:flex;gap:4px;align-items:center}
 .blackboard{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:3px solid #1a3c1a}
-
-/* セル — 通常 */
 .lb-cell{width:62px;height:50px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all 0.18s;border:2px dashed #b0d0f0;background:#ddeeff;color:#6090c0;position:relative}
 .lb-cell:hover{border-color:#45b7d1;background:#c8eeff;transform:scale(1.07)}
-
-/* セル — 座席あり */
 .lb-cell.seat{background:#fff8ee;border:2px solid #c8a870;font-size:11px;color:#5a3a00}
+.lb-cell.seat:hover{border-color:#ff6b9d;background:#fff0f8;transform:scale(1.05)}
 .lb-cell.seat.vision{background:#fffce6;border-color:#ffd93d}
 .lb-cell.has-name{background:#e8f5ff;border-color:#45b7d1}
-
-/* 削除モード */
-.lb-cell.seat.del-mode{border-color:#fd7272;background:#fff0f0;animation:delShake 0.4s ease-in-out}
-.lb-cell.seat.del-mode:hover{background:#ffe0e0;border-color:#e03030;transform:scale(1.05)}
-@keyframes delShake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
-
+.lb-cell.seat.del-mode{border-color:#fd7272;background:#fff0f0;animation:delShake 0.4s}
+@keyframes delShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
 .lb-cell-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px;line-height:1}
 .lb-cell-name{font-size:11px;font-weight:700;color:#1a3a6a;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px;margin-top:4px}
-
-/* 削除バッジ */
-.del-badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#fd7272;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;line-height:1;z-index:2}
-
+.del-badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#fd7272;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;z-index:2}
 .add-c-btn{width:24px;height:50px;border-radius:6px;border:2px dashed #b0b0d0;background:#f5f5ff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9090c0;flex-shrink:0;transition:all 0.15s}
 .add-c-btn:hover{border-color:#a29bfe;color:#a29bfe;background:#eeeeff}
 .del-r-btn{width:18px;height:50px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#ddd;cursor:pointer;border-radius:4px;flex-shrink:0}
 .del-r-btn:hover{color:#ff6b9d;background:#fff0f5}
 .add-r-btn{margin-top:4px;padding:5px 18px;border-radius:20px;border:2px dashed #b0b0d0;background:#f8f8ff;cursor:pointer;font-size:12px;color:#9090c0;font-family:inherit;transition:all 0.15s}
 .add-r-btn:hover{border-color:#a29bfe;color:#a29bfe}
-
 .btn{padding:7px 16px;border-radius:18px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;transition:all 0.18s;display:inline-flex;align-items:center;gap:5px}
 .btn:active{transform:scale(0.95)}
 .btn-pp{background:#a29bfe;color:#fff}.btn-pp:hover{background:#8c85f0}
@@ -66,13 +54,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:12px;margin:2px;font-weight:700}
 .tag-o{background:#fff3cd;color:#7a5a00;border:1.5px solid #ffd060}
 .tag-r{background:#ffe0e0;color:#8a2020;border:1.5px solid #ffb0b0}
-
-/* 削除モードバー */
-.del-mode-bar{background:#fff0f0;border:2px solid #fd7272;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;animation:fadeIn 0.25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.del-mode-bar-text{font-size:13px;font-weight:700;color:#c0304a;flex:1}
-.del-mode-bar-sub{font-size:11px;color:#e08080;margin-top:2px}
-
+.del-mode-bar{background:#fff0f0;border:2px solid #fd7272;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .popup-bg{position:fixed;inset:0;background:rgba(30,10,60,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
 .popup-box{background:#fff;border-radius:20px;border:3px solid #a29bfe;padding:16px;width:100%;max-width:320px;box-shadow:0 8px 32px rgba(100,80,200,0.25);animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
@@ -83,7 +65,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .popup-item .pi-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .popup-cancel{margin-top:8px;width:100%;padding:8px;border-radius:10px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:13px;color:#888;font-family:inherit;font-weight:700}
 .popup-cancel:hover{background:#f0eeff;color:#5c4a8a}
-
 .k-hdr{background:linear-gradient(135deg,#5c4a8a,#8b5cf6,#ff6b9d);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
 .k-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
 .k-body{background:linear-gradient(180deg,#e8f4ff 0%,#f8f0ff 100%);min-height:500px;padding:14px;position:relative;overflow:hidden}
@@ -151,7 +132,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 .empty-ico{font-size:40px;margin-bottom:8px}
 </style>
 
-<h2 class="sr-only">THE SEKIGAE — 席替えアプリ</h2>
+<h2 class="sr-only">THE SEKIGAE</h2>
 <div class="app">
 
 <div class="scr on" id="scr-t">
@@ -172,7 +153,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 <div class="t-panel on" id="tp-lay">
   <div class="card">
     <h3>📐 座席レイアウト</h3>
-    <div class="hint">マス目クリック→座席追加 / 座席クリック→名簿から選択 / 🗑削除モードで座席を削除</div>
+    <div class="hint">マス目クリック→座席追加 / 座席クリック→名前を選択 / 🗑削除モードで座席を削除</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
       <select class="sel" id="preset-sel" onchange="applyPreset()">
         <option value="">プリセット選択</option>
@@ -185,17 +166,15 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
       <button class="btn btn-rd-wh" id="del-mode-btn" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px">🗑 削除モード</button>
       <button class="btn btn-rd" onclick="clearGrid()" style="font-size:11px;padding:5px 10px">全クリア</button>
     </div>
-
     <div class="del-mode-bar" id="del-mode-bar" style="display:none">
-      <div>
-        <div class="del-mode-bar-text">🗑 削除モード ON — 消したい座席をタップ！</div>
-        <div class="del-mode-bar-sub">もう一度「削除モード」を押すと終了します</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:#c0304a">🗑 削除モード ON — 消したい座席をタップ！</div>
+        <div style="font-size:11px;color:#e08080;margin-top:2px">もう一度ボタンを押すと終了</div>
       </div>
       <button class="btn btn-wh" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px;flex-shrink:0">✅ 完了</button>
     </div>
-
     <div class="lb-wrap"><div class="lb-inner" id="lb"></div></div>
-    <div id="lb-stat" style="font-size:12px;color:#888"></div>
+    <div id="lb-stat" style="font-size:12px;color:#888;margin-top:4px"></div>
   </div>
 </div>
 
@@ -210,20 +189,11 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
     </div>
     <div id="roster-stat" style="margin-top:8px;font-size:12px;color:#555"></div>
   </div>
-  <div class="card">
-    <h3>✨ 自動配置</h3>
-    <div class="hint">配慮設定を反映して自動割り当て</div>
-    <div class="btn-row">
-      <button class="btn btn-gn" onclick="autoAssign()">自動配置を実行</button>
-      <button class="btn btn-wh" onclick="clearAllNames()">名前をクリア</button>
-    </div>
-    <div id="auto-stat" style="margin-top:8px;font-size:12px;color:#555"></div>
-  </div>
 </div>
 
 <div class="t-panel" id="tp-cfg">
   <div class="card">
-    <h3>👁 視力配慮</h3>
+    <h3>👁 視力配慮（前列固定）</h3>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
       <select class="sel" id="vision-sel"></select>
       <button class="btn btn-yw" onclick="addVision()" style="font-size:12px;padding:5px 10px">前列固定</button>
@@ -255,7 +225,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
       <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#5c4a8a;letter-spacing:2px">せきがえ 統計</div>
       <div style="background:#a29bfe;color:#fff;border-radius:12px;font-size:12px;padding:3px 10px;font-weight:700" id="stat-round-badge">0回分</div>
-      <button class="btn btn-rd" onclick="clearStats()" style="font-size:11px;padding:4px 10px">統計リセット</button>
+      <button class="btn btn-rd" onclick="clearStats()" style="font-size:11px;padding:4px 10px">リセット</button>
     </div>
     <div class="stat-summary" id="stat-summary"></div>
     <div class="tab-pills">
@@ -348,7 +318,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:var(
 </div>
 
 </div>
-
 <script>
 const AC=new(window.AudioContext||window.webkitAudioContext)();
 function tone(f,d,t='sine',v=0.3){try{const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d);}catch(e){}}
@@ -360,11 +329,10 @@ function sndFanfare(){if(!se())return;[523,659,784,1047,1318].forEach((n,i)=>set
 function sndFlip(){if(!se())return;tone(380+Math.random()*320,0.11,'sine',0.18);}
 function sndClick(){if(!se())return;tone(700,0.06,'sine',0.15);}
 function sndSelect(){if(!se())return;tone(880,0.08,'triangle',0.2);tone(1100,0.1,'sine',0.15);}
-function sndDelete(){if(!se())return;tone(300,0.15,'sawtooth',0.2);tone(200,0.1,'sine',0.1);}
+function sndDelete(){if(!se())return;tone(300,0.15,'sawtooth',0.2);}
 
 let grid=[],students=[],visionStu=[],seps=[],assignment={};
-let adjMatrix={},totalRounds=0;
-let delMode=false;
+let adjMatrix={},totalRounds=0,delMode=false;
 const avatarColors=['#ffb3c6','#b3d9ff','#b3ffdc','#ffd9b3','#d9b3ff','#fffbb3','#ffcdb3'];
 const avatarEmoji=['🐱','🐶','🐻','🐰','🐸','🐼','🦊','🐨','🐹','🐯','🦁','🐮','🐷','🐙','🐧'];
 
@@ -374,34 +342,21 @@ function getCell(r,c){return grid.find(x=>x.r===r&&x.c===c);}
 function activeSeats(){return grid.filter(x=>x.on);}
 function seatNum(r,c){return activeSeats().findIndex(x=>x.r===r&&x.c===c)+1;}
 function isVR(r){return r<(parseInt(document.getElementById('vision-rows').value)||1);}
-function usedNames(){return activeSeats().map(s=>s.name).filter(n=>n&&n.trim());}
-function availableStudents(){return students.filter(s=>!usedNames().includes(s));}
+function availableStudents(){
+  const used=new Set(activeSeats().map(s=>s.name).filter(n=>n&&n.trim()));
+  return students.filter(s=>!used.has(s));
+}
 
 /* ===== 削除モード ===== */
 function toggleDelMode(){
   delMode=!delMode;
   const btn=document.getElementById('del-mode-btn');
   const bar=document.getElementById('del-mode-bar');
-  if(delMode){
-    btn.style.background='#fd7272';btn.style.color='#fff';btn.style.borderColor='#fd7272';
-    btn.textContent='🗑 削除モード ON';
-    bar.style.display='flex';
-  } else {
-    btn.style.background='';btn.style.color='';btn.style.borderColor='';
-    btn.textContent='🗑 削除モード';
-    bar.style.display='none';
-  }
+  if(delMode){btn.style.cssText='background:#fd7272;color:#fff;border-color:#fd7272;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700';btn.textContent='🗑 削除モード ON';bar.style.display='flex';}
+  else{btn.style.cssText='';btn.textContent='🗑 削除モード';bar.style.display='none';}
   renderLB();
 }
-
-function deleteSeat(r,c){
-  const cell=getCell(r,c);
-  if(!cell)return;
-  cell.on=false;
-  cell.name='';
-  sndDelete();
-  renderLB();
-}
+function deleteSeat(r,c){const cell=getCell(r,c);if(!cell)return;cell.on=false;cell.name='';sndDelete();renderLB();}
 
 /* ===== GRID ===== */
 function applyPreset(){
@@ -412,21 +367,17 @@ function applyPreset(){
   grid=[];
   for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=type==='g'||(r===0||c===0||c===cols-1);grid.push({r,c,on,name:''});}
   document.getElementById('preset-sel').value='';
-  delMode=false;
-  document.getElementById('del-mode-bar').style.display='none';
-  const btn=document.getElementById('del-mode-btn');
-  btn.style.background='';btn.style.color='';btn.style.borderColor='';btn.textContent='🗑 削除モード';
+  delMode=false;document.getElementById('del-mode-bar').style.display='none';
+  const btn=document.getElementById('del-mode-btn');btn.style.cssText='';btn.textContent='🗑 削除モード';
   renderLB();
 }
 function clearGrid(){grid=[];delMode=false;renderLB();}
-function clearAllNames(){grid.forEach(c=>c.name='');renderLB();}
 
 function renderLB(){
   const el=document.getElementById('lb');el.innerHTML='';
   const rows=maxR(),cols=maxC();
   const bb=document.createElement('div');bb.className='blackboard';
   bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);
-
   for(let r=0;r<=rows;r++){
     const rw=document.createElement('div');rw.className='lb-row';
     for(let c=0;c<=cols;c++){
@@ -436,64 +387,53 @@ function renderLB(){
         if(isVR(r))d.classList.add('vision');
         if(cell.name)d.classList.add('has-name');
         if(delMode)d.classList.add('del-mode');
-
         const num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
         const nm=document.createElement('div');nm.className='lb-cell-name';
         nm.textContent=cell.name||'＋';if(!cell.name)nm.style.fontSize='20px';
         d.appendChild(num);d.appendChild(nm);
-
         if(delMode){
-          // 削除バッジ
-          const badge=document.createElement('div');badge.className='del-badge';badge.textContent='✕';
-          d.appendChild(badge);
+          const badge=document.createElement('div');badge.className='del-badge';badge.textContent='✕';d.appendChild(badge);
           d.addEventListener('click',()=>deleteSeat(r,c));
-          d.title='タップして削除';
         } else {
           d.addEventListener('click',()=>openPopup(r,c));
-          d.title='クリックして名前を選択';
         }
       } else {
-        // 空セル：削除モード中はクリック無効
         if(!delMode){
           d.innerHTML='<span style="font-size:16px">＋</span>';
           d.addEventListener('click',()=>{
             if(!cell){for(let rr=0;rr<=r;rr++)for(let cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});}
             const nc=getCell(r,c);if(nc)nc.on=true;renderLB();
           });
-        } else {
-          d.style.opacity='0.3';
-          d.style.pointerEvents='none';
-        }
+        } else {d.style.opacity='0.3';d.style.pointerEvents='none';}
       }
       rw.appendChild(d);
     }
-
     if(!delMode){
       const ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';
       ac.addEventListener('click',()=>{const nc=cols+1;for(let rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});const nw=getCell(r,nc);if(nw)nw.on=true;renderLB();});
       rw.appendChild(ac);
-      const dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';dr.title='この行を削除';
+      const dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';
       dr.addEventListener('click',()=>{grid=grid.filter(x=>x.r!==r);grid.forEach(x=>{if(x.r>r)x.r--;});renderLB();});
       rw.appendChild(dr);
     }
     el.appendChild(rw);
   }
-
   if(!delMode){
     const ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';
     ar.addEventListener('click',()=>{const nr=rows+1;for(let c=0;c<=cols;c++)grid.push({r:nr,c,on:false,name:''});renderLB();});
     el.appendChild(ar);
   }
-
-  document.getElementById('lb-stat').textContent=`${activeSeats().length}席 / ${usedNames().length}名入力済み${delMode?' — 🗑 削除モード中':''}`;
+  const named=activeSeats().filter(s=>s.name&&s.name.trim()).length;
+  document.getElementById('lb-stat').textContent=`${activeSeats().length}席 / ${named}名入力済み${delMode?' — 🗑 削除モード中':''}`;
 }
 
 /* ===== POPUP ===== */
-let popupTarget={r:-1,c:-1};
 function openPopup(r,c){
   if(delMode)return;
-  sndClick();popupTarget={r,c};
-  const cell=getCell(r,c);const avail=availableStudents();const hasCur=cell&&cell.name;
+  sndClick();
+  const cell=getCell(r,c);
+  const avail=availableStudents();
+  const hasCur=cell&&cell.name;
   document.getElementById('popup-title').textContent=`${seatNum(r,c)}番席 — だれにする？`;
   const list=document.getElementById('popup-list');list.innerHTML='';
   if(hasCur){
@@ -551,45 +491,91 @@ function renderSeps(){document.getElementById('sep-list').innerHTML=seps.map((p,
 /* ===== ASSIGN ===== */
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
 function isAdj(a,b){return(a.r===b.r&&Math.abs(a.c-b.c)===1)||(a.c===b.c&&Math.abs(a.r-b.r)===1);}
-function computeAssign(stuList){
-  const seats=activeSeats();const vr=parseInt(document.getElementById('vision-rows').value)||1;
-  const assign={};const usedS=new Set();const usedStu=new Set();
-  const vStu=visionStu.filter(s=>stuList.includes(s));
-  shuffle(seats.filter(s=>s.r<vr)).forEach((s,i)=>{if(vStu[i]){const k=s.r+'_'+s.c;assign[vStu[i]]=k;usedS.add(k);usedStu.add(vStu[i]);}});
-  const rem=stuList.filter(s=>!usedStu.has(s));
-  const avail=seats.filter(s=>!usedS.has(s.r+'_'+s.c)).map(s=>s.r+'_'+s.c);
-  const idToS=id=>{const[r,c]=id.split('_').map(Number);return{r:+r,c:+c};};
+
+/*
+  ★ 割り当てロジック（確定版）★
+
+  ① 名前あり座席 → その名前がその席に固定（絶対に動かさない）
+  ② 名前なし座席 → 名簿の中でまだ座席に入っていない残りの名前をランダムに割り当て
+                    隣にしない制約・視力配慮は残り名前の割り当てに適用
+*/
+function buildAssignment(){
+  const seats=activeSeats();
+
+  // ① 名前あり座席は固定
+  const fixedMap={};   // seatId -> name
+  const fixedNames=new Set();
+  seats.forEach(s=>{
+    if(s.name&&s.name.trim()){
+      fixedMap[s.r+'_'+s.c]=s.name;
+      fixedNames.add(s.name);
+    }
+  });
+
+  // ② 名前なし座席に入れる残り名前（名簿にあるがまだ固定されていない）
+  const emptySeatIds=seats.filter(s=>!s.name||!s.name.trim()).map(s=>s.r+'_'+s.c);
+  const remainingStudents=students.filter(s=>!fixedNames.has(s));
+
+  // 入れる人数は空席数と残り人数の少ない方
+  const count=Math.min(emptySeatIds.length, remainingStudents.length);
+  const stuToPlace=remainingStudents.slice(0,count);
+
+  // 空席IDをcount分だけ使う
+  const emptyToUse=emptySeatIds.slice(0,count);
+
+  // 視力配慮：空席の中で前列のものに優先
+  const vr=parseInt(document.getElementById('vision-rows').value)||1;
+  const idToRC=id=>{const[r,c]=id.split('_').map(Number);return{r:+r,c:+c};};
+  const frontEmpty=emptyToUse.filter(id=>idToRC(id).r<vr);
+  const restEmpty=emptyToUse.filter(id=>idToRC(id).r>=vr);
+
+  // 視力配慮の生徒（残り名前の中にいる場合のみ）
+  const visionInRemaining=visionStu.filter(s=>stuToPlace.includes(s));
+  const assignExtra={};
+  const usedStu=new Set();
+  const usedSeat=new Set();
+
+  shuffle([...frontEmpty]).forEach((sid,i)=>{
+    if(visionInRemaining[i]){assignExtra[visionInRemaining[i]]=sid;usedStu.add(visionInRemaining[i]);usedSeat.add(sid);}
+  });
+
+  const remStu=stuToPlace.filter(s=>!usedStu.has(s));
+  const remSeat=emptyToUse.filter(id=>!usedSeat.has(id));
+
+  // 隣にしない制約を考慮してシャッフル（固定座席の名前も考慮）
+  const fullMap={...fixedMap,...assignExtra};
   let best=null;
   for(let t=0;t<500;t++){
-    const sh=shuffle([...avail]);const trial={};rem.forEach((s,i)=>{trial[s]=sh[i];});
-    const merged={...assign,...trial};let ok=true;
-    for(const[a,b]of seps){const sa=idToS(merged[a]),sb=idToS(merged[b]);if(sa&&sb&&isAdj(sa,sb)){ok=false;break;}}
+    const sh=shuffle([...remSeat]);
+    const trial={};remStu.forEach((s,i)=>{if(sh[i])trial[s]=sh[i];});
+    const merged={...fullMap,...trial};
+    let ok=true;
+    for(const[a,b] of seps){
+      if(!merged[a]||!merged[b])continue;
+      if(isAdj(idToRC(merged[a]),idToRC(merged[b]))){ok=false;break;}
+    }
     if(ok){best=trial;break;}
   }
-  if(!best){best={};rem.forEach((s,i)=>{best[s]=shuffle([...avail])[i];});}
-  return{...assign,...best};
-}
-function autoAssign(){
-  const seats=activeSeats();
-  if(!students.length){document.getElementById('auto-stat').textContent='先に名簿を読み込んでください';return;}
-  if(!seats.length){document.getElementById('auto-stat').textContent='座席が設定されていません';return;}
-  const stuList=students.slice(0,seats.length);
-  const asgn=computeAssign(stuList);
-  Object.entries(asgn).forEach(([stu,id])=>{const[r,c]=id.split('_').map(Number);const s=getCell(r,c);if(s)s.name=stu;});
-  renderLB();
-  document.getElementById('auto-stat').innerHTML=`<span style="color:#2d6a2d;font-weight:700">✅ ${stuList.length}名の配置が完了しました！</span>`;
+  if(!best){best={};remStu.forEach((s,i)=>{if(remSeat[i])best[s]=remSeat[i];});}
+
+  // 最終マップ: seatId -> name
+  const result={};
+  Object.entries(fixedMap).forEach(([sid,n])=>result[sid]=n);
+  Object.entries(assignExtra).forEach(([n,sid])=>result[sid]=n);
+  Object.entries(best).forEach(([n,sid])=>{if(sid)result[sid]=n;});
+  return result;
 }
 
 /* ===== STATS ===== */
-function recordAdjacency(asgn){
-  const seats=activeSeats();const idToStu={};Object.entries(asgn).forEach(([stu,id])=>idToStu[id]=stu);
-  const stuList=Object.keys(asgn);
+function recordAdjacency(seatIdToName){
+  const seats=activeSeats();
+  const stuList=Object.values(seatIdToName).filter(Boolean);
   stuList.forEach(a=>{if(!adjMatrix[a])adjMatrix[a]={};stuList.forEach(b=>{if(adjMatrix[a][b]===undefined)adjMatrix[a][b]=0;});});
   seats.forEach(s=>{
-    const me=idToStu[s.r+'_'+s.c];if(!me)return;
+    const id=s.r+'_'+s.c;const me=seatIdToName[id];if(!me)return;
     [[0,1],[1,0]].forEach(([dr,dc])=>{
       const nb=seats.find(x=>x.r===s.r+dr&&x.c===s.c+dc);if(!nb)return;
-      const them=idToStu[nb.r+'_'+nb.c];if(!them)return;
+      const them=seatIdToName[nb.r+'_'+nb.c];if(!them)return;
       if(!adjMatrix[me])adjMatrix[me]={};if(!adjMatrix[them])adjMatrix[them]={};
       if(adjMatrix[me][them]===undefined)adjMatrix[me][them]=0;
       if(adjMatrix[them][me]===undefined)adjMatrix[them][me]=0;
@@ -604,7 +590,7 @@ function renderStats(){
   if(!names.length||totalRounds===0){document.getElementById('stat-empty').style.display='block';document.getElementById('stat-content').style.display='none';return;}
   document.getElementById('stat-empty').style.display='none';document.getElementById('stat-content').style.display='block';
   document.getElementById('stat-round-badge').textContent=`${totalRounds}回分`;
-  let maxCount=0,neverCount=0;const allStu=[...new Set(Object.keys(adjMatrix))];
+  let maxCount=0,neverCount=0;const allStu=[...new Set(names)];
   for(let i=0;i<allStu.length;i++)for(let j=i+1;j<allStu.length;j++){const v=(adjMatrix[allStu[i]]||{})[allStu[j]]||0;if(v>maxCount)maxCount=v;if(v===0)neverCount++;}
   document.getElementById('stat-summary').innerHTML=`
     <div class="stat-card"><div class="sc-val">${totalRounds}</div><div class="sc-lbl">実施回数</div></div>
@@ -661,62 +647,125 @@ function toTeacher(){document.getElementById('scr-k').classList.remove('on');doc
 function showKS(name){['waiting','cd','spin','reveal','class'].forEach(s=>{const el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});}
 
 /* ===== ROULETTE ===== */
-const spinChars=['🌀','🎲','⭐','🎊','🌈','🎯','🎠','🎡'];const cdChars=['🐱','🐶','🐻','🐰'];
+const spinChars=['🌀','🎲','⭐','🎊','🌈','🎯'];const cdChars=['🐱','🐶','🐻','🐰'];
+let currentAssignment={};
+
 function startRoulette(){
-  AC.resume();const seats=activeSeats().filter(s=>s.name&&s.name.trim());
-  if(!seats.length){alert('座席に名前が入力されていません！');return;}
-  const stuList=seats.map(s=>s.name);assignment=computeAssign(stuList);
-  renderKidClassHidden();showKS('cd');let cnt=3;
+  AC.resume();
+  const seats=activeSeats();
+  if(!seats.length){alert('座席が設定されていません！');return;}
+
+  // 割り当て実行
+  currentAssignment=buildAssignment();
+
+  // ルーレットに表示する名前一覧（割り当て済み全員）
+  const allNames=Object.values(currentAssignment).filter(Boolean);
+  if(!allNames.length){alert('座席に名前が入力されていないか、名簿が読み込まれていません！');return;}
+
+  renderKidClassHidden();showKS('cd');
+  let cnt=3;
   document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[0];sndCD(cnt);
-  const iv=setInterval(()=>{cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(()=>spinPhase(stuList),650);}},900);
+  const iv=setInterval(()=>{cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(()=>spinPhase(allNames),650);}},900);
 }
-function spinPhase(stuList){
-  showKS('spin');const nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');
+
+function spinPhase(allNames){
+  showKS('spin');
+  const nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');
   const emojis=['🎲','🌟','🎊','🎯','🌈','🎉','🎪','⭐'];let t=0;const total=60+Math.floor(Math.random()*28);const colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1'];
-  const iv=setInterval(()=>{nm.textContent=stuList[t%stuList.length];nm.style.color=colors[t%colors.length];sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];sndTick();t++;if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhase,680);}},75);
+  const iv=setInterval(()=>{
+    nm.textContent=allNames[t%allNames.length];nm.style.color=colors[t%colors.length];
+    sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';
+    emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];
+    sndTick();t++;
+    if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhase,680);}
+  },75);
 }
+
 function revealPhase(){
   showKS('reveal');sndFanfare();spawnConfetti();
-  const seats=activeSeats();const idToStu={};Object.entries(assignment).forEach(([stu,id])=>idToStu[id]=stu);
-  const rows=maxR(),cols=maxC();const g=document.getElementById('rv-grid');
+  const seats=activeSeats();
+  const rows=maxR(),cols=maxC();
+  const g=document.getElementById('rv-grid');
   g.style.cssText=`display:grid;grid-template-columns:repeat(${cols+1},1fr);gap:4px;width:100%`;g.innerHTML='';
-  for(let r=0;r<=rows;r++)for(let c=0;c<=cols;c++){
-    const cell=getCell(r,c);const d=document.createElement('div');
-    if(cell&&cell.on){d.className='rv-cell';d.id='rv-'+r+'_'+c;const rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';const rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';d.appendChild(rn);d.appendChild(rm);}
-    else{d.style.cssText='visibility:hidden;height:44px';}
-    g.appendChild(d);
+
+  for(let r=0;r<=rows;r++){
+    for(let c=0;c<=cols;c++){
+      const cell=getCell(r,c);const d=document.createElement('div');
+      if(cell&&cell.on){
+        d.className='rv-cell';d.id='rv-'+r+'_'+c;
+        const rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';
+        const rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';
+        d.appendChild(rn);d.appendChild(rm);
+      } else {d.style.cssText='visibility:hidden;height:44px';}
+      g.appendChild(d);
+    }
   }
+
   const shuf=shuffle([...seats.map(s=>s.r+'_'+s.c)]);let i=0;
   const iv=setInterval(()=>{
-    if(i>=shuf.length){clearInterval(iv);recordAdjacency(assignment);setTimeout(()=>afterReveal(idToStu),1100);return;}
-    const id=shuf[i];const stu=idToStu[id];const cell=document.getElementById('rv-'+id);
-    if(cell&&stu){cell.classList.add('flip');const rm=cell.querySelector('.rv-name');if(rm)rm.textContent=stu;sndFlip();}
+    if(i>=shuf.length){
+      clearInterval(iv);
+      recordAdjacency(currentAssignment);
+      setTimeout(()=>afterReveal(),1100);
+      return;
+    }
+    const id=shuf[i];
+    const name=currentAssignment[id]||'';
+    const cell=document.getElementById('rv-'+id);
+    if(cell){
+      cell.classList.add('flip');
+      const rm=cell.querySelector('.rv-name');
+      if(rm)rm.textContent=name||'空席';
+      if(name)sndFlip();
+    }
     i++;
   },95);
 }
-function afterReveal(idToStu){revealKidClass(idToStu);showKS('class');}
+
+function afterReveal(){
+  revealKidClass();showKS('class');
+}
+
 function renderKidClassHidden(){
-  const el=document.getElementById('k-cls');el.innerHTML='';const rows=maxR(),cols=maxC();
+  const el=document.getElementById('k-cls');el.innerHTML='';
+  const rows=maxR(),cols=maxC();
   const bb=document.createElement('div');bb.className='k-bb';bb.style.width=((cols+1)*73+10)+'px';bb.textContent='黒 板';el.appendChild(bb);
   for(let r=0;r<=rows;r++){
     const rw=document.createElement('div');rw.className='k-row';
     for(let c=0;c<=cols;c++){
       const cell=getCell(r,c);const d=document.createElement('div');
-      if(cell&&cell.on){d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id='kd-'+r+'_'+c;const num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';const nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';d.appendChild(num);d.appendChild(nm);}
-      else{d.className='k-no-desk';}
+      if(cell&&cell.on){
+        d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id='kd-'+r+'_'+c;
+        const num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
+        const nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
+        d.appendChild(num);d.appendChild(nm);
+      } else {d.className='k-no-desk';}
       rw.appendChild(d);
     }
     el.appendChild(rw);
   }
 }
-function revealKidClass(idToStu){
-  activeSeats().forEach(s=>{const d=document.getElementById('kd-'+s.r+'_'+s.c);if(!d)return;const stu=idToStu[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');const nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=stu||'空席';});
+
+function revealKidClass(){
+  activeSeats().forEach(s=>{
+    const id=s.r+'_'+s.c;
+    const d=document.getElementById('kd-'+id);if(!d)return;
+    const name=currentAssignment[id]||'';
+    d.classList.remove('hidden');d.classList.add('pop');
+    const nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=name||'空席';
+  });
 }
+
 function resetKid(){showKS('waiting');}
+
 function spawnConfetti(){
   const colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];const kb=document.getElementById('k-body');
   for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti-p';const sz=6+Math.random()*10;c.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[i%colors.length]};width:${sz}px;height:${sz}px;transform:rotate(${Math.random()*360}deg);animation-duration:${1.4+Math.random()*1.4}s;animation-delay:${Math.random()*0.4}s`;kb.appendChild(c);setTimeout(()=>c.remove(),3200);}
 }
 
-(function(){let rows=5,cols=6;grid=[];for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=r===0||c===0||c===cols-1;grid.push({r,c,on,name:''});}renderLB();})();
-</script>
+/* init */
+(function(){
+  let rows=5,cols=6;grid=[];
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const on=r===0||c===0||c===cols-1;grid.push({r,c,on,name:''});}
+  renderLB();
+})();
