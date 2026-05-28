@@ -419,7 +419,19 @@ function doSave(){
 }
 function loadSaved(){
   try{
+    // 新キーがなければ古いキーから順番に探してマイグレーション
     var json=localStorage.getItem('sekigae-v17');
+    if(!json){
+      var oldKeys=['sekigae-v16','sekigae-v15','sekigae-v14','sekigae-v13','sekigae-v12','sekigae-v11','sekigae-v10','sekigae-v9'];
+      for(var ki=0;ki<oldKeys.length;ki++){
+        json=localStorage.getItem(oldKeys[ki]);
+        if(json){
+          // 旧データを新キーに移行して保存
+          localStorage.setItem('sekigae-v17',json);
+          break;
+        }
+      }
+    }
     if(!json)return false;
     var d=JSON.parse(json);
     grid=d.grid||[];students=d.students||[];visionStu=d.visionStu||[];seps=d.seps||[];
