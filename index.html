@@ -172,6 +172,33 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .legend-dot{width:16px;height:16px;border-radius:4px;flex-shrink:0}
 .empty-state{text-align:center;padding:30px;color:#bbb;font-size:13px}
 .empty-ico{font-size:40px;margin-bottom:8px}
+/* ===== フラグ機能 ===== */
+.num-row{flex-wrap:wrap;gap:6px;padding:8px 10px}
+.num-row-top{display:flex;align-items:center;gap:6px;width:100%}
+.num-row-bottom{display:flex;align-items:center;gap:6px;width:100%;flex-wrap:wrap}
+.flag-btn{background:none;border:2px solid #e0d8ff;border-radius:8px;cursor:pointer;font-size:16px;padding:2px 5px;line-height:1;transition:all 0.15s;opacity:0.35;flex-shrink:0}
+.flag-btn.on{border-color:transparent;opacity:1;background:#f0eeff;transform:scale(1.1)}
+.flag-btn:hover{opacity:0.8;transform:scale(1.05)}
+.memo-inp{flex:1;border:1px solid #e0d8ff;border-radius:8px;font-size:11px;padding:3px 7px;font-family:inherit;color:#555;background:#fafaff;min-width:80px}
+.memo-inp:focus{outline:none;border-color:#a29bfe}
+.memo-inp::placeholder{color:#ccc}
+/* 座席レイアウトのフラグ表示 */
+.lb-cell-flags{position:absolute;bottom:2px;right:2px;font-size:10px;line-height:1;letter-spacing:-1px}
+/* 子ども画面には絶対表示しない */
+#scr-k .lb-cell-flags,
+#scr-k .flag-btn,
+#scr-k .memo-inp,
+.k-desk .cell-flags{display:none!important}
+/* ===== プレビュー ===== */
+.pv-bb{background:#2a5c2a;color:#c8f0b8;border-radius:8px;padding:6px 0;text-align:center;font-size:12px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:2px solid #1a3c1a}
+.pv-row{display:flex;gap:4px;align-items:center;justify-content:center}
+.pv-desk{width:62px;height:48px;border-radius:8px;border:2px solid #c8a870;background:#fff8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.pv-desk.new-pair{border-color:#ff6b9d;background:#fff0f8;box-shadow:0 0 0 2px rgba(255,107,157,0.4)}
+.pv-desk-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:3px}
+.pv-desk-name{font-size:11px;font-weight:700;color:#2d4a1e;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px}
+.pv-empty{width:62px;height:48px;flex-shrink:0;visibility:hidden}
+.pv-pair-chip{display:inline-flex;align-items:center;gap:5px;background:#fff0f8;border:1.5px solid #ff6b9d;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;color:#c0304a;margin:3px}
+.pv-no-new{font-size:12px;color:#aaa;padding:6px 0}
 </style>
 </head>
 <body>
@@ -199,11 +226,9 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
       <select class="sel" id="preset-sel" onchange="applyPreset()">
         <option value="">プリセット選択</option>
-        <option value="ko5x6">コの字 5行×6列</option>
-        <option value="ko4x6">コの字 4行×6列</option>
-        <option value="g5x6">グリッド 5行×6列</option>
-        <option value="g4x5">グリッド 4行×5列</option>
-        <option value="g6x6">グリッド 6行×6列</option>
+        <option value="g5x5">グリッド 5行×5列（25席）</option>
+        <option value="g5x6">グリッド 5行×6列（30席）</option>
+        <option value="g5x7">グリッド 5行×7列（35席）</option>
       </select>
       <button class="btn btn-rd-wh" id="del-mode-btn" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px">🗑 削除モード</button>
       <button class="btn btn-rd" onclick="clearGrid()" style="font-size:11px;padding:5px 10px">名前だけクリア</button>
@@ -304,10 +329,45 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     </div>
   </div>
 </div>
+<div id="preview-adopted-msg" style="display:none;background:linear-gradient(135deg,#e8f5e9,#f0fffe);border:2px solid #81c784;border-radius:12px;padding:10px 14px;margin-bottom:8px;display:none;align-items:center;gap:10px;flex-wrap:wrap">
+  <span style="font-size:22px">✅</span>
+  <div style="flex:1">
+    <div style="font-size:13px;font-weight:700;color:#2e7d32">席替えの配置が確定しました！</div>
+    <div style="font-size:11px;color:#558b2f;margin-top:2px">子ども画面へ GO! を押すと確定した配置でルーレットを開始します</div>
+  </div>
+  <button class="btn btn-rd-wh" onclick="cancelAdopted()" style="font-size:11px;padding:4px 10px;flex-shrink:0">取り消す</button>
+</div>
 <div class="btn-row">
+  <button class="btn btn-wh" onclick="showPreview()" style="font-size:14px;padding:11px 22px">🔍 席替えプレビュー</button>
   <button class="btn btn-pk" onclick="toKid()" style="font-size:15px;padding:11px 26px;letter-spacing:1px">🎉 子ども画面へ GO!</button>
 </div>
 </div>
+</div>
+
+<!-- プレビューモーダル -->
+<div class="popup-bg" id="preview-modal" style="display:none" onclick="closePreview(event)">
+  <div class="popup-box" onclick="event.stopPropagation()" style="max-width:480px;max-height:88vh;overflow-y:auto">
+    <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#5c4a8a;letter-spacing:2px;text-align:center;margin-bottom:4px">🔍 席替えプレビュー</div>
+    <div style="font-size:11px;color:#aaa;text-align:center;margin-bottom:12px">先生専用 — 子どもには見せないでください</div>
+
+    <!-- 教室グリッド -->
+    <div id="pv-grid-wrap" style="background:#eef6ff;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:12px;border:2px solid #cce0ff">
+      <div id="pv-grid" style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content"></div>
+    </div>
+
+    <!-- 初めての隣同士コメント -->
+    <div id="pv-new-pairs-section">
+      <div style="font-size:13px;font-weight:700;color:#5c4a8a;margin-bottom:6px">🎉 今回はじめて隣になるペア</div>
+      <div id="pv-new-pairs"></div>
+    </div>
+
+    <!-- 再試行 & 採用ボタン -->
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-wh" onclick="rerollPreview()" style="flex:1;justify-content:center">🔄 やり直す</button>
+      <button class="btn btn-pk" onclick="adoptPreview()" style="flex:1;justify-content:center">✅ この配置で決定！</button>
+    </div>
+    <button class="popup-cancel" onclick="closePreview()">閉じる（配置は確定しない）</button>
+  </div>
 </div>
 <div class="scr" id="scr-k">
 <div class="k-hdr">
@@ -436,6 +496,11 @@ function loadSaved(){
     var d=JSON.parse(json);
     grid=d.grid||[];students=d.students||[];visionStu=d.visionStu||[];seps=d.seps||[];
     adjMatrix=d.adjMatrix||{};totalRounds=d.totalRounds||0;numList=d.numList||[];
+    // 古いデータに flags/memo がなければ補完
+    numList.forEach(function(it){
+      if(!it.flags)it.flags={leader:false,high:false,low:false,care:false,vision:false};
+      if(it.memo===undefined)it.memo='';
+    });
     if(d.rosterText)document.getElementById('roster-ta').value=d.rosterText;
     if(d.visionRows)document.getElementById('vision-rows').value=d.visionRows;
     if(d.sound!==undefined)document.getElementById('chk-sound').checked=d.sound;
@@ -463,8 +528,107 @@ function updateRoundDisp(){
 }
 
 var rosterDebounce=null;
-function onRosterInput(){clearTimeout(rosterDebounce);rosterDebounce=setTimeout(function(){var raw=document.getElementById('roster-ta').value;var names=[...new Set(raw.split(/[\n\r\t]+/).map(function(s){return s.trim();}).filter(function(s){return s;}))];if(!names.length){document.getElementById('roster-stat').textContent='';document.getElementById('num-list-card').style.display='none';students=[];numList=[];updateSels();scheduleSave();return;}students=names;numList=names.map(function(name,i){return{num:i+1,name:name};});updateSels();document.getElementById('num-list-card').style.display='block';renderNumList();document.getElementById('roster-ta').classList.add('success');setTimeout(function(){document.getElementById('roster-ta').classList.remove('success');},800);document.getElementById('roster-stat').innerHTML='<span style="color:#5c4a8a;font-weight:700">✅ '+names.length+'名</span>';scheduleSave();},300);}
-function renderNumList(){var el=document.getElementById('num-list');el.innerHTML='';numList.forEach(function(item,i){var row=document.createElement('div');row.className='num-row';var badge=document.createElement('div');badge.className='num-badge';badge.textContent=item.num+'番';var nameEl=document.createElement('div');nameEl.className='num-name';nameEl.textContent=item.name;nameEl.addEventListener('dblclick',function(){var inp=document.createElement('input');inp.className='num-inp';inp.value=item.name;nameEl.replaceWith(inp);inp.focus();inp.select();function finish(){var v=inp.value.trim()||item.name;item.name=v;students[i]=v;renderNumList();scheduleSave();}inp.addEventListener('blur',finish);inp.addEventListener('keydown',function(e){if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=item.name;inp.blur();}});});var delBtn=document.createElement('button');delBtn.className='num-del';delBtn.textContent='✕';delBtn.addEventListener('click',function(){numList.splice(i,1);numList.forEach(function(it,j){it.num=j+1;});students=numList.map(function(it){return it.name;});document.getElementById('roster-ta').value=students.join('\n');updateSels();renderNumList();scheduleSave();document.getElementById('roster-stat').innerHTML='<span style="color:#5c4a8a;font-weight:700">'+numList.length+'名</span>';});row.appendChild(badge);row.appendChild(nameEl);row.appendChild(delBtn);el.appendChild(row);});}
+// フラグ定義（先生のみ）
+var FLAGS=[
+  {key:'leader', icon:'✨', label:'リーダー'},
+  {key:'high',   icon:'💯', label:'学力高'},
+  {key:'low',    icon:'😨', label:'学力低'},
+  {key:'care',   icon:'💦', label:'要配慮'},
+  {key:'vision', icon:'👓', label:'視力悪い'}
+];
+
+function onRosterInput(){
+  clearTimeout(rosterDebounce);
+  rosterDebounce=setTimeout(function(){
+    var raw=document.getElementById('roster-ta').value;
+    var names=[...new Set(raw.split(/[\n\r\t]+/).map(function(s){return s.trim();}).filter(function(s){return s;}))];
+    if(!names.length){
+      document.getElementById('roster-stat').textContent='';
+      document.getElementById('num-list-card').style.display='none';
+      students=[];numList=[];updateSels();scheduleSave();return;
+    }
+    students=names;
+    // 既存の numList を引き継ぎつつ新しい名前を追加
+    var oldMap={};
+    numList.forEach(function(it){oldMap[it.name]=it;});
+    numList=names.map(function(name,i){
+      var old=oldMap[name];
+      return{
+        num:i+1, name:name,
+        flags: old?old.flags:{leader:false,high:false,low:false,care:false,vision:false},
+        memo: old?old.memo:''
+      };
+    });
+    updateSels();
+    document.getElementById('num-list-card').style.display='block';
+    renderNumList();
+    document.getElementById('roster-ta').classList.add('success');
+    setTimeout(function(){document.getElementById('roster-ta').classList.remove('success');},800);
+    document.getElementById('roster-stat').innerHTML='<span style="color:#5c4a8a;font-weight:700">✅ '+names.length+'名</span>';
+    scheduleSave();
+  },300);
+}
+
+function renderNumList(){
+  var el=document.getElementById('num-list');el.innerHTML='';
+  numList.forEach(function(item,i){
+    var row=document.createElement('div');row.className='num-row';
+
+    // 上段：番号 + 名前 + ✕
+    var top=document.createElement('div');top.className='num-row-top';
+    var badge=document.createElement('div');badge.className='num-badge';badge.textContent=item.num+'番';
+
+    var nameEl=document.createElement('div');nameEl.className='num-name';nameEl.textContent=item.name;
+    nameEl.addEventListener('dblclick',function(){
+      var inp=document.createElement('input');inp.className='num-inp';inp.value=item.name;
+      nameEl.replaceWith(inp);inp.focus();inp.select();
+      function finish(){var v=inp.value.trim()||item.name;item.name=v;students[i]=v;renderNumList();renderLB();scheduleSave();}
+      inp.addEventListener('blur',finish);
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=item.name;inp.blur();}});
+    });
+
+    var delBtn=document.createElement('button');delBtn.className='num-del';delBtn.textContent='✕';
+    delBtn.addEventListener('click',function(){
+      numList.splice(i,1);
+      numList.forEach(function(it,j){it.num=j+1;});
+      students=numList.map(function(it){return it.name;});
+      document.getElementById('roster-ta').value=students.join('\n');
+      updateSels();renderNumList();renderLB();scheduleSave();
+      document.getElementById('roster-stat').innerHTML='<span style="color:#5c4a8a;font-weight:700">'+numList.length+'名</span>';
+    });
+    top.appendChild(badge);top.appendChild(nameEl);top.appendChild(delBtn);
+
+    // 下段：フラグボタン + メモ
+    var bot=document.createElement('div');bot.className='num-row-bottom';
+
+    // flags がない古いデータに対応
+    if(!item.flags)item.flags={leader:false,high:false,low:false,care:false,vision:false};
+    if(item.memo===undefined)item.memo='';
+
+    FLAGS.forEach(function(f){
+      var btn=document.createElement('button');
+      btn.className='flag-btn'+(item.flags[f.key]?' on':'');
+      btn.textContent=f.icon;btn.title=f.label;
+      btn.addEventListener('click',(function(item,key){return function(){
+        item.flags[key]=!item.flags[key];
+        renderNumList();renderLB();scheduleSave();
+      };})(item,f.key));
+      bot.appendChild(btn);
+    });
+
+    var memoInp=document.createElement('input');
+    memoInp.className='memo-inp';memoInp.type='text';
+    memoInp.placeholder='メモ（先生のみ）';memoInp.value=item.memo||'';
+    memoInp.addEventListener('input',(function(item){return function(e){
+      item.memo=e.target.value;scheduleSave();
+    };})(item));
+    bot.appendChild(memoInp);
+
+    row.appendChild(top);row.appendChild(bot);
+    el.appendChild(row);
+  });
+}
+
 function clearRoster(){document.getElementById('roster-ta').value='';students=[];numList=[];updateSels();document.getElementById('num-list-card').style.display='none';document.getElementById('num-list').innerHTML='';document.getElementById('roster-stat').textContent='';scheduleSave();}
 function loadSample(){var names=['田中','鈴木','佐藤','高橋','伊藤','渡辺','山本','中村','小林','加藤','吉田','山田','佐々木','松本','井上','木村','林','斎藤','清水','山口','中島','小川','石川','前田','岡田','後藤','長谷川','村上','近藤','坂本'];document.getElementById('roster-ta').value=names.join('\n');onRosterInput();}
 
@@ -479,14 +643,158 @@ function clearAllNames(){if(!confirm('全座席の名前をクリアしますか
 function toggleDelMode(){delMode=!delMode;var btn=document.getElementById('del-mode-btn');var bar=document.getElementById('del-mode-bar');if(delMode){btn.style.cssText='background:#fd7272;color:#fff;border-color:#fd7272;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer';btn.textContent='🗑 削除モード ON';bar.style.display='flex';}else{btn.style.cssText='';btn.textContent='🗑 削除モード';bar.style.display='none';}renderLB();}
 function deleteSeat(r,c){var cell=getCell(r,c);if(!cell)return;cell.on=false;cell.name='';sndDelete();renderLB();scheduleSave();}
 function cancelName(r,c){var cell=getCell(r,c);if(!cell)return;cell.name='';sndSelect();renderLB();scheduleSave();}
-function applyPreset(){var v=document.getElementById('preset-sel').value;if(!v)return;var rows=5,cols=6,type='ko';if(v==='ko4x6'){rows=4;cols=6;}else if(v==='g5x6'){rows=5;cols=6;type='g';}else if(v==='g4x5'){rows=4;cols=5;type='g';}else if(v==='g6x6'){rows=6;cols=6;type='g';}grid=[];for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){var on=type==='g'||(r===0||c===0||c===cols-1);grid.push({r:r,c:c,on:on,name:''});}document.getElementById('preset-sel').value='';delMode=false;document.getElementById('del-mode-bar').style.display='none';var btn=document.getElementById('del-mode-btn');btn.style.cssText='';btn.textContent='🗑 削除モード';renderLB();scheduleSave();}
+function applyPreset(){
+  var v=document.getElementById('preset-sel').value;if(!v)return;
+  var rows=5,cols=6;
+  if(v==='g5x5'){rows=5;cols=5;}
+  else if(v==='g5x6'){rows=5;cols=6;}
+  else if(v==='g5x7'){rows=5;cols=7;}
+  grid=[];
+  for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){grid.push({r:r,c:c,on:true,name:''});}
+  document.getElementById('preset-sel').value='';delMode=false;
+  document.getElementById('del-mode-bar').style.display='none';
+  var btn=document.getElementById('del-mode-btn');btn.style.cssText='';btn.textContent='🗑 削除モード';
+  renderLB();scheduleSave();
+}
 // 全クリア = 名前だけクリア、座席スタイルはそのまま
 function clearGrid(){
   if(!confirm('全座席の名前をクリアしますか？\n（座席の配置はそのまま残ります）'))return;
   grid.forEach(function(c){c.name='';});
   renderLB();scheduleSave();
 }
-function renderLB(){var el=document.getElementById('lb');el.innerHTML='';var rows=maxR(),cols=maxC();var bb=document.createElement('div');bb.className='blackboard';bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);for(var r=0;r<=rows;r++){var rw=document.createElement('div');rw.className='lb-row';(function(r){for(var c=0;c<=cols;c++){(function(r,c){var cell=getCell(r,c);var d=document.createElement('div');d.className='lb-cell';if(cell&&cell.on){d.classList.add('seat');if(isVR(r))d.classList.add('vision');if(cell.name)d.classList.add('has-name');if(delMode)d.classList.add('del-mode');var num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';var nm=document.createElement('div');nm.className='lb-cell-name';nm.textContent=cell.name||'＋';if(!cell.name)nm.style.fontSize='20px';d.appendChild(num);d.appendChild(nm);if(delMode){var badge=document.createElement('div');badge.className='del-badge';badge.textContent='✕';d.appendChild(badge);d.addEventListener('click',(function(r,c){return function(){deleteSeat(r,c);};})(r,c));}else{if(cell.name){var cx=document.createElement('div');cx.className='cancel-x';cx.textContent='✕';cx.title='名前をキャンセル';cx.addEventListener('click',(function(r,c){return function(e){e.stopPropagation();cancelName(r,c);};})(r,c));d.appendChild(cx);}d.addEventListener('click',(function(r,c){return function(){openPopup(r,c);};})(r,c));}}else{if(!delMode){d.innerHTML='<span style="font-size:16px">＋</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);if(!cell){for(var rr=0;rr<=r;rr++)for(var cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});}var nc=getCell(r,c);if(nc)nc.on=true;renderLB();scheduleSave();};})(r,c));}else{d.style.opacity='0.3';d.style.pointerEvents='none';}}rw.appendChild(d);})(r,c);}if(!delMode){var ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';(function(r){ac.addEventListener('click',function(){var nc=cols+1;for(var rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});var nw=getCell(r,nc);if(nw)nw.on=true;renderLB();scheduleSave();});})(r);rw.appendChild(ac);var dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';(function(r){dr.addEventListener('click',function(){grid=grid.filter(function(x){return x.r!==r;});grid.forEach(function(x){if(x.r>r)x.r--;});renderLB();scheduleSave();});})(r);rw.appendChild(dr);}el.appendChild(rw);})(r);}if(!delMode){var ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';ar.addEventListener('click',function(){var nr=rows+1;for(var c=0;c<=cols;c++)grid.push({r:nr,c:c,on:false,name:''});renderLB();scheduleSave();});el.appendChild(ar);}var named=activeSeats().filter(function(s){return s.name&&s.name.trim();}).length;document.getElementById('lb-stat').textContent=activeSeats().length+'席 / '+named+'名入力済み'+(delMode?' — 🗑 削除モード中':'');}
+
+// 空行・空列を削除してインデックスを詰め直す
+function pruneEmptyRowsCols(){
+  // 現在 on=true の座席がある行・列を収集
+  var usedRows=new Set(),usedCols=new Set();
+  grid.forEach(function(c){if(c.on){usedRows.add(c.r);usedCols.add(c.c);}});
+  // on=false のセルで、その行にも列にも on=true がなければ削除
+  grid=grid.filter(function(c){
+    var rowHasSeat=usedRows.has(c.r);
+    var colHasSeat=usedCols.has(c.c);
+    return rowHasSeat&&colHasSeat;
+  });
+  // 行・列インデックスを 0 から連番に振り直す
+  var rowList=[...usedRows].sort(function(a,b){return a-b;});
+  var colList=[...usedCols].sort(function(a,b){return a-b;});
+  var rowMap={},colMap={};
+  rowList.forEach(function(r,i){rowMap[r]=i;});
+  colList.forEach(function(c,i){colMap[c]=i;});
+  grid.forEach(function(c){c.r=rowMap[c.r];c.c=colMap[c.c];});
+}
+
+function deleteSeat(r,c){
+  var cell=getCell(r,c);if(!cell)return;
+  cell.on=false;cell.name='';
+  sndDelete();
+  pruneEmptyRowsCols(); // 空行・空列を自動削除
+  renderLB();scheduleSave();
+}
+function cancelName(r,c){var cell=getCell(r,c);if(!cell)return;cell.name='';sndSelect();renderLB();scheduleSave();}
+
+function renderLB(){
+  var el=document.getElementById('lb');el.innerHTML='';
+  var rows=maxR(),cols=maxC();
+  var bb=document.createElement('div');bb.className='blackboard';
+  bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);
+
+  for(var r=0;r<=rows;r++){
+    var rw=document.createElement('div');rw.className='lb-row';
+    (function(r){
+      for(var c=0;c<=cols;c++){
+        (function(r,c){
+          var cell=getCell(r,c);
+          var d=document.createElement('div');d.className='lb-cell';
+          if(cell&&cell.on){
+            d.classList.add('seat');
+            if(isVR(r))d.classList.add('vision');
+            if(cell.name)d.classList.add('has-name');
+            if(delMode)d.classList.add('del-mode');
+            var num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
+            var nm=document.createElement('div');nm.className='lb-cell-name';nm.textContent=cell.name||'＋';
+            if(!cell.name)nm.style.fontSize='20px';
+            d.appendChild(num);d.appendChild(nm);
+            // ★ フラグ表示（先生画面のみ）
+            if(cell.name){
+              var info=numList.find(function(it){return it.name===cell.name;});
+              if(info&&info.flags){
+                var flagStr=FLAGS.filter(function(f){return info.flags[f.key];}).map(function(f){return f.icon;}).join('');
+                if(flagStr){
+                  var flagEl=document.createElement('div');flagEl.className='lb-cell-flags';flagEl.textContent=flagStr;
+                  d.appendChild(flagEl);
+                }
+              }
+            }
+            if(delMode){
+              var badge=document.createElement('div');badge.className='del-badge';badge.textContent='✕';d.appendChild(badge);
+              d.addEventListener('click',(function(r,c){return function(){deleteSeat(r,c);};})(r,c));
+            }else{
+              if(cell.name){
+                var cx=document.createElement('div');cx.className='cancel-x';cx.textContent='✕';cx.title='名前をキャンセル';
+                cx.addEventListener('click',(function(r,c){return function(e){e.stopPropagation();cancelName(r,c);};})(r,c));
+                d.appendChild(cx);
+              }
+              d.addEventListener('click',(function(r,c){return function(){openPopup(r,c);};})(r,c));
+            }
+          } else {
+            if(delMode){
+              // 削除モード中：空マスはクリックで座席を追加（復元）できる
+              d.style.cssText='width:62px;height:50px;border-radius:10px;border:2px dashed #ffb3b3;background:#fff5f5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#ffaaaa;position:relative';
+              d.textContent='＋';
+              d.title='ここに座席を追加';
+              d.addEventListener('click',(function(r,c){return function(){
+                var cell=getCell(r,c);
+                if(cell){cell.on=true;cell.name='';}
+                else{grid.push({r:r,c:c,on:true,name:''});}
+                renderLB();scheduleSave();
+              };})(r,c));
+            } else {
+              d.innerHTML='<span style="font-size:16px">＋</span>';
+              d.addEventListener('click',(function(r,c){return function(){
+                var cell=getCell(r,c);
+                if(!cell){
+                  for(var rr=0;rr<=r;rr++)for(var cc=0;cc<=c;cc++)if(!getCell(rr,cc))grid.push({r:rr,c:cc,on:false,name:''});
+                }
+                var nc=getCell(r,c);if(nc)nc.on=true;
+                renderLB();scheduleSave();
+              };})(r,c));
+            }
+          }
+          rw.appendChild(d);
+        })(r,c);
+      }
+      if(!delMode){
+        var ac=document.createElement('div');ac.className='add-c-btn';ac.textContent='＋';
+        (function(r){ac.addEventListener('click',function(){
+          var nc=cols+1;
+          for(var rr=0;rr<=rows;rr++)if(!getCell(rr,nc))grid.push({r:rr,c:nc,on:false,name:''});
+          var nw=getCell(r,nc);if(nw)nw.on=true;
+          renderLB();scheduleSave();
+        });})(r);
+        rw.appendChild(ac);
+        var dr=document.createElement('div');dr.className='del-r-btn';dr.textContent='✕';
+        (function(r){dr.addEventListener('click',function(){
+          grid=grid.filter(function(x){return x.r!==r;});
+          grid.forEach(function(x){if(x.r>r)x.r--;});
+          renderLB();scheduleSave();
+        });})(r);
+        rw.appendChild(dr);
+      }
+      el.appendChild(rw);
+    })(r);
+  }
+  if(!delMode){
+    var ar=document.createElement('button');ar.className='add-r-btn';ar.textContent='＋ 行を追加';
+    ar.addEventListener('click',function(){
+      var nr=rows+1;
+      for(var c=0;c<=cols;c++)grid.push({r:nr,c:c,on:false,name:''});
+      renderLB();scheduleSave();
+    });
+    el.appendChild(ar);
+  }
+  var named=activeSeats().filter(function(s){return s.name&&s.name.trim();}).length;
+  document.getElementById('lb-stat').textContent=activeSeats().length+'席 / '+named+'名入力済み'+(delMode?' — 🗑 削除モード中（空マスクリックで再追加）':'');
+}
 
 function openPopup(r,c){if(delMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
 function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
@@ -512,11 +820,48 @@ function adjScore(seatMap){
     [[0,1],[1,0]].forEach(function(d){
       var nb=seats.find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});if(!nb)return;
       var them=seatMap[nb.r+'_'+nb.c];if(!them)return;
-      // 回数を取得。多いほどペナルティ大（2乗で重み付け）
       var cnt=(adjMatrix[me]&&adjMatrix[me][them]!==undefined)?adjMatrix[me][them]:0;
       score+=cnt*cnt;
     });
   });
+  return score;
+}
+
+// ★ 均等分散スコア：✨💯😨が同じ班（2×2の4人グループ）に偏るとペナルティ
+// 班 = 座席を2列×2行ずつのブロックに区切る
+function balanceScore(seatMap){
+  var seats=activeSeats();
+  if(!seats.length)return 0;
+  // フラグ対象キー
+  var targetFlags=['leader','high','low'];
+  // 名前→フラグマップ
+  var flagMap={};
+  numList.forEach(function(it){if(it.flags)flagMap[it.name]=it.flags;});
+
+  // 2×2 ブロックに分けてそれぞれのフラグ集中度を計算
+  var rows=maxR()+1, cols=maxC()+1;
+  var blockSize=2;
+  var score=0;
+  for(var br=0;br<rows;br+=blockSize){
+    for(var bc=0;bc<cols;bc+=blockSize){
+      // このブロック内の名前を収集
+      var blockNames=[];
+      for(var r=br;r<br+blockSize&&r<rows;r++){
+        for(var c=bc;c<bc+blockSize&&c<cols;c++){
+          var id=r+'_'+c;
+          var name=seatMap[id];
+          if(name)blockNames.push(name);
+        }
+      }
+      if(blockNames.length<2)continue;
+      // 各フラグのカウント
+      targetFlags.forEach(function(fk){
+        var cnt=blockNames.filter(function(n){return flagMap[n]&&flagMap[n][fk];}).length;
+        // 2人以上同じブロックに入ったらペナルティ（cnt²）
+        if(cnt>=2)score+=cnt*cnt*5;
+      });
+    }
+  }
   return score;
 }
 
@@ -557,7 +902,7 @@ function buildAssignment(){
     var invalid=false;
     for(var si=0;si<seps.length;si++){var a=seps[si][0],b=seps[si][1];if(!nameMap[a]||!nameMap[b])continue;if(isAdj(idToRC(nameMap[a]),idToRC(nameMap[b]))){invalid=true;break;}}
     if(invalid)continue;
-    var sc=adjScore(seatMap);
+    var sc=adjScore(seatMap)+balanceScore(seatMap);
     if(sc<bestScore){bestScore=sc;bestResult=trial;}
   }
   if(!bestResult){bestResult={};remStu.forEach(function(s,i){if(remSeat[i])bestResult[s]=remSeat[i];});}
@@ -620,12 +965,25 @@ function renderRank(){var names=Object.keys(adjMatrix);var pairs=[];for(var i=0;
 function renderNever(){var names=Object.keys(adjMatrix);var filter=document.getElementById('never-filter-sel').value;var pairs=[];for(var i=0;i<names.length;i++)for(var j=i+1;j<names.length;j++){var v=(adjMatrix[names[i]]||{})[names[j]]||0;if(v===0&&(!filter||names[i]===filter||names[j]===filter))pairs.push({a:names[i],b:names[j]});}document.getElementById('never-grid').innerHTML=pairs.map(function(p){return '<span class="never-pill">💔 '+p.a+' & '+p.b+'</span>';}).join('')||'<div style="color:#aaa;font-size:13px;padding:8px">まだ隣になっていないペアはありません！✨</div>';document.getElementById('never-count').textContent=pairs.length+'ペアが未交流';}
 function statTab(name){['heat','rank','never'].forEach(function(t){document.getElementById('sp-'+t).style.display=t===name?'block':'none';document.getElementById('pill-'+t).classList.toggle('on',t===name);});}
 
-function toKid(){document.getElementById('scr-t').classList.remove('on');document.getElementById('scr-k').classList.add('on');showKS('waiting');updateRoundDisp();}
+function toKid(){
+  // プレビューから採用した場合は currentAssignment を保持、
+  // 直接 GO した場合はリセット（startAllAtOnce 内で生成）
+  document.getElementById('scr-t').classList.remove('on');
+  document.getElementById('scr-k').classList.add('on');
+  showKS('waiting');updateRoundDisp();
+}
 function toTeacher(){document.getElementById('scr-k').classList.remove('on');document.getElementById('scr-t').classList.add('on');}
 function showKS(name){['waiting','cd','spin','reveal','obo','class'].forEach(function(s){var el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});}
 
 var spinChars=['🌀','🎲','⭐','🎊','🌈','🎯'],cdChars=['🐱','🐶','🐻','🐰'];
-function startAllAtOnce(){AC.resume();var seats=activeSeats();if(!seats.length){alert('座席が設定されていません！');return;}currentAssignment=buildAssignment();var allNames=Object.values(currentAssignment).filter(Boolean);if(!allNames.length){alert('名前が入力されていません！');return;}renderKidClassHidden('k-cls');showKS('cd');var cnt=3;document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[0];sndCD(cnt);var iv=setInterval(function(){cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(function(){spinPhaseAll(allNames);},650);}},900);}
+function startAllAtOnce(){AC.resume();var seats=activeSeats();if(!seats.length){alert('座席が設定されていません！');return;}
+  // プレビューで確定した配置があればそれを使う、なければ新たに生成
+  if(currentAssignment&&Object.keys(currentAssignment).length>0){
+    // そのまま使う
+  } else {
+    currentAssignment=buildAssignment();
+  }
+  var allNames=Object.values(currentAssignment).filter(Boolean);if(!allNames.length){alert('名前が入力されていません！');return;}renderKidClassHidden('k-cls');showKS('cd');var cnt=3;document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[0];sndCD(cnt);var iv=setInterval(function(){cnt--;if(cnt>0){document.getElementById('cd-num').textContent=cnt;document.getElementById('cd-char').textContent=cdChars[3-cnt];sndCD(cnt);}else{clearInterval(iv);document.getElementById('cd-num').textContent='GO!';sndCD(0);setTimeout(function(){spinPhaseAll(allNames);},650);}},900);}
 function spinPhaseAll(allNames){showKS('spin');var nm=document.getElementById('spin-nm'),prog=document.getElementById('spin-prog'),emo=document.getElementById('spin-emo'),sc=document.getElementById('spin-char');var emojis=['🎲','🌟','🎊','🎯','🌈','🎉','🎪','⭐'],t=0,total=60+Math.floor(Math.random()*28),colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1'];var iv=setInterval(function(){nm.textContent=allNames[t%allNames.length];nm.style.color=colors[t%colors.length];sc.textContent=spinChars[t%spinChars.length];prog.style.width=Math.round(t/total*100)+'%';emo.textContent=emojis[t%emojis.length]+' '+emojis[(t+2)%emojis.length]+' '+emojis[(t+5)%emojis.length];sndTick();t++;if(t>=total){clearInterval(iv);nm.textContent='じゃじゃーん！🎊';nm.style.color='#fff';sc.textContent='🎊';setTimeout(revealPhaseAll,680);}},75);}
 function revealPhaseAll(){showKS('reveal');sndFanfare();spawnConfetti();var seats=activeSeats();var rows=maxR(),cols=maxC();var g=document.getElementById('rv-grid');g.style.cssText='display:grid;grid-template-columns:repeat('+(cols+1)+',1fr);gap:4px;width:100%';g.innerHTML='';for(var r=0;r<=rows;r++)for(var c=0;c<=cols;c++){var cell=getCell(r,c);var d=document.createElement('div');if(cell&&cell.on){d.className='rv-cell';d.id='rv-'+r+'_'+c;var rn=document.createElement('div');rn.className='rv-num';rn.textContent=seatNum(r,c)+'番';var rm=document.createElement('div');rm.className='rv-name';rm.textContent='？';d.appendChild(rn);d.appendChild(rm);}else{d.style.cssText='visibility:hidden;height:44px';}g.appendChild(d);}var shuf=shuffle([...seats.map(function(s){return s.r+'_'+s.c;})]);var i=0;var iv=setInterval(function(){if(i>=shuf.length){clearInterval(iv);recordAdjacency(currentAssignment);setTimeout(function(){revealKidClass('k-cls');showKS('class');},1100);return;}var id=shuf[i],name=currentAssignment[id]||'';var cell=document.getElementById('rv-'+id);if(cell){cell.classList.add('flip');var rm=cell.querySelector('.rv-name');if(rm)rm.textContent=name||'空席';if(name)sndFlip();}i++;},95);}
 
@@ -642,6 +1000,136 @@ function renderKidClassHidden(targetId){var el=document.getElementById(targetId)
 function revealKidClass(targetId){activeSeats().forEach(function(s){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=name||'空席';});}
 function resetKid(){clearInterval(oboIv);oboSpinning=false;oboQueue=[];oboIndex=0;showKS('waiting');}
 function spawnConfetti(){var colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];var kb=document.getElementById('k-body');for(var i=0;i<50;i++){var c=document.createElement('div');c.className='confetti-p';var sz=6+Math.random()*10;c.style.cssText='left:'+Math.random()*100+'%;top:-20px;background:'+colors[i%colors.length]+';width:'+sz+'px;height:'+sz+'px;transform:rotate('+Math.random()*360+'deg);animation-duration:'+(1.4+Math.random()*1.4)+'s;animation-delay:'+Math.random()*0.4+'s';kb.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},3200);}}
+
+// ===== プレビュー機能 =====
+var previewAssignment = {}; // 現在プレビュー中の配置
+
+function cancelAdopted(){
+  // 確定を取り消し → grid の名前もクリア
+  currentAssignment = {};
+  grid.forEach(function(c){ c.name = ''; });
+  renderLB();
+  scheduleSave();
+  document.getElementById('preview-adopted-msg').style.display='none';
+}
+
+function showPreview(){
+  var seats = activeSeats();
+  if(!seats.length){alert('座席が設定されていません！');return;}
+  var names = students.filter(Boolean);
+  if(!names.length){alert('名簿を読み込んでください！');return;}
+  previewAssignment = buildAssignment();
+  renderPreview();
+  document.getElementById('preview-modal').style.display='flex';
+}
+
+function rerollPreview(){
+  currentAssignment = {};
+  document.getElementById('preview-adopted-msg').style.display='none';
+  previewAssignment = buildAssignment();
+  renderPreview();
+}
+
+function renderPreview(){
+  var asgn = previewAssignment;
+  var seats = activeSeats();
+  var rows = maxR(), cols = maxC();
+
+  // 教室グリッド描画
+  var grid_el = document.getElementById('pv-grid');
+  grid_el.innerHTML = '';
+
+  // 初めての隣ペアを事前計算
+  var newPairs = [];
+  seats.forEach(function(s){
+    var id = s.r+'_'+s.c, me = asgn[id]; if(!me) return;
+    // 右と下だけ（重複防止）
+    [[0,1],[1,0]].forEach(function(d){
+      var nb = seats.find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});
+      if(!nb) return;
+      var them = asgn[nb.r+'_'+nb.c]; if(!them) return;
+      var cnt = (adjMatrix[me]&&adjMatrix[me][them]!==undefined) ? adjMatrix[me][them] : 0;
+      if(cnt===0) newPairs.push({a:me, b:them, sid1:id, sid2:nb.r+'_'+nb.c});
+    });
+  });
+
+  var newSeatIds = new Set();
+  newPairs.forEach(function(p){newSeatIds.add(p.sid1);newSeatIds.add(p.sid2);});
+
+  // 黒板
+  var bb = document.createElement('div');
+  bb.className = 'pv-bb';
+  bb.style.width = ((cols+1)*66+8)+'px';
+  bb.textContent = '黒 板';
+  grid_el.appendChild(bb);
+
+  for(var r=0;r<=rows;r++){
+    var rw = document.createElement('div');
+    rw.className = 'pv-row';
+    for(var c=0;c<=cols;c++){
+      var cell = getCell(r,c);
+      var d = document.createElement('div');
+      if(cell&&cell.on){
+        d.className = 'pv-desk';
+        var sid = r+'_'+c;
+        if(newSeatIds.has(sid)) d.classList.add('new-pair');
+        var num = document.createElement('div');
+        num.className = 'pv-desk-num';
+        num.textContent = seatNum(r,c)+'番';
+        var nm = document.createElement('div');
+        nm.className = 'pv-desk-name';
+        nm.textContent = asgn[sid] || '空席';
+        if(!asgn[sid]) nm.style.color='#bbb';
+        d.appendChild(num); d.appendChild(nm);
+      } else {
+        d.className = 'pv-empty';
+      }
+      rw.appendChild(d);
+    }
+    grid_el.appendChild(rw);
+  }
+
+  // 初めての隣ペアコメント
+  var pairsEl = document.getElementById('pv-new-pairs');
+  pairsEl.innerHTML = '';
+  if(newPairs.length===0){
+    var msg = document.createElement('div');
+    msg.className = 'pv-no-new';
+    msg.textContent = '今回は全員すでに一度は隣になったことがあります';
+    pairsEl.appendChild(msg);
+  } else {
+    newPairs.forEach(function(p){
+      var chip = document.createElement('span');
+      chip.className = 'pv-pair-chip';
+      chip.innerHTML = '🎉 '+p.a+' &amp; '+p.b+' <span style="font-weight:400;font-size:11px;color:#e06080">はじめて隣！</span>';
+      pairsEl.appendChild(chip);
+    });
+    var note = document.createElement('div');
+    note.style.cssText = 'font-size:11px;color:#aaa;margin-top:6px';
+    note.textContent = '※ピンク枠の席が「はじめての隣」ペアです';
+    pairsEl.appendChild(note);
+  }
+}
+
+function adoptPreview(){
+  // プレビューの配置を確定 → grid の name に書き込む → 座席タブに反映
+  currentAssignment = previewAssignment;
+  // grid の各 seat に名前を書き込む
+  Object.keys(currentAssignment).forEach(function(sid){
+    var p = sid.split('_');
+    var cell = getCell(+p[0], +p[1]);
+    if(cell && cell.on) cell.name = currentAssignment[sid] || '';
+  });
+  renderLB(); // 座席タブを更新
+  scheduleSave();
+  closePreview();
+  document.getElementById('preview-adopted-msg').style.display='block';
+}
+
+function closePreview(e){
+  if(e&&e.target!==document.getElementById('preview-modal'))return;
+  document.getElementById('preview-modal').style.display='none';
+}
 
 (function(){
   var loaded=loadSaved();
