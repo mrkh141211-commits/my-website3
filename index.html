@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE SEKIGAE v17</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Yomogi&family=Kaisei+Opti&family=DotGothic16&family=Reggae+One&family=RocknRoll+One&family=Hachi+Maru+Pop&family=Zen+Kurenaido&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff9f0;color:#333;font-size:14px}
@@ -25,20 +25,48 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .card{background:#fff;border-radius:16px;border:2px solid #e8e0ff;padding:13px;margin-bottom:10px;box-shadow:0 3px 10px rgba(100,80,200,0.07)}
 .card h3{font-size:13px;color:#5c4a8a;margin-bottom:7px;font-weight:700}
 .hint{font-size:11px;color:#aaa;margin-bottom:8px}
-.lb-wrap{background:#eef6ff;border-radius:14px;padding:10px;overflow-x:auto;margin-bottom:8px;border:2px solid #cce0ff}
+.lb-wrap{
+  background-color:#e8d5b0;
+  background-image:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0px, transparent 18px,
+      rgba(180,130,70,0.12) 18px, rgba(180,130,70,0.12) 20px,
+      transparent 20px, transparent 44px,
+      rgba(160,110,50,0.08) 44px, rgba(160,110,50,0.08) 47px,
+      transparent 47px, transparent 70px,
+      rgba(190,145,80,0.10) 70px, rgba(190,145,80,0.10) 72px
+    ),
+    repeating-linear-gradient(
+      88deg,
+      transparent 0px, transparent 60px,
+      rgba(150,100,40,0.05) 60px, rgba(150,100,40,0.05) 62px
+    );
+  border-radius:14px;padding:10px;overflow-x:auto;margin-bottom:8px;
+  border:3px solid #c4a060;
+  box-shadow:inset 0 0 20px rgba(120,80,20,0.08);
+}
 .lb-inner{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content}
 .lb-row{display:flex;gap:4px;align-items:center}
-.blackboard{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:3px solid #1a3c1a}
-.lb-cell{width:62px;height:50px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all 0.18s;border:2px dashed #b0d0f0;background:#ddeeff;color:#6090c0;position:relative}
+.blackboard{display:block;margin-bottom:6px;}
+.lb-cell{width:130px;height:88px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all 0.18s;border:2px dashed #b0d0f0;background:#ddeeff;color:#6090c0;position:relative}
 .lb-cell:hover{border-color:#45b7d1;background:#c8eeff;transform:scale(1.07)}
-.lb-cell.seat{background:#fff8ee;border:2px solid #c8a870;font-size:11px;color:#5a3a00}
-.lb-cell.seat:hover{border-color:#ff6b9d;background:#fff0f8;transform:scale(1.05)}
-.lb-cell.seat.vision{background:#fffce6;border-color:#ffd93d}
-.lb-cell.has-name{background:#e8f5ff;border-color:#45b7d1}
-.lb-cell.seat.del-mode{border-color:#fd7272;background:#fff0f0;animation:delShake 0.4s}
+.lb-cell.seat{
+  background:transparent;
+  border:none !important;
+  box-shadow:none !important;
+  font-size:11px;color:#3a2000;
+  position:relative;
+  overflow:visible;
+  cursor:pointer;
+}
+.lb-cell.seat:hover{transform:scale(1.07) translateY(-2px);filter:drop-shadow(0 4px 8px rgba(255,107,157,0.4))}
+.lb-cell.seat.vision .desk-svg .desk-top{fill:#ffe066 !important;}
+.lb-cell.has-name .desk-svg .desk-top{fill:#cce8ff !important;}
+.lb-cell.seat.del-mode .desk-svg .desk-top{fill:#ffcccc !important;} .lb-cell.seat.del-mode{animation:delShake 0.4s}
 @keyframes delShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
-.lb-cell-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px;line-height:1}
-.lb-cell-name{font-size:11px;font-weight:700;color:#1a3a6a;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px;margin-top:4px}
+.lb-cell-num{font-size:15px;color:#7a5000;font-weight:700;position:absolute;top:3px;left:0;right:0;text-align:center;line-height:1;z-index:3}
+
 .lb-cell.has-name .cancel-x{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#fd7272;color:#fff;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center;border:2px solid #fff;z-index:3;cursor:pointer}
 .lb-cell.has-name:hover .cancel-x{display:flex}
 .del-badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#fd7272;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;z-index:2}
@@ -84,7 +112,23 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .popup-cancel:hover{background:#f0eeff;color:#5c4a8a}
 .k-hdr{background:linear-gradient(135deg,#5c4a8a,#8b5cf6,#ff6b9d);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
 .k-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2)}
-.k-body{background:linear-gradient(180deg,#e8f4ff 0%,#f8f0ff 100%);min-height:500px;padding:14px;position:relative;overflow:hidden}
+.k-body{
+  background-color:#e8d5b0;
+  background-image:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0px, transparent 18px,
+      rgba(180,130,70,0.12) 18px, rgba(180,130,70,0.12) 20px,
+      transparent 20px, transparent 44px,
+      rgba(160,110,50,0.08) 44px, rgba(160,110,50,0.08) 47px
+    ),
+    repeating-linear-gradient(
+      88deg,
+      transparent 0px, transparent 60px,
+      rgba(150,100,40,0.05) 60px, rgba(150,100,40,0.05) 62px
+    );
+  min-height:500px;padding:14px;position:relative;overflow:hidden;
+}
 .chars{display:flex;justify-content:center;gap:20px;margin-bottom:8px;flex-wrap:wrap}
 .char{display:flex;flex-direction:column;align-items:center;gap:2px;animation:charFloat 2.5s ease-in-out infinite}
 .char:nth-child(2){animation-delay:.4s}.char:nth-child(3){animation-delay:.8s}.char:nth-child(4){animation-delay:1.2s}
@@ -129,17 +173,17 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .obo-action-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 .obo-reset-link{font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;margin-top:8px;text-decoration:underline;display:inline-block}
 .k-class{display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px 0}
-.k-bb{background:#2a5c2a;color:#c8f0b8;border-radius:10px;padding:8px 0;text-align:center;font-size:14px;font-weight:700;letter-spacing:3px;margin-bottom:8px;border:3px solid #1a3c1a}
+.k-bb{display:block;margin-bottom:8px;}
 .k-row{display:flex;gap:5px;align-items:center}
-.k-desk{width:68px;height:54px;border-radius:10px;border:3px solid #c8a870;background:#fff8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 0 #c0a060;transition:all 0.4s;position:relative}
-.k-desk.vision{border-color:#ffd93d;background:#fffce6}
-.k-desk.revealed{border-color:#55efc4;background:#e8fff8;box-shadow:0 3px 0 #3db88a}
-.k-desk-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:4px}
-.k-desk-name{font-size:11px;font-weight:700;color:#2d4a1e;text-align:center;word-break:break-all;line-height:1.2;padding:0 3px}
-.k-desk.hidden .k-desk-name{color:transparent;background:#e8dfc8;border-radius:4px;width:50px;height:13px;margin:0 auto}
+.k-desk{width:130px;height:88px;border-radius:0;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.4s;position:relative;overflow:visible}
+.k-desk.vision .kdesk-svg .desk-top{fill:#ffe066 !important}
+.k-desk.revealed .kdesk-svg .desk-top{fill:#cce8ff !important}
+.k-desk-num{font-size:15px;color:#7a5000;font-weight:700;position:absolute;top:3px;left:0;right:0;text-align:center;z-index:3;line-height:1}
+.k-desk-name{font-size:22px;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1.2;padding:2px 6px 0;position:absolute;top:16px;left:0;right:0;z-index:3}
+.k-desk.hidden .k-desk-name{color:transparent}
 .k-desk.pop{animation:deskPop 0.55s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes deskPop{0%{transform:scale(0.5) rotate(-8deg)}70%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
-.k-no-desk{width:68px;height:54px;visibility:hidden}
+.k-no-desk{width:130px;height:88px;visibility:hidden}
 .rv-cell{background:#2a5c2a;border:1.5px solid #4a9040;border-radius:8px;padding:4px 2px;text-align:center;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.35s}
 .rv-cell.flip{background:#fff8ee;border-color:#c8a870}
 .rv-num{font-size:9px;color:#5a8050;margin-bottom:1px}
@@ -189,12 +233,47 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 #scr-k .flag-btn,
 #scr-k .memo-inp,
 .k-desk .cell-flags{display:none!important}
-/* ===== プレビュー ===== */
+/* ===== 机イラスト ===== */
+/* desk decoration now in SVG */
+
+/* ===== 机SVGイラスト ===== */
+.lb-cell.seat{width:130px;height:88px;}
+.desk-svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+.lb-cell-num{z-index:3;position:absolute;top:2px;left:3px;font-size:18px;color:#7a5000;font-weight:700;line-height:1}
+.lb-cell-flags{z-index:3;position:absolute;bottom:2px;right:2px;font-size:9px;line-height:1;letter-spacing:-1px}
+.lb-cell.seat .cancel-x{z-index:4}
+
+.lb-cell-name{font-size:22px;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1;padding:0 6px;position:absolute;top:28px;left:0;right:0;z-index:2}
+/* ===== フォントボタン ===== */
+.font-btn{padding:7px 13px;border-radius:14px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.15s;color:#555}
+.font-btn.on{background:#5c4a8a;color:#fff;border-color:#5c4a8a}
+.font-btn:hover{border-color:#a29bfe;background:#f0eeff}
+/* ===== テーマ・BGMボタン ===== */
+.theme-btn{padding:6px 12px;border-radius:14px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.15s;color:#555}
+.theme-btn.on{background:#a29bfe;color:#fff;border-color:#a29bfe}
+.theme-btn:hover{border-color:#a29bfe;background:#f0eeff}
+.color-theme-btn{padding:8px 14px;border-radius:14px;border:3px solid transparent;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;color:#fff;transition:all 0.15s;text-shadow:0 1px 2px rgba(0,0,0,0.3)}
+.color-theme-btn.on{border-color:#fff;box-shadow:0 0 0 3px rgba(0,0,0,0.2)}
+.color-theme-btn:hover{transform:scale(1.05)}
+.hist-item{background:#f8f8ff;border:1.5px solid #e0d8ff;border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s}
+.hist-item:hover{border-color:#a29bfe;background:#f0eeff}
+.hist-item-date{font-size:11px;color:#aaa;margin-bottom:3px}
+.hist-item-names{font-size:12px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-item-badge{display:inline-flex;align-items:center;gap:3px;background:#e8f0ff;color:#5c4a8a;border-radius:8px;font-size:10px;font-weight:700;padding:2px 6px;margin-right:4px}
+.flag-group{background:#f8f8ff;border:1.5px solid #e0d8ff;border-radius:10px;padding:8px;margin-bottom:6px}
+.flag-group-title{font-size:11px;font-weight:700;color:#5c4a8a;margin-bottom:4px}
+.flag-bar-wrap{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.flag-bar-label{font-size:14px;width:24px;text-align:center}
+.flag-bar-bg{flex:1;background:#f0eeff;border-radius:4px;height:14px}
+.flag-bar-fill{height:100%;border-radius:4px;transition:width 0.4s}
+.flag-bar-count{font-size:11px;color:#888;min-width:20px}
+:root{--thA:#5c4a8a;--thB:#8b5cf6;--thC:#ff6b9d;--thG:linear-gradient(135deg,#5c4a8a 0%,#8b5cf6 50%,#ff6b9d 100%)}
+
 .pv-bb{background:#2a5c2a;color:#c8f0b8;border-radius:8px;padding:6px 0;text-align:center;font-size:12px;font-weight:700;letter-spacing:3px;margin-bottom:6px;border:2px solid #1a3c1a}
 .pv-row{display:flex;gap:4px;align-items:center;justify-content:center}
 .pv-desk{width:62px;height:48px;border-radius:8px;border:2px solid #c8a870;background:#fff8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;flex-shrink:0}
 .pv-desk.new-pair{border-color:#ff6b9d;background:#fff0f8;box-shadow:0 0 0 2px rgba(255,107,157,0.4)}
-.pv-desk-num{font-size:9px;color:#c0a880;position:absolute;top:2px;left:3px}
+.pv-desk-num{font-size:18px;color:#7a5000;font-weight:700;position:absolute;top:2px;left:3px}
 .pv-desk-name{font-size:11px;font-weight:700;color:#2d4a1e;text-align:center;word-break:break-all;line-height:1.2;padding:0 2px}
 .pv-empty{width:62px;height:48px;flex-shrink:0;visibility:hidden}
 .pv-pair-chip{display:inline-flex;align-items:center;gap:5px;background:#fff0f8;border:1.5px solid #ff6b9d;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;color:#c0304a;margin:3px}
@@ -216,13 +295,25 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <button class="hdr-tab" id="ht-ros" onclick="hTab('ros')">② 名簿</button>
     <button class="hdr-tab" id="ht-cfg" onclick="hTab('cfg')">③ 配慮</button>
     <button class="hdr-tab" id="ht-stat" onclick="hTab('stat')">📊 統計</button>
+    <button class="hdr-tab" id="ht-hist" onclick="hTab('hist')">📅 履歴</button>
+    <button class="hdr-tab" id="ht-set" onclick="hTab('set')">🎨 設定</button>
   </div>
 </div>
 <div class="t-body">
 <div class="t-panel on" id="tp-lay">
   <div class="card">
     <h3>📐 座席レイアウト</h3>
-    <div class="hint">マス目クリック→座席追加 / 座席クリック→名前を登録 / 名前にカーソルで✕→キャンセル / 🗑削除モードで座席ごと削除 / 「名前だけクリア」は座席の配置を保ったまま全名前を消します</div>
+    <div class="hint">① 名簿を登録 → ② 「🤖 スマート配置を実行」で自動配置（毎回違う配置） → ③ 必要なら手動修正 → ④ 子ども画面へ GO!</div>
+
+    <!-- ★ スマート配置ボタン -->
+    <div style="background:linear-gradient(135deg,#f0eeff,#fff0f8);border:2px solid #a29bfe;border-radius:14px;padding:10px 12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-pp" onclick="runSmartAssign()" id="smart-btn" style="font-size:14px;padding:9px 20px">🤖 スマート配置を実行</button>
+        <div style="flex:1;font-size:11px;color:#888">未ペア優先・フラグ均等・同席回避を自動で考慮して配置します</div>
+      </div>
+      <div id="smart-status" style="display:none;margin-top:8px;font-size:12px;color:#5c4a8a;font-weight:700"></div>
+    </div>
+
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
       <select class="sel" id="preset-sel" onchange="applyPreset()">
         <option value="">プリセット選択</option>
@@ -279,9 +370,65 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     </div>
     <div id="sep-list"></div>
   </div>
+</div>
+
+<!-- 📅 履歴タブ -->
+<div class="t-panel" id="tp-hist">
   <div class="card">
-    <h3>🎭 演出設定</h3>
-    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
+    <h3>📅 席替え履歴</h3>
+    <div class="hint">席替えを実行するたびに自動で保存されます。クリックで当時の座席表を確認・復元できます。</div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+
+<!-- 🎨 設定タブ -->
+<div class="t-panel" id="tp-set">
+  <div class="card">
+    <h3>🔤 フォント設定</h3>
+    <div class="hint">アプリ全体のフォントを変更できます。</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="font-btns">
+      <button class="font-btn on" data-font="default" onclick="setFont(this,'default')">📝 デフォルト</button>
+      <button class="font-btn" data-font="maru" onclick="setFont(this,'maru')">🟡 ニコニコ丸ゴシック</button>
+      <button class="font-btn" data-font="natsume" onclick="setFont(this,'natsume')">🍃 なつ葉</button>
+      <button class="font-btn" data-font="reggae" onclick="setFont(this,'reggae')">🎸 レゲエ</button>
+      <button class="font-btn" data-font="yomogi" onclick="setFont(this,'yomogi')">✏️ よもぎ（手書き風）</button>
+      <button class="font-btn" data-font="kaisei" onclick="setFont(this,'kaisei')">📖 解星（明朝系）</button>
+      <button class="font-btn" data-font="dotgothic" onclick="setFont(this,'dotgothic')">👾 ドットゴシック（レトロ）</button>
+      <button class="font-btn" data-font="rocknroll" onclick="setFont(this,'rocknroll')">🎵 ロックンロール</button>
+    </div>
+    <div id="font-preview" style="margin-top:10px;padding:10px 14px;background:#f8f8ff;border-radius:10px;border:1.5px solid #e0d8ff;font-size:18px;color:#333">
+      あいうえお　田中　鈴木　ABCabc　席替え！
+    </div>
+  </div>
+  <div class="card">
+    <h3>🎨 テーマカラー</h3>
+    <div class="hint">アプリ全体の雰囲気を変えられます。</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="color-theme-btns">
+      <button class="color-theme-btn on" data-theme="purple" onclick="setColorTheme(this,'purple')" style="background:linear-gradient(135deg,#5c4a8a,#ff6b9d)">💜 デフォルト</button>
+      <button class="color-theme-btn" data-theme="ocean" onclick="setColorTheme(this,'ocean')" style="background:linear-gradient(135deg,#0077b6,#00b4d8)">🌊 オーシャン</button>
+      <button class="color-theme-btn" data-theme="forest" onclick="setColorTheme(this,'forest')" style="background:linear-gradient(135deg,#2d6a4f,#74c69d)">🌲 フォレスト</button>
+      <button class="color-theme-btn" data-theme="sunset" onclick="setColorTheme(this,'sunset')" style="background:linear-gradient(135deg,#e76f51,#ffd166)">🌅 サンセット</button>
+      <button class="color-theme-btn" data-theme="candy" onclick="setColorTheme(this,'candy')" style="background:linear-gradient(135deg,#ff6eb4,#ffcc00)">🍭 キャンディ</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📊 フラグ分布チェック</h3>
+    <div class="hint">現在の座席配置でフラグがどのグループに分散されているか確認できます。</div>
+    <button class="btn btn-pp" onclick="renderFlagCheck()" style="margin-bottom:10px">🔍 今の配置を分析</button>
+    <div id="flag-check-result"></div>
+  </div>
+  <div class="card">
+    <h3>🎭 演出・サウンド設定</h3>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:10px"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
+    <div style="font-size:12px;font-weight:700;color:#5c4a8a;margin-bottom:6px">🎵 BGMテーマ</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap" id="bgm-btns">
+      <button class="theme-btn on" data-bgm="normal" onclick="setBgm(this,'normal')">🎲 ノーマル</button>
+      <button class="theme-btn" data-bgm="festive" onclick="setBgm(this,'festive')">🎉 フェスティバル（マリンバ）</button>
+      <button class="theme-btn" data-bgm="calm" onclick="setBgm(this,'calm')">🌙 おだやか（ハープ）</button>
+      <button class="theme-btn" data-bgm="dramatic" onclick="setBgm(this,'dramatic')">🔥 ドラマティック（オーケストラ）</button>
+      <button class="theme-btn" data-bgm="jazz" onclick="setBgm(this,'jazz')">🎷 ジャズ（スウィング）</button>
+      <button class="theme-btn" data-bgm="game" onclick="setBgm(this,'game')">🎮 ゲーム（8bitチップチューン）</button>
+    </div>
   </div>
   <div class="card">
     <h3>💾 データ管理</h3>
@@ -304,6 +451,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <button class="tab-pill on" id="pill-heat" onclick="statTab('heat')">🟦 隣になった回数</button>
       <button class="tab-pill" id="pill-rank" onclick="statTab('rank')">🏆 ランキング</button>
       <button class="tab-pill" id="pill-never" onclick="statTab('never')">💔 未ペア</button>
+      <button class="tab-pill" id="pill-seat" onclick="statTab('seat')">🪑 座席ヒートマップ</button>
     </div>
     <div id="sp-heat">
       <div class="legend-row">
@@ -327,52 +475,37 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <div id="never-grid"></div>
       <div id="never-count" style="font-size:12px;color:#888;margin-top:8px"></div>
     </div>
+
+    <!-- 🪑 座席ヒートマップ -->
+    <div id="sp-seat" style="display:none">
+      <div class="hint">各児童がどの座席に何回座ったかを表示します。色が濃いほど多く座っています。</div>
+      <div class="legend-row">
+        <span style="font-size:11px;color:#888">回数：</span>
+        <div class="legend-item"><div class="legend-dot" style="background:#f8f4ff"></div>0回</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c8e6ff"></div>1回</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7ec8f0"></div>2回</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2196f3"></div>3回</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ff6b9d"></div>4回+</div>
+      </div>
+      <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:12px;color:#666">児童を選択：</span>
+        <select class="filter-sel" id="seat-filter-sel" onchange="renderSeatHeatmap()"><option value="">全員の合計</option></select>
+      </div>
+      <div id="seat-heatmap-wrap" style="overflow-x:auto"></div>
+    </div>
   </div>
 </div>
-<div id="preview-adopted-msg" style="display:none;background:linear-gradient(135deg,#e8f5e9,#f0fffe);border:2px solid #81c784;border-radius:12px;padding:10px 14px;margin-bottom:8px;display:none;align-items:center;gap:10px;flex-wrap:wrap">
-  <span style="font-size:22px">✅</span>
-  <div style="flex:1">
-    <div style="font-size:13px;font-weight:700;color:#2e7d32">席替えの配置が確定しました！</div>
-    <div style="font-size:11px;color:#558b2f;margin-top:2px">子ども画面へ GO! を押すと確定した配置でルーレットを開始します</div>
-  </div>
-  <button class="btn btn-rd-wh" onclick="cancelAdopted()" style="font-size:11px;padding:4px 10px;flex-shrink:0">取り消す</button>
-</div>
+
 <div class="btn-row">
-  <button class="btn btn-wh" onclick="showPreview()" style="font-size:14px;padding:11px 22px">🔍 席替えプレビュー</button>
   <button class="btn btn-pk" onclick="toKid()" style="font-size:15px;padding:11px 26px;letter-spacing:1px">🎉 子ども画面へ GO!</button>
 </div>
 </div>
 </div>
 
-<!-- プレビューモーダル -->
-<div class="popup-bg" id="preview-modal" style="display:none" onclick="closePreview(event)">
-  <div class="popup-box" onclick="event.stopPropagation()" style="max-width:480px;max-height:88vh;overflow-y:auto">
-    <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#5c4a8a;letter-spacing:2px;text-align:center;margin-bottom:4px">🔍 席替えプレビュー</div>
-    <div style="font-size:11px;color:#aaa;text-align:center;margin-bottom:12px">先生専用 — 子どもには見せないでください</div>
-
-    <!-- 教室グリッド -->
-    <div id="pv-grid-wrap" style="background:#eef6ff;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:12px;border:2px solid #cce0ff">
-      <div id="pv-grid" style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:fit-content"></div>
-    </div>
-
-    <!-- 初めての隣同士コメント -->
-    <div id="pv-new-pairs-section">
-      <div style="font-size:13px;font-weight:700;color:#5c4a8a;margin-bottom:6px">🎉 今回はじめて隣になるペア</div>
-      <div id="pv-new-pairs"></div>
-    </div>
-
-    <!-- 再試行 & 採用ボタン -->
-    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-      <button class="btn btn-wh" onclick="rerollPreview()" style="flex:1;justify-content:center">🔄 やり直す</button>
-      <button class="btn btn-pk" onclick="adoptPreview()" style="flex:1;justify-content:center">✅ この配置で決定！</button>
-    </div>
-    <button class="popup-cancel" onclick="closePreview()">閉じる（配置は確定しない）</button>
-  </div>
-</div>
 <div class="scr" id="scr-k">
 <div class="k-hdr">
   <div class="k-logo">THE SEKIGAE</div>
-  <button class="btn btn-wh" onclick="toTeacher()" style="font-size:10px;padding:3px 9px;background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3)">先生</button>
+  
 </div>
 <div class="k-body" id="k-body">
   <div id="k-waiting">
@@ -380,7 +513,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <div class="char"><div class="char-body">🐱</div><div class="char-name">にゃんた</div></div>
       <div class="char"><div class="char-body">🐶</div><div class="char-name">わんこ</div></div>
       <div class="char"><div class="char-body">🐻</div><div class="char-name">くまお</div></div>
-      <div class="char"><div class="char-body">🐰</div><div class="char-name">ぴょん</div></div>
+      <div class="char" id="pyon-char" onclick="pyonTap()" style="cursor:pointer;position:relative"><div class="char-body">🐰</div><div class="char-name">ぴょん</div><div id="pyon-hint" style="display:none;position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:100"></div></div>
     </div>
     <div class="k-waiting">
       <div class="k-title-big">THE SEKIGAE</div>
@@ -408,8 +541,12 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <div class="k-overlay" style="padding:16px 12px">
       <div class="reveal-ttl">🎊 はっぴょう！ 🎊</div>
       <div id="rv-grid" style="width:100%"></div>
-      <div style="margin-top:12px;display:flex;justify-content:center">
+      <div style="margin-top:12px;display:flex;justify-content:center;gap:10px;align-items:center">
         <button class="btn btn-pp" onclick="resetKid()" style="font-size:15px;padding:10px 24px">🔄 もういちど</button>
+        <div id="pyon-end1" onclick="pyonTap()" style="cursor:pointer;position:relative;opacity:0.7" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+          <span style="font-size:36px">🐰</span>
+          <div id="pyon-hint-end1" style="display:none;position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:100"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -432,7 +569,16 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     </div>
     <div class="k-class" id="obo-cls" style="margin-top:8px"></div>
   </div>
-  <div id="k-class" style="display:none"><div class="k-class" id="k-cls"></div></div>
+  <div id="k-class" style="display:none">
+  <div style="display:flex;justify-content:center;gap:10px;padding:10px 0;align-items:center">
+    <button class="btn btn-pp" onclick="resetKid()" style="font-size:14px;padding:9px 22px">🔄 もういちど</button>
+    <div id="pyon-end2" onclick="pyonTap()" style="cursor:pointer;position:relative;opacity:0.7" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+      <span style="font-size:36px">🐰</span>
+      <div id="pyon-hint-end2" style="display:none;position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:100"></div>
+    </div>
+  </div>
+  <div class="k-class" id="k-cls"></div>
+</div>
 </div>
 </div>
 <div class="popup-bg" id="popup" style="display:none" onclick="closePopup(event)">
@@ -448,9 +594,88 @@ const AC=new(window.AudioContext||window.webkitAudioContext)();
 function tone(f,d,t,v){t=t||'sine';v=v||0.3;try{var o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d);}catch(e){}}
 function drum(){try{var b=AC.createBuffer(1,AC.sampleRate*0.1,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2)*0.7;var s=AC.createBufferSource(),g=AC.createGain();s.buffer=b;s.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(0.4,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.1);s.start();}catch(e){}}
 function se(){return document.getElementById('chk-sound').checked;}
-function sndTick(){if(!se())return;tone(860+Math.random()*120,0.04,'square',0.1);drum();}
-function sndCD(n){if(!se())return;tone(n===0?1046:500,0.3,'triangle',0.45);}
-function sndFanfare(){if(!se())return;[523,659,784,1047,1318].forEach(function(n,i){setTimeout(function(){tone(n,0.35,'triangle',0.38);tone(n*1.5,0.28,'sine',0.13);},i*85);});setTimeout(function(){tone(1568,0.65,'triangle',0.48);},500);}
+function sndTick(){
+  if(!se())return;
+  if(currentBgm==='calm'){
+    // ハープ風：柔らかいサイン波、ランダムな音階
+    var notes=[261,294,330,349,392,440,494,523];
+    var n=notes[Math.floor(Math.random()*notes.length)];
+    tone(n,0.18,'sine',0.07);
+  } else if(currentBgm==='festive'){
+    // マリンバ風：明るいパーカッション
+    var notes2=[523,587,659,698,784,880,988,1047];
+    var n2=notes2[Math.floor(Math.random()*notes2.length)];
+    tone(n2,0.12,'triangle',0.14);
+    setTimeout(function(){tone(n2*2,0.06,'sine',0.05);},30);
+  } else if(currentBgm==='dramatic'){
+    // オーケストラ風：低音＋高音の重厚なコンビ
+    var low=[130,146,164,174,196];
+    var high=[523,587,659,698,784];
+    var idx=Math.floor(Math.random()*low.length);
+    tone(low[idx],0.15,'sawtooth',0.10);
+    tone(high[idx],0.10,'square',0.06);
+    drum();
+  } else if(currentBgm==='jazz'){
+    // ジャズ風：スウィングなランダム音
+    var jnotes=[277,311,370,415,466,554,622,740];
+    var jn=jnotes[Math.floor(Math.random()*jnotes.length)];
+    tone(jn,0.10,'triangle',0.09);
+    setTimeout(function(){tone(jn*1.5,0.07,'sine',0.04);},25);
+  } else if(currentBgm==='game'){
+    // ゲーム風：チップチューン8bit
+    var gnotes=[523,659,784,1047,1319,1568];
+    var gn=gnotes[Math.floor(Math.random()*gnotes.length)];
+    tone(gn,0.05,'square',0.13);
+    drum();
+  } else {
+    // ノーマル
+    tone(860+Math.random()*120,0.04,'square',0.1);drum();
+  }
+}
+
+function sndFanfare(){
+  if(!se())return;
+  if(currentBgm==='calm'){
+    // 穏やかな鐘の音：ゆっくり上昇
+    [523,659,784,1047,1319].forEach(function(n,i){
+      setTimeout(function(){tone(n,0.7,'sine',0.25);tone(n*2,0.5,'sine',0.08);},i*250);
+    });
+    setTimeout(function(){tone(1568,1.2,'sine',0.3);},1300);
+  } else if(currentBgm==='festive'){
+    // 祭り！速い上昇＋高音連打
+    [523,659,784,1047,1319,1568,2093,2637].forEach(function(n,i){
+      setTimeout(function(){tone(n,0.2,'triangle',0.42);tone(n*1.5,0.15,'sine',0.15);},i*65);
+    });
+    setTimeout(function(){
+      [2093,2637,3136].forEach(function(n,i){setTimeout(function(){tone(n,0.3,'triangle',0.5);},i*80);});
+    },550);
+  } else if(currentBgm==='dramatic'){
+    // 壮大：低音から轟くオーケストラ
+    [130,164,196,261,329,392,523,659,784,1047].forEach(function(n,i){
+      setTimeout(function(){tone(n,0.45,'sawtooth',0.28);tone(n*2,0.3,'square',0.10);},i*80);
+    });
+    setTimeout(function(){tone(523,1.0,'sawtooth',0.4);tone(784,0.8,'sawtooth',0.3);tone(1047,0.6,'sawtooth',0.2);},850);
+  } else if(currentBgm==='jazz'){
+    // ジャズ：スウィングなファンファーレ
+    [[523,659],[587,740],[659,830],[698,880],[784,988],[880,1109],[988,1245],[1047,1319]].forEach(function(p,i){
+      setTimeout(function(){tone(p[0],0.25,'triangle',0.3);tone(p[1],0.2,'sine',0.18);},i*90+(i%2===1?30:0));
+    });
+    setTimeout(function(){[1047,1319,1568].forEach(function(n,i){setTimeout(function(){tone(n,0.5,'triangle',0.38);},i*100);});},780);
+  } else if(currentBgm==='game'){
+    // ゲームクリア：上昇スケール＋ジングル
+    [523,587,659,698,784,880,988,1047].forEach(function(n,i){
+      setTimeout(function(){tone(n,0.12,'square',0.3);},i*60);
+    });
+    setTimeout(function(){
+      [1047,1319,1568,2093].forEach(function(n,i){setTimeout(function(){tone(n,0.25,'square',0.4);},i*80);});
+    },520);
+    setTimeout(function(){tone(2093,0.8,'square',0.35);},850);
+  } else {
+    // ノーマル
+    [523,659,784,1047,1318].forEach(function(n,i){setTimeout(function(){tone(n,0.35,'triangle',0.38);tone(n*1.5,0.28,'sine',0.13);},i*85);});
+    setTimeout(function(){tone(1568,0.65,'triangle',0.48);},500);
+  }
+}function sndCD(n){if(!se())return;tone(n===0?1046:500,0.3,'triangle',0.45);}
 function sndFlip(){if(!se())return;tone(380+Math.random()*320,0.11,'sine',0.18);}
 function sndClick(){if(!se())return;tone(700,0.06,'sine',0.15);}
 function sndSelect(){if(!se())return;tone(880,0.08,'triangle',0.2);tone(1100,0.1,'sine',0.15);}
@@ -459,7 +684,140 @@ function sndStop(){if(!se())return;tone(440,0.08,'square',0.18);setTimeout(funct
 function sndReveal(){if(!se())return;tone(660,0.2,'triangle',0.35);setTimeout(function(){tone(880,0.25,'triangle',0.3);},100);}
 
 var grid=[],students=[],visionStu=[],seps=[],adjMatrix={},totalRounds=0,delMode=false;
-var currentAssignment={},numList=[],saveTimer=null;
+var currentAssignment={},numList=[],saveTimer=null,seatHistory={};
+var currentBgm='normal',currentColorTheme='purple',seatingHistory=[];
+var currentFont='default';
+
+var FONT_MAP={
+  'default': "'Hiragino Maru Gothic ProN','Meiryo',sans-serif",
+  'maru':    "'Hachi Maru Pop',cursive",
+  'natsume': "'Zen Kurenaido',sans-serif",
+  'reggae':  "'Reggae One',cursive",
+  'yomogi':  "'Yomogi',cursive",
+  'kaisei':  "'Kaisei Opti',serif",
+  'dotgothic':"'DotGothic16',sans-serif",
+  'rocknroll':"'RocknRoll One',sans-serif"
+};
+
+function setFont(btn,key){
+  currentFont=key;
+  document.querySelectorAll('.font-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  applyFont(key);
+  scheduleSave();
+}
+
+function applyFont(key){
+  var ff=FONT_MAP[key]||FONT_MAP['default'];
+  document.body.style.fontFamily=ff;
+  // プレビューテキストも更新
+  var prev=document.getElementById('font-preview');
+  if(prev)prev.style.fontFamily=ff;
+}
+
+
+var COLOR_THEMES={
+  purple:{a:'#5c4a8a',b:'#8b5cf6',c:'#ff6b9d',g:'linear-gradient(135deg,#5c4a8a 0%,#8b5cf6 50%,#ff6b9d 100%)'},
+  ocean: {a:'#0077b6',b:'#0096c7',c:'#00b4d8',g:'linear-gradient(135deg,#0077b6,#0096c7,#00b4d8)'},
+  forest:{a:'#1b4332',b:'#40916c',c:'#74c69d',g:'linear-gradient(135deg,#1b4332,#40916c,#74c69d)'},
+  sunset:{a:'#c1121f',b:'#e76f51',c:'#ffd166',g:'linear-gradient(135deg,#c1121f,#e76f51,#ffd166)'},
+  candy: {a:'#c9184a',b:'#ff6eb4',c:'#ffcc00',g:'linear-gradient(135deg,#c9184a,#ff6eb4,#ffcc00)'}
+};
+
+function setColorTheme(btn,key){
+  currentColorTheme=key;
+  document.querySelectorAll('.color-theme-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  applyColorTheme(key);scheduleSave();
+}
+function applyColorTheme(key){
+  var t=COLOR_THEMES[key]||COLOR_THEMES.purple;
+  document.querySelectorAll('.hdr,.k-hdr').forEach(function(h){h.style.background=t.g;});
+}
+function setBgm(btn,key){
+  currentBgm=key;
+  document.querySelectorAll('.theme-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  scheduleSave();
+}
+function saveToHistory(asgn){
+  var now=new Date();
+  var ds=now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate()+' '+('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
+  seatingHistory.unshift({date:ds,assignment:JSON.parse(JSON.stringify(asgn)),round:totalRounds});
+  if(seatingHistory.length>20)seatingHistory.pop();
+}
+function renderHistoryPanel(){
+  var el=document.getElementById('hist-list');if(!el)return;el.innerHTML='';
+  if(!seatingHistory.length){el.innerHTML='<div class="empty-state"><div class="empty-ico">📅</div><div>まだ席替え履歴がありません</div></div>';return;}
+  seatingHistory.forEach(function(h,i){
+    var item=document.createElement('div');item.className='hist-item';
+    var names=Object.values(h.assignment).filter(Boolean);
+    item.innerHTML='<div class="hist-item-date"><span class="hist-item-badge">第'+h.round+'回</span>'+h.date+'</div>'
+      +'<div class="hist-item-names">'+names.slice(0,8).join('・')+(names.length>8?'…':'')+'</div>'
+      +'<div style="font-size:11px;color:#a29bfe;margin-top:4px">クリックで詳細・復元 ▶</div>';
+    item.addEventListener('click',function(){showHistDetail(h);});
+    el.appendChild(item);
+  });
+}
+function showHistDetail(h){
+  if(!confirm('第'+h.round+'回（'+h.date+'）の配置に復元しますか？')){return;}
+  activeSeats().forEach(function(s){s.name='';});
+  Object.entries(h.assignment).forEach(function(e){
+    var p=e[0].split('_'),cell=getCell(+p[0],+p[1]);
+    if(cell&&cell.on)cell.name=e[1]||'';
+  });
+  currentAssignment=h.assignment;
+  renderLB();scheduleSave();
+  alert('✅ 復元しました！');
+}
+function renderFlagCheck(){
+  var el=document.getElementById('flag-check-result');if(!el)return;
+  var seats=activeSeats();
+  if(!seats.some(function(s){return s.name;})){el.innerHTML='<div style="color:#aaa;font-size:12px">先に座席に名前を配置してください</div>';return;}
+  var rows=maxR()+1,cols=maxC()+1,bs=2,groups=[];
+  for(var br=0;br<rows;br+=bs)for(var bc=0;bc<cols;bc+=bs){
+    var m=[];for(var r=br;r<br+bs&&r<rows;r++)for(var c=bc;c<bc+bs&&c<cols;c++){var cell=getCell(r,c);if(cell&&cell.on&&cell.name)m.push(cell.name);}
+    if(m.length)groups.push(m);
+  }
+  var flagMap={};numList.forEach(function(it){if(it.flags)flagMap[it.name]=it.flags;});
+  var TF=[{key:'leader',icon:'✨'},{key:'high',icon:'💯'},{key:'low',icon:'😨'},{key:'care',icon:'💦'},{key:'vision',icon:'👓'}];
+  var totals={};TF.forEach(function(f){totals[f.key]=numList.filter(function(it){return it.flags&&it.flags[f.key];}).length;});
+  el.innerHTML='';
+  var sum=document.createElement('div');sum.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px';
+  TF.forEach(function(f){if(!totals[f.key])return;var ch=document.createElement('span');ch.style.cssText='background:#f0eeff;border:1.5px solid #a29bfe;border-radius:10px;padding:3px 8px;font-size:12px;font-weight:700';ch.textContent=f.icon+' '+totals[f.key]+'人';sum.appendChild(ch);});
+  if(sum.children.length)el.appendChild(sum);
+  var bad=0;
+  groups.forEach(function(members,gi){
+    var div=document.createElement('div');div.className='flag-group';
+    div.innerHTML='<div class="flag-group-title">グループ'+(gi+1)+' ('+members.join('・')+')</div>';
+    TF.forEach(function(f){
+      var cnt=members.filter(function(n){return flagMap[n]&&flagMap[n][f.key];}).length;
+      if(!totals[f.key])return;
+      var pct=Math.round(cnt/totals[f.key]*100);
+      var fc=cnt>=2?'#ff9f43':cnt===1?'#a29bfe':'#e0d8ff';
+      var w=document.createElement('div');w.className='flag-bar-wrap';
+      w.innerHTML='<div class="flag-bar-label">'+f.icon+'</div><div class="flag-bar-bg"><div class="flag-bar-fill" style="width:'+pct+'%;background:'+fc+'"></div></div><div class="flag-bar-count">'+cnt+'人'+(cnt>=2?' ⚠️':'')+'</div>';
+      div.appendChild(w);if(cnt>=2&&['leader','high','low'].includes(f.key))bad++;
+    });
+    el.appendChild(div);
+  });
+  var ev=document.createElement('div');
+  ev.style.cssText='margin-top:8px;padding:8px 12px;border-radius:10px;font-size:13px;font-weight:700;'+(bad===0?'background:#e8f5e9;color:#2e7d32':'background:#fff8e1;color:#e65100');
+  ev.textContent=bad===0?'✅ バランス良好！フラグが均等に分散されています':'⚠️ '+bad+'箇所でフラグが集中しています。スマート配置か手動で調整してください';
+  el.appendChild(ev);
+}
+function recordSeatHistory(seatIdToName){Object.entries(seatIdToName).forEach(function(e){var sid=e[0],name=e[1];if(!name)return;if(!seatHistory[name])seatHistory[name]={};seatHistory[name][sid]=(seatHistory[name][sid]||0)+1;});}
+
+// 同席スコア：同じ席に何度も座るとペナルティ
+function seatRepeatScore(seatMap){
+  var score=0;
+  Object.entries(seatMap).forEach(function(e){
+    var sid=e[0],name=e[1];if(!name)return;
+    var cnt=(seatHistory[name]&&seatHistory[name][sid])||0;
+    score+=cnt*cnt*3;
+  });
+  return score;
+}
 
 var avatarColors=['#ffb3c6','#b3d9ff','#b3ffdc','#ffd9b3','#d9b3ff','#fffbb3','#ffcdb3'];
 var avatarEmoji=['🐱','🐶','🐻','🐰','🐸','🐼','🦊','🐨','🐹','🐯','🦁','🐮','🐷','🐙','🐧'];
@@ -468,7 +826,7 @@ function showSave(s){var el=document.getElementById('save-ind');if(s==='saving')
 function scheduleSave(){clearTimeout(saveTimer);showSave('saving');saveTimer=setTimeout(doSave,800);}
 function doSave(){
   try{
-    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,
+    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,seatHistory:seatHistory,seatingHistory:seatingHistory,currentBgm:currentBgm,currentColorTheme:currentColorTheme,currentFont:currentFont,
       rosterText:document.getElementById('roster-ta').value,
       visionRows:document.getElementById('vision-rows').value,
       sound:document.getElementById('chk-sound').checked};
@@ -495,7 +853,11 @@ function loadSaved(){
     if(!json)return false;
     var d=JSON.parse(json);
     grid=d.grid||[];students=d.students||[];visionStu=d.visionStu||[];seps=d.seps||[];
-    adjMatrix=d.adjMatrix||{};totalRounds=d.totalRounds||0;numList=d.numList||[];
+    adjMatrix=d.adjMatrix||{};totalRounds=d.totalRounds||0;numList=d.numList||[];seatHistory=d.seatHistory||{};
+    seatingHistory=d.seatingHistory||[];
+    if(d.currentBgm){currentBgm=d.currentBgm;var bgmBtn=document.querySelector('[data-bgm="'+currentBgm+'"]');if(bgmBtn)setBgm(bgmBtn,currentBgm);}
+    if(d.currentColorTheme){currentColorTheme=d.currentColorTheme;var ctBtn=document.querySelector('[data-theme="'+currentColorTheme+'"]');if(ctBtn)setColorTheme(ctBtn,currentColorTheme);}
+    if(d.currentFont){currentFont=d.currentFont;var ftBtn=document.querySelector('[data-font="'+currentFont+'"]');if(ftBtn)setFont(ftBtn,currentFont);else applyFont(currentFont);}
     // 古いデータに flags/memo がなければ補完
     numList.forEach(function(it){
       if(!it.flags)it.flags={leader:false,high:false,low:false,care:false,vision:false};
@@ -513,7 +875,7 @@ function loadSaved(){
 function resetAll(){
   if(!confirm('⚠️ 全データをリセットしますか？'))return;
   try{localStorage.removeItem('sekigae-v17');}catch(e){}
-  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];currentAssignment={};
+  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};
   document.getElementById('roster-ta').value='';document.getElementById('roster-stat').textContent='';
   document.getElementById('num-list-card').style.display='none';document.getElementById('num-list').innerHTML='';
   renderLB();renderVision();renderSeps();updateSels();renderStats();updateRoundDisp();showSave('idle');
@@ -641,8 +1003,8 @@ function isVR(r){return r<(parseInt(document.getElementById('vision-rows').value
 function availableStudents(){var used=new Set(activeSeats().map(function(s){return s.name;}).filter(function(n){return n&&n.trim();}));return students.filter(function(s){return !used.has(s);});}
 function clearAllNames(){if(!confirm('全座席の名前をクリアしますか？'))return;grid.forEach(function(c){c.name='';});renderLB();scheduleSave();}
 function toggleDelMode(){delMode=!delMode;var btn=document.getElementById('del-mode-btn');var bar=document.getElementById('del-mode-bar');if(delMode){btn.style.cssText='background:#fd7272;color:#fff;border-color:#fd7272;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer';btn.textContent='🗑 削除モード ON';bar.style.display='flex';}else{btn.style.cssText='';btn.textContent='🗑 削除モード';bar.style.display='none';}renderLB();}
-function deleteSeat(r,c){var cell=getCell(r,c);if(!cell)return;cell.on=false;cell.name='';sndDelete();renderLB();scheduleSave();}
-function cancelName(r,c){var cell=getCell(r,c);if(!cell)return;cell.name='';sndSelect();renderLB();scheduleSave();}
+
+
 function applyPreset(){
   var v=document.getElementById('preset-sel').value;if(!v)return;
   var rows=5,cols=6;
@@ -695,8 +1057,23 @@ function cancelName(r,c){var cell=getCell(r,c);if(!cell)return;cell.name='';sndS
 function renderLB(){
   var el=document.getElementById('lb');el.innerHTML='';
   var rows=maxR(),cols=maxC();
-  var bb=document.createElement('div');bb.className='blackboard';
-  bb.style.width=((cols+2)*66+20)+'px';bb.textContent='黒 板';el.appendChild(bb);
+  // ★ SVG黒板
+  var bbW=(cols+1)*100+16;
+  var bbH=80;
+  var bbSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  bbSvg.setAttribute('viewBox','0 0 '+bbW+' '+bbH);
+  bbSvg.className='blackboard';
+  bbSvg.style.width=bbW+'px';bbSvg.style.height=bbH+'px';
+  bbSvg.innerHTML=
+    '<rect x="0" y="0" width="'+bbW+'" height="'+bbH+'" rx="8" fill="#c8922a"/>'+
+    '<rect x="8" y="8" width="'+(bbW-16)+'" height="'+(bbH-16)+'" rx="4" fill="#2d6e2d"/>'+
+    '<line x1="8" y1="35" x2="'+(bbW-8)+'" y2="35" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>'+
+    '<line x1="8" y1="50" x2="'+(bbW-8)+'" y2="50" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>'+
+    '<text x="'+(bbW/2)+'" y="48" text-anchor="middle" fill="rgba(200,240,180,0.9)" font-family="sans-serif" font-size="24" font-weight="bold" letter-spacing="8">黒　板</text>'+
+    '<rect x="8" y="'+(bbH-12)+'" width="'+(bbW-16)+'" height="6" rx="2" fill="#b07820"/>'+
+    '<rect x="18" y="'+(bbH-11)+'" width="24" height="4" rx="2" fill="#f0f0f0"/>'+
+    '<rect x="48" y="'+(bbH-11)+'" width="18" height="4" rx="2" fill="#ffd93d"/>';
+  el.appendChild(bbSvg);
 
   for(var r=0;r<=rows;r++){
     var rw=document.createElement('div');rw.className='lb-row';
@@ -710,9 +1087,27 @@ function renderLB(){
             if(isVR(r))d.classList.add('vision');
             if(cell.name)d.classList.add('has-name');
             if(delMode)d.classList.add('del-mode');
+            // ★ 机SVG
+            var svgEl=document.createElementNS('http://www.w3.org/2000/svg','svg');
+            svgEl.setAttribute('viewBox','0 0 130 88');svgEl.setAttribute('xmlns','http://www.w3.org/2000/svg');
+            svgEl.className='desk-svg';
+            svgEl.innerHTML=
+              '<rect x="10" y="67" width="10" height="19" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+              '<rect x="110" y="67" width="10" height="19" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+              '<rect x="12" y="72" width="106" height="10" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
+              '<rect x="0" y="58" width="130" height="10" rx="3" fill="#c9903a"/>'+
+              '<rect x="0" y="1" width="130" height="60" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
+              '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
+            d.appendChild(svgEl);
             var num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
-            var nm=document.createElement('div');nm.className='lb-cell-name';nm.textContent=cell.name||'＋';
-            if(!cell.name)nm.style.fontSize='20px';
+            var nm=document.createElement('div');nm.className='lb-cell-name';
+            if(cell.name){
+              nm.textContent=cell.name;
+              // 文字数に応じてフォントサイズを調整
+              var fs=cell.name.length<=4?22:cell.name.length<=6?18:14;
+              nm.style.fontSize=fs+'px';
+            }
+            else{nm.style.cssText='font-size:28px;color:rgba(100,60,0,0.3);top:5px';nm.textContent='＋';}
             d.appendChild(num);d.appendChild(nm);
             // ★ フラグ表示（先生画面のみ）
             if(cell.name){
@@ -739,7 +1134,7 @@ function renderLB(){
           } else {
             if(delMode){
               // 削除モード中：空マスはクリックで座席を追加（復元）できる
-              d.style.cssText='width:62px;height:50px;border-radius:10px;border:2px dashed #ffb3b3;background:#fff5f5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#ffaaaa;position:relative';
+              d.style.cssText='width:130px;height:88px;border-radius:10px;border:2px dashed #ffb3b3;background:#fff5f5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#ffaaaa;position:relative';
               d.textContent='＋';
               d.title='ここに座席を追加';
               d.addEventListener('click',(function(r,c){return function(){
@@ -798,7 +1193,15 @@ function renderLB(){
 
 function openPopup(r,c){if(delMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
 function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
-function hTab(name){['lay','ros','cfg','stat'].forEach(function(t){document.getElementById('tp-'+t).classList.toggle('on',t===name);document.getElementById('ht-'+t).classList.toggle('on',t===name);});if(name==='stat')renderStats();}
+function hTab(name){
+  ['lay','ros','cfg','stat','hist','set'].forEach(function(t){
+    var tp=document.getElementById('tp-'+t),ht=document.getElementById('ht-'+t);
+    if(tp)tp.classList.toggle('on',t===name);
+    if(ht)ht.classList.toggle('on',t===name);
+  });
+  if(name==='stat')renderStats();
+  if(name==='hist')renderHistoryPanel();
+}
 function updateSels(){['vision-sel','sep-a','sep-b'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var cur=el.value;el.innerHTML=students.map(function(s){return '<option>'+s+'</option>';}).join('');if(students.includes(cur))el.value=cur;});}
 function addVision(){var s=document.getElementById('vision-sel').value;if(s&&!visionStu.includes(s)){visionStu.push(s);renderVision();scheduleSave();}}
 function removeVision(s){visionStu=visionStu.filter(function(x){return x!==s;});renderVision();scheduleSave();}
@@ -902,7 +1305,7 @@ function buildAssignment(){
     var invalid=false;
     for(var si=0;si<seps.length;si++){var a=seps[si][0],b=seps[si][1];if(!nameMap[a]||!nameMap[b])continue;if(isAdj(idToRC(nameMap[a]),idToRC(nameMap[b]))){invalid=true;break;}}
     if(invalid)continue;
-    var sc=adjScore(seatMap)+balanceScore(seatMap);
+    var sc=adjScore(seatMap)+balanceScore(seatMap)+seatRepeatScore(seatMap);
     if(sc<bestScore){bestScore=sc;bestResult=trial;}
   }
   if(!bestResult){bestResult={};remStu.forEach(function(s,i){if(remSeat[i])bestResult[s]=remSeat[i];});}
@@ -941,6 +1344,8 @@ function recordAdjacency(seatIdToName){
     });
   });
   totalRounds++;
+  saveToHistory(seatIdToName); // 席替え履歴に保存
+  recordSeatHistory(seatIdToName);
   updateRoundDisp();
   scheduleSave();
 }
@@ -963,7 +1368,94 @@ function renderHeatmap(){var names=Object.keys(adjMatrix);var tbl=document.getEl
 function showDetail(name){var box=document.getElementById('detail-box');var others=Object.keys(adjMatrix).filter(function(x){return x!==name;});var sorted=others.map(function(o){return{name:o,count:(adjMatrix[name]||{})[o]||0};}).sort(function(a,b){return b.count-a.count;});var maxC=sorted[0]?sorted[0].count||1:1;box.style.display='block';box.innerHTML='<div class="card" style="margin-bottom:0"><h3>👤 '+name+' の隣になった人</h3><div style="display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto">'+sorted.map(function(e){var o=e.name,v=e.count;return '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;width:70px;color:#333;flex-shrink:0">'+o+'</span><div style="flex:1;background:#f0eeff;border-radius:6px;height:14px"><div style="width:'+(maxC>0?Math.round(v/maxC*100):0)+'%;height:100%;background:'+(v===0?'#f0eeff':'linear-gradient(90deg,#a29bfe,#ff6b9d)')+';border-radius:6px"></div></div><span style="font-size:12px;font-weight:700;min-width:26px;text-align:right;color:'+(v===0?'#ccc':v>=3?'#ff6b9d':'#5c4a8a')+'">'+v+'回</span>'+(v===0?'<span style="font-size:10px;color:#ff9f43;flex-shrink:0">未</span>':'')+'</div>';}).join('')+'</div></div>';}
 function renderRank(){var names=Object.keys(adjMatrix);var pairs=[];for(var i=0;i<names.length;i++)for(var j=i+1;j<names.length;j++){var v=(adjMatrix[names[i]]||{})[names[j]]||0;pairs.push({a:names[i],b:names[j],count:v});}pairs.sort(function(x,y){return y.count-x.count;});var top=pairs.filter(function(p){return p.count>0;}).slice(0,20);var maxC=top[0]?top[0].count||1:1;var medals=['🥇','🥈','🥉'];document.getElementById('rank-list').innerHTML=top.map(function(p,i){return '<div class="rank-item"><div style="font-size:16px">'+(i<3?medals[i]:'　')+'</div><div style="font-size:13px;font-weight:700;color:#a29bfe;width:22px;text-align:center">'+(i+1)+'</div><div style="font-size:13px;font-weight:700;color:#333;flex:1">'+p.a+' ↔ '+p.b+'</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:'+Math.round(p.count/maxC*100)+'%"></div></div><div style="font-size:12px;color:#888;font-weight:700;min-width:28px;text-align:right">'+p.count+'回</div></div>';}).join('')||'<div class="empty-state" style="padding:16px"><div>まだ記録がありません</div></div>';}
 function renderNever(){var names=Object.keys(adjMatrix);var filter=document.getElementById('never-filter-sel').value;var pairs=[];for(var i=0;i<names.length;i++)for(var j=i+1;j<names.length;j++){var v=(adjMatrix[names[i]]||{})[names[j]]||0;if(v===0&&(!filter||names[i]===filter||names[j]===filter))pairs.push({a:names[i],b:names[j]});}document.getElementById('never-grid').innerHTML=pairs.map(function(p){return '<span class="never-pill">💔 '+p.a+' & '+p.b+'</span>';}).join('')||'<div style="color:#aaa;font-size:13px;padding:8px">まだ隣になっていないペアはありません！✨</div>';document.getElementById('never-count').textContent=pairs.length+'ペアが未交流';}
-function statTab(name){['heat','rank','never'].forEach(function(t){document.getElementById('sp-'+t).style.display=t===name?'block':'none';document.getElementById('pill-'+t).classList.toggle('on',t===name);});}
+function statTab(name){
+  ['heat','rank','never','seat'].forEach(function(t){
+    document.getElementById('sp-'+t).style.display=t===name?'block':'none';
+    document.getElementById('pill-'+t).classList.toggle('on',t===name);
+  });
+  if(name==='seat')renderSeatHeatmap();
+}
+
+function renderSeatHeatmap(){
+  var wrap=document.getElementById('seat-heatmap-wrap');
+  if(!wrap)return;
+  var seats=activeSeats();
+  if(!seats.length||!Object.keys(seatHistory).length){
+    wrap.innerHTML='<div class="empty-state" style="padding:16px"><div>まだ座席履歴がありません</div></div>';return;
+  }
+
+  // セレクトを更新
+  var sel=document.getElementById('seat-filter-sel');
+  var selVal=sel.value;
+  var allNames=Object.keys(seatHistory);
+  sel.innerHTML='<option value="">全員の合計</option>'+allNames.map(function(n){return '<option>'+n+'</option>';}).join('');
+  if(allNames.includes(selVal))sel.value=selVal;
+
+  var rows=maxR(),cols=maxC();
+  var filterName=sel.value;
+
+  // seatId -> count のマップを作成
+  function getCount(sid){
+    if(filterName){
+      return (seatHistory[filterName]&&seatHistory[filterName][sid])||0;
+    } else {
+      // 全員合計
+      var total=0;
+      allNames.forEach(function(n){total+=(seatHistory[n]&&seatHistory[n][sid])||0;});
+      return total;
+    }
+  }
+
+  // 最大値
+  var maxVal=0;
+  seats.forEach(function(s){var v=getCount(s.r+'_'+s.c);if(v>maxVal)maxVal=v;});
+
+  // グリッド描画（教室レイアウトと同じ向きで）
+  var html='<div style="display:inline-flex;flex-direction:column;gap:4px;padding:4px">';
+  // 黒板
+  html+='<div style="background:#2d6e2d;border:3px solid #c8922a;border-radius:6px;padding:6px 0;text-align:center;font-size:12px;font-weight:700;color:rgba(200,240,180,0.9);letter-spacing:4px;margin-bottom:4px">黒　板</div>';
+
+  for(var r=0;r<=rows;r++){
+    html+='<div style="display:flex;gap:4px">';
+    for(var c2=0;c2<=cols;c2++){
+      var cell=getCell(r,c2);
+      if(cell&&cell.on){
+        var sid=r+'_'+c2;
+        var cnt=getCount(sid);
+        var sno=seatNum(r,c2);
+        // 色: 0=薄紫, 1=水色, 2=青, 3=濃青, 4+=ピンク
+        var bg=cnt===0?'#f0eeff':cnt===1?'#c8e6ff':cnt===2?'#7ec8f0':cnt===3?'#2196f3':'#ff6b9d';
+        var tc=cnt>=2?'#fff':'#333';
+        html+='<div style="width:58px;height:48px;border-radius:8px;background:'+bg+';display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px solid rgba(0,0,0,0.1);position:relative">'
+          +'<div style="font-size:9px;color:rgba(0,0,0,0.4);position:absolute;top:2px;left:3px">'+sno+'番</div>'
+          +'<div style="font-size:20px;font-weight:700;color:'+tc+'">'+cnt+'</div>'
+          +'<div style="font-size:8px;color:'+tc+';opacity:0.7">回</div>'
+          +'</div>';
+      } else {
+        html+='<div style="width:58px;height:48px;visibility:hidden"></div>';
+      }
+    }
+    html+='</div>';
+  }
+  html+='</div>';
+  wrap.innerHTML=html;
+
+  // 名前ありの場合は追加情報
+  if(filterName&&seatHistory[filterName]){
+    var entries=Object.entries(seatHistory[filterName]).sort(function(a,b){return b[1]-a[1];});
+    var mostSid=entries[0]?entries[0][0]:null;
+    if(mostSid){
+      var ms=getCell(+mostSid.split('_')[0],+mostSid.split('_')[1]);
+      var msNo=ms?seatNum(+mostSid.split('_')[0],+mostSid.split('_')[1]):'?';
+      wrap.innerHTML+='<div style="margin-top:8px;padding:8px 12px;background:#f0eeff;border-radius:10px;font-size:12px;color:#5c4a8a;font-weight:700">'+filterName+'さんが最も多く座った席：<strong>'+msNo+'番（'+entries[0][1]+'回）</strong></div>';
+    }
+    var neverSeats=seats.filter(function(s){return !seatHistory[filterName][s.r+'_'+s.c];}).length;
+    if(neverSeats>0){
+      wrap.innerHTML+='<div style="margin-top:4px;padding:8px 12px;background:#fff0f8;border-radius:10px;font-size:12px;color:#c0304a;font-weight:700">まだ座ったことがない席：<strong>'+neverSeats+'席</strong></div>';
+    }
+  }
+}
+
 
 function toKid(){
   // プレビューから採用した場合は currentAssignment を保持、
@@ -992,143 +1484,102 @@ function startOneByOne(){AC.resume();var seats=activeSeats();if(!seats.length){a
 function oboShowCurrent(){var item=oboQueue[oboIndex];if(!item)return;document.getElementById('obo-num-display').textContent=item.name+'さん';var nm=document.getElementById('obo-name-display');nm.textContent='？番の席！';nm.className='obo-name-display';nm.style.color='#ffd93d';document.getElementById('obo-seat-area').style.display='none';document.getElementById('obo-start-btn').style.display='block';document.getElementById('obo-stop-btn').style.display='none';document.getElementById('obo-action-btns').style.display='none';document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';renderOboProgress();}
 function renderOboProgress(){var el=document.getElementById('obo-progress');el.innerHTML='';oboQueue.forEach(function(_,i){var dot=document.createElement('div');dot.className='obo-dot';if(i<oboIndex)dot.classList.add('done');else if(i===oboIndex)dot.classList.add('current');el.appendChild(dot);});}
 function oboStartSpin(){if(oboSpinning)return;oboSpinning=true;document.getElementById('obo-start-btn').style.display='none';document.getElementById('obo-stop-btn').style.display='block';var nm=document.getElementById('obo-name-display');nm.className='obo-name-display spinning';var totalSeats=activeSeats().length,t=0;var colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1','#ff9f43'];oboIv=setInterval(function(){nm.textContent=((t%totalSeats)+1)+'番の席！';nm.style.color=colors[t%colors.length];sndTick();t++;},80);}
-function oboStop(){if(!oboSpinning)return;clearInterval(oboIv);oboSpinning=false;var item=oboQueue[oboIndex];var nm=document.getElementById('obo-name-display');nm.textContent=item.seatNo+'番の席！';nm.style.color='#fff';nm.className='obo-name-display stopped';sndStop();document.getElementById('obo-stop-btn').style.display='none';setTimeout(function(){sndReveal();document.getElementById('obo-seat-area').style.display='block';document.getElementById('obo-seat-reveal').textContent=item.name+'さんの席は…';document.getElementById('obo-seat-label').textContent=item.seatNo+'番！🎉';var p=item.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d){d.classList.remove('hidden');d.classList.add('revealed','pop');var dn=d.querySelector('.k-desk-name');if(dn)dn.textContent=item.name;}document.getElementById('obo-action-btns').style.display='flex';if(oboIndex>=oboQueue.length-1){document.getElementById('obo-next-btn').style.display='none';document.getElementById('obo-finish-btn').style.display='inline-flex';}else{document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';}},350);}
+function oboStop(){if(!oboSpinning)return;clearInterval(oboIv);oboSpinning=false;var item=oboQueue[oboIndex];var nm=document.getElementById('obo-name-display');nm.textContent=item.seatNo+'番の席！';nm.style.color='#fff';nm.className='obo-name-display stopped';sndStop();document.getElementById('obo-stop-btn').style.display='none';setTimeout(function(){sndReveal();document.getElementById('obo-seat-area').style.display='block';document.getElementById('obo-seat-reveal').textContent=item.name+'さんの席は…';document.getElementById('obo-seat-label').textContent=item.seatNo+'番！🎉';var p=item.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d){d.classList.remove('hidden');d.classList.add('revealed','pop');var dn=d.querySelector('.k-desk-name');if(dn){dn.textContent=item.name;var kfs=item.name.length<=4?22:item.name.length<=6?18:14;dn.style.fontSize=kfs+'px';}}document.getElementById('obo-action-btns').style.display='flex';if(oboIndex>=oboQueue.length-1){document.getElementById('obo-next-btn').style.display='none';document.getElementById('obo-finish-btn').style.display='inline-flex';}else{document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';}},350);}
 function oboNext(){oboIndex++;oboShowCurrent();}
-function oboFinish(){var asgn={};oboQueue.forEach(function(q){if(q.seatId&&q.name)asgn[q.seatId]=q.name;});recordAdjacency(asgn);sndFanfare();spawnConfetti();oboQueue.forEach(function(q){var p=q.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d&&d.classList.contains('hidden')){d.classList.remove('hidden');d.classList.add('pop');var dn=d.querySelector('.k-desk-name');if(dn)dn.textContent=q.name;}});document.getElementById('k-cls').innerHTML=document.getElementById('obo-cls').innerHTML;showKS('class');}
+function oboFinish(){var asgn={};oboQueue.forEach(function(q){if(q.seatId&&q.name)asgn[q.seatId]=q.name;});recordAdjacency(asgn);sndFanfare();spawnConfetti();oboQueue.forEach(function(q){var p=q.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d&&d.classList.contains('hidden')){d.classList.remove('hidden');d.classList.add('pop');var dn=d.querySelector('.k-desk-name');if(dn){dn.textContent=q.name;var kfs3=q.name.length<=4?22:q.name.length<=6?18:14;dn.style.fontSize=kfs3+'px';}}});document.getElementById('k-cls').innerHTML=document.getElementById('obo-cls').innerHTML;showKS('class');}
 
-function renderKidClassHidden(targetId){var el=document.getElementById(targetId);el.innerHTML='';var rows=maxR(),cols=maxC();var bb=document.createElement('div');bb.className='k-bb';bb.style.width=((cols+1)*73+10)+'px';bb.textContent='黒 板';el.appendChild(bb);for(var r=0;r<=rows;r++){var rw=document.createElement('div');rw.className='k-row';for(var c=0;c<=cols;c++){var cell=getCell(r,c);var d=document.createElement('div');if(cell&&cell.on){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id=pfx+r+'_'+c;var num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';var nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';d.appendChild(num);d.appendChild(nm);}else{d.className='k-no-desk';}rw.appendChild(d);}el.appendChild(rw);}}
-function revealKidClass(targetId){activeSeats().forEach(function(s){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm)nm.textContent=name||'空席';});}
+function renderKidClassHidden(targetId){var el=document.getElementById(targetId);el.innerHTML='';var rows=maxR(),cols=maxC();var kbbW2=(cols)*100+16;var kbbH2=80;var kbbSvg2=document.createElementNS('http://www.w3.org/2000/svg','svg');kbbSvg2.setAttribute('viewBox','0 0 '+kbbW2+' '+kbbH2);kbbSvg2.className='k-bb';kbbSvg2.style.cssText='display:block;width:'+kbbW2+'px;height:'+kbbH2+'px;margin-bottom:8px';kbbSvg2.innerHTML='<rect x="0" y="0" width="'+kbbW2+'" height="'+kbbH2+'" rx="8" fill="#c8922a"/><rect x="8" y="8" width="'+(kbbW2-16)+'" height="'+(kbbH2-16)+'" rx="4" fill="#2d6e2d"/><text x="'+(kbbW2/2)+'" y="48" text-anchor="middle" fill="rgba(200,240,180,0.9)" font-family="sans-serif" font-size="24" font-weight="bold" letter-spacing="8">黒　板</text><rect x="8" y="'+(kbbH2-12)+'" width="'+(kbbW2-16)+'" height="6" rx="2" fill="#b07820"/><rect x="18" y="'+(kbbH2-11)+'" width="24" height="4" rx="2" fill="#f0f0f0"/><rect x="48" y="'+(kbbH2-11)+'" width="18" height="4" rx="2" fill="#ffd93d"/>';el.appendChild(kbbSvg2);for(var r=0;r<=rows;r++){var rw=document.createElement('div');rw.className='k-row';for(var c=0;c<=cols;c++){var cell=getCell(r,c);var d=document.createElement('div');if(cell&&cell.on){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id=pfx+r+'_'+c;
+              // SVG机（先生画面と同じスタイル）
+              var ksvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+              ksvg.setAttribute('viewBox','0 0 130 88');ksvg.className='kdesk-svg';
+              ksvg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;z-index:1';
+              ksvg.innerHTML=
+                '<rect x="10" y="67" width="10" height="19" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+                '<rect x="110" y="67" width="10" height="19" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+                '<rect x="12" y="72" width="106" height="10" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
+                '<rect x="0" y="58" width="130" height="10" rx="3" fill="#c9903a"/>'+
+                '<rect x="0" y="1" width="130" height="60" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
+                '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
+              d.appendChild(ksvg);
+              var num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
+              var nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
+              d.appendChild(num);d.appendChild(nm);}else{d.className='k-no-desk';}rw.appendChild(d);}el.appendChild(rw);}}
+function revealKidClass(targetId){activeSeats().forEach(function(s){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm){nm.textContent=name||'空席';if(name){var kfs2=name.length<=4?22:name.length<=6?18:14;nm.style.fontSize=kfs2+'px';}}});}
 function resetKid(){clearInterval(oboIv);oboSpinning=false;oboQueue=[];oboIndex=0;showKS('waiting');}
 function spawnConfetti(){var colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];var kb=document.getElementById('k-body');for(var i=0;i<50;i++){var c=document.createElement('div');c.className='confetti-p';var sz=6+Math.random()*10;c.style.cssText='left:'+Math.random()*100+'%;top:-20px;background:'+colors[i%colors.length]+';width:'+sz+'px;height:'+sz+'px;transform:rotate('+Math.random()*360+'deg);animation-duration:'+(1.4+Math.random()*1.4)+'s;animation-delay:'+Math.random()*0.4+'s';kb.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},3200);}}
 
-// ===== プレビュー機能 =====
-var previewAssignment = {}; // 現在プレビュー中の配置
 
-function cancelAdopted(){
-  // 確定を取り消し → grid の名前もクリア
-  currentAssignment = {};
-  grid.forEach(function(c){ c.name = ''; });
-  renderLB();
-  scheduleSave();
-  document.getElementById('preview-adopted-msg').style.display='none';
-}
 
-function showPreview(){
-  var seats = activeSeats();
-  if(!seats.length){alert('座席が設定されていません！');return;}
-  var names = students.filter(Boolean);
-  if(!names.length){alert('名簿を読み込んでください！');return;}
-  previewAssignment = buildAssignment();
-  renderPreview();
-  document.getElementById('preview-modal').style.display='flex';
-}
-
-function rerollPreview(){
-  currentAssignment = {};
-  document.getElementById('preview-adopted-msg').style.display='none';
-  previewAssignment = buildAssignment();
-  renderPreview();
-}
-
-function renderPreview(){
-  var asgn = previewAssignment;
-  var seats = activeSeats();
-  var rows = maxR(), cols = maxC();
-
-  // 教室グリッド描画
-  var grid_el = document.getElementById('pv-grid');
-  grid_el.innerHTML = '';
-
-  // 初めての隣ペアを事前計算
-  var newPairs = [];
-  seats.forEach(function(s){
-    var id = s.r+'_'+s.c, me = asgn[id]; if(!me) return;
-    // 右と下だけ（重複防止）
-    [[0,1],[1,0]].forEach(function(d){
-      var nb = seats.find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});
-      if(!nb) return;
-      var them = asgn[nb.r+'_'+nb.c]; if(!them) return;
-      var cnt = (adjMatrix[me]&&adjMatrix[me][them]!==undefined) ? adjMatrix[me][them] : 0;
-      if(cnt===0) newPairs.push({a:me, b:them, sid1:id, sid2:nb.r+'_'+nb.c});
+// ===== スマート配置を実行（座席タブから）=====
+function runSmartAssign(){
+  var seats=activeSeats();
+  if(!seats.length){alert('先にプリセットで座席を配置してください！');return;}
+  if(!students.length){alert('先に名簿を登録してください！');return;}
+  var btn=document.getElementById('smart-btn');
+  var status=document.getElementById('smart-status');
+  btn.disabled=true;btn.textContent='⏳ 計算中...';
+  setTimeout(function(){
+    // ★ 毎回全員再配置：いったん全座席の名前をクリアしてから buildAssignment
+    activeSeats().forEach(function(s){s.name='';});
+    var asgn=buildAssignment();
+    Object.entries(asgn).forEach(function(e){
+      var p=e[0].split('_'),cell=getCell(+p[0],+p[1]);
+      if(cell&&cell.on)cell.name=e[1]||'';
     });
-  });
-
-  var newSeatIds = new Set();
-  newPairs.forEach(function(p){newSeatIds.add(p.sid1);newSeatIds.add(p.sid2);});
-
-  // 黒板
-  var bb = document.createElement('div');
-  bb.className = 'pv-bb';
-  bb.style.width = ((cols+1)*66+8)+'px';
-  bb.textContent = '黒 板';
-  grid_el.appendChild(bb);
-
-  for(var r=0;r<=rows;r++){
-    var rw = document.createElement('div');
-    rw.className = 'pv-row';
-    for(var c=0;c<=cols;c++){
-      var cell = getCell(r,c);
-      var d = document.createElement('div');
-      if(cell&&cell.on){
-        d.className = 'pv-desk';
-        var sid = r+'_'+c;
-        if(newSeatIds.has(sid)) d.classList.add('new-pair');
-        var num = document.createElement('div');
-        num.className = 'pv-desk-num';
-        num.textContent = seatNum(r,c)+'番';
-        var nm = document.createElement('div');
-        nm.className = 'pv-desk-name';
-        nm.textContent = asgn[sid] || '空席';
-        if(!asgn[sid]) nm.style.color='#bbb';
-        d.appendChild(num); d.appendChild(nm);
-      } else {
-        d.className = 'pv-empty';
-      }
-      rw.appendChild(d);
-    }
-    grid_el.appendChild(rw);
-  }
-
-  // 初めての隣ペアコメント
-  var pairsEl = document.getElementById('pv-new-pairs');
-  pairsEl.innerHTML = '';
-  if(newPairs.length===0){
-    var msg = document.createElement('div');
-    msg.className = 'pv-no-new';
-    msg.textContent = '今回は全員すでに一度は隣になったことがあります';
-    pairsEl.appendChild(msg);
-  } else {
-    newPairs.forEach(function(p){
-      var chip = document.createElement('span');
-      chip.className = 'pv-pair-chip';
-      chip.innerHTML = '🎉 '+p.a+' &amp; '+p.b+' <span style="font-weight:400;font-size:11px;color:#e06080">はじめて隣！</span>';
-      pairsEl.appendChild(chip);
+    currentAssignment=asgn;
+    renderLB();scheduleSave();
+    var newPairCount=0;
+    activeSeats().forEach(function(s){
+      var id=s.r+'_'+s.c,me=asgn[id];if(!me)return;
+      [[0,1],[1,0]].forEach(function(d){
+        var nb=activeSeats().find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});
+        if(!nb)return;
+        var them=asgn[nb.r+'_'+nb.c];if(!them)return;
+        var cnt=(adjMatrix[me]&&adjMatrix[me][them]!==undefined)?adjMatrix[me][them]:0;
+        if(cnt===0)newPairCount++;
+      });
     });
-    var note = document.createElement('div');
-    note.style.cssText = 'font-size:11px;color:#aaa;margin-top:6px';
-    note.textContent = '※ピンク枠の席が「はじめての隣」ペアです';
-    pairsEl.appendChild(note);
-  }
+    status.style.display='block';
+    status.innerHTML='✅ 配置完了！🎉 はじめて隣になるペア：<strong>'+newPairCount+'組</strong>';
+    btn.disabled=false;btn.textContent='🤖 もう一度スマート配置';
+  },50);
 }
 
-function adoptPreview(){
-  // プレビューの配置を確定 → grid の name に書き込む → 座席タブに反映
-  currentAssignment = previewAssignment;
-  // grid の各 seat に名前を書き込む
-  Object.keys(currentAssignment).forEach(function(sid){
-    var p = sid.split('_');
-    var cell = getCell(+p[0], +p[1]);
-    if(cell && cell.on) cell.name = currentAssignment[sid] || '';
+
+
+
+
+
+
+
+
+
+// ===== ぴょん隠しボタン（3回タップで先生画面へ）=====
+var pyonCount=0,pyonTimer=null;
+function pyonTap(){
+  pyonCount++;
+  clearTimeout(pyonTimer);
+  // すべてのぴょんヒントを更新
+  var hints=['pyon-hint','pyon-hint-end1','pyon-hint-end2'];
+  var msg=pyonCount===1?'あと2回…':pyonCount===2?'あと1回…':'';
+  hints.forEach(function(id){
+    var h=document.getElementById(id);
+    if(!h)return;
+    if(pyonCount>=3){h.style.display='none';}
+    else{h.textContent=msg;h.style.display='block';}
   });
-  renderLB(); // 座席タブを更新
-  scheduleSave();
-  closePreview();
-  document.getElementById('preview-adopted-msg').style.display='block';
-}
-
-function closePreview(e){
-  if(e&&e.target!==document.getElementById('preview-modal'))return;
-  document.getElementById('preview-modal').style.display='none';
+  if(pyonCount>=3){
+    pyonCount=0;
+    toTeacher();
+    return;
+  }
+  pyonTimer=setTimeout(function(){
+    pyonCount=0;
+    hints.forEach(function(id){
+      var h=document.getElementById(id);
+      if(h)h.style.display='none';
+    });
+  },2000);
 }
 
 (function(){
