@@ -244,6 +244,15 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .lb-cell.seat .cancel-x{z-index:4}
 
 .lb-cell-name{font-size:22px;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1;padding:0 6px;position:absolute;top:46px;left:0;right:0;z-index:2}
+
+/* ===== 班設定 ===== */
+.group-mode-bar{background:linear-gradient(135deg,#fff3e0,#fff8e1);border:2px solid #ffa726;border-radius:12px;padding:8px 12px;margin-bottom:8px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.group-mode-bar.on{display:flex}
+.group-color-btn{width:28px;height:28px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.15s;flex-shrink:0}
+.group-color-btn.on{border-color:#333;transform:scale(1.2)}
+.lb-cell.seat.group-selecting{outline:3px solid #ff9800;outline-offset:2px}
+.group-badge{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;z-index:4;pointer-events:none;line-height:1}
+.lb-cell.seat .desk-top{transition:fill 0.2s}
 /* ===== フォントボタン ===== */
 .font-btn{padding:7px 13px;border-radius:14px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.15s;color:#555}
 .font-btn.on{background:#5c4a8a;color:#fff;border-color:#5c4a8a}
@@ -303,7 +312,20 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 <div class="t-panel on" id="tp-lay">
   <div class="card">
     <h3>📐 座席レイアウト</h3>
-    <div class="hint">① 名簿を登録 → ② 「🤖 スマート配置を実行」で自動配置（毎回違う配置） → ③ 必要なら手動修正 → ④ 子ども画面へ GO!</div>
+    <div class="hint">① 名簿を登録 → ② 「🤖 スマート配置を実行」で自動配置 → ③ 手動修正 → ④ 子ども画面へ GO!</div>
+
+    <!-- 班設定バー -->
+    <div style="background:linear-gradient(135deg,#fff3e0,#fff8e1);border:2px solid #ffa726;border-radius:12px;padding:8px 12px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="group-mode-btn" onclick="toggleGroupMode()" style="font-size:13px;padding:7px 16px;background:#ffa726;color:#fff;border:none">🏷 班を設定</button>
+        <div id="group-mode-panel" style="display:none;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:12px;font-weight:700;color:#e65100">班を選んで座席をドラッグ：</span>
+          <div id="group-color-btns" style="display:flex;gap:4px;flex-wrap:wrap"></div>
+          <button class="btn btn-rd" onclick="clearGroups()" style="font-size:11px;padding:4px 10px">班をリセット</button>
+        </div>
+      </div>
+      <div id="group-legend" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"></div>
+    </div>
 
     <!-- ★ スマート配置ボタン -->
     <div style="background:linear-gradient(135deg,#f0eeff,#fff0f8);border:2px solid #a29bfe;border-radius:14px;padding:10px 12px;margin-bottom:10px">
@@ -328,7 +350,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#c0304a">🗑 削除モード ON</div></div>
       <button class="btn btn-wh" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px;flex-shrink:0">✅ 完了</button>
     </div>
-    <div class="lb-wrap"><div class="lb-inner" id="lb"></div></div>
+    <div class="lb-wrap"><div class="lb-inner" id="lb" onmouseup="groupDragEnd_fn()" onmouseleave="groupDragEnd_fn()"></div></div>
     <div id="lb-stat" style="font-size:12px;color:#888;margin-top:4px"></div>
   </div>
 </div>
@@ -686,6 +708,109 @@ function sndReveal(){if(!se())return;tone(660,0.2,'triangle',0.35);setTimeout(fu
 var grid=[],students=[],visionStu=[],seps=[],adjMatrix={},totalRounds=0,delMode=false;
 var currentAssignment={},numList=[],saveTimer=null,seatHistory={};
 var currentBgm='normal',currentColorTheme='purple',seatingHistory=[];
+var groups={};
+var currentGroupNo=1;
+var groupMode=false;
+var dragGroup_seats=[];
+var dragGroup_active=false;
+
+var GROUP_COLORS=['#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#ffeaa7','#dda0dd','#98d8c8','#f7b2b7'];
+var GROUP_NAMES=['1班','2班','3班','4班','5班','6班','7班','8班'];
+
+function toggleGroupMode(){
+  groupMode=!groupMode;
+  var btn=document.getElementById('group-mode-btn');
+  var panel=document.getElementById('group-mode-panel');
+  if(groupMode){
+    btn.textContent='✅ 班設定中（クリックで終了）';
+    btn.style.background='#e65100';
+    panel.style.display='flex';
+    renderGroupColorBtns();
+  } else {
+    btn.textContent='🏷 班を設定';
+    btn.style.background='#ffa726';
+    panel.style.display='none';
+  }
+  renderLB();
+}
+
+function renderGroupColorBtns(){
+  var el=document.getElementById('group-color-btns');if(!el)return;
+  el.innerHTML='';
+  GROUP_COLORS.forEach(function(col,i){
+    var btn=document.createElement('button');
+    btn.className='group-color-btn'+(currentGroupNo===i+1?' on':'');
+    btn.style.cssText='width:28px;height:28px;border-radius:50%;background:'+col+';border:3px solid '+(currentGroupNo===i+1?'#333':'transparent')+';cursor:pointer;flex-shrink:0';
+    btn.title=GROUP_NAMES[i];
+    btn.onclick=(function(n){return function(){
+      currentGroupNo=n;
+      document.querySelectorAll('#group-color-btns button').forEach(function(b,j){
+        b.style.borderColor=j===n-1?'#333':'transparent';
+      });
+    };})(i+1);
+    el.appendChild(btn);
+  });
+}
+
+function clearGroups(){
+  if(!confirm('すべての班設定をリセットしますか？'))return;
+  groups={};renderLB();renderGroupLegend();scheduleSave();
+}
+
+function renderGroupLegend(){
+  var el=document.getElementById('group-legend');if(!el)return;
+  var usedGroups={};
+  Object.values(groups).forEach(function(g){usedGroups[g]=true;});
+  var keys=Object.keys(usedGroups).map(Number).sort(function(a,b){return a-b;});
+  if(!keys.length){el.innerHTML='';return;}
+  el.innerHTML=keys.map(function(g){
+    var col=GROUP_COLORS[g-1]||'#ccc';
+    var members=[];
+    activeSeats().forEach(function(s){
+      var sid=s.r+'_'+s.c;
+      if(groups[sid]===g&&s.name)members.push(s.name);
+    });
+    return '<span style="background:'+col+';color:#fff;border-radius:10px;padding:2px 10px;font-size:11px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.3)">'+
+      GROUP_NAMES[g-1]+'：'+members.length+'人'+(members.length?'（'+members.slice(0,3).join('・')+(members.length>3?'…':'')+'）':'')+'</span>';
+  }).join('');
+}
+
+function groupAssignCell(r,c_){
+  var sid=r+'_'+c_;
+  var cell=getCell(r,c_);
+  if(!cell||!cell.on)return;
+  if(dragGroup_seats.indexOf(sid)>=0)return;
+  dragGroup_seats.push(sid);
+  groups[sid]=currentGroupNo;
+  var deskEl=document.getElementById('seat_'+r+'_'+c_);
+  if(deskEl){
+    var col=GROUP_COLORS[currentGroupNo-1]||'#f5d98a';
+    var top=deskEl.querySelector('.desk-top');
+    if(top)top.setAttribute('fill',col);
+    var badge=deskEl.querySelector('.group-badge');
+    if(badge){badge.textContent=GROUP_NAMES[currentGroupNo-1];}
+    else{
+      var nb=document.createElement('div');nb.className='group-badge';
+      nb.style.cssText='position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:15px;font-weight:900;z-index:4;pointer-events:none;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6),0 0 8px rgba(0,0,0,0.3);letter-spacing:1px';
+      nb.textContent=GROUP_NAMES[currentGroupNo-1];
+      deskEl.appendChild(nb);
+    }
+  }
+}
+
+function groupDragStart_fn(r,c_){
+  if(!groupMode)return;
+  dragGroup_active=true;dragGroup_seats=[];
+  groupAssignCell(r,c_);
+}
+function groupDragMove_fn(r,c_){
+  if(!groupMode||!dragGroup_active)return;
+  groupAssignCell(r,c_);
+}
+function groupDragEnd_fn(){
+  dragGroup_active=false;
+  renderGroupLegend();scheduleSave();
+}
 var currentFont='default';
 
 var FONT_MAP={
@@ -774,10 +899,26 @@ function renderFlagCheck(){
   var el=document.getElementById('flag-check-result');if(!el)return;
   var seats=activeSeats();
   if(!seats.some(function(s){return s.name;})){el.innerHTML='<div style="color:#aaa;font-size:12px">先に座席に名前を配置してください</div>';return;}
-  var rows=maxR()+1,cols=maxC()+1,bs=2,groups=[];
-  for(var br=0;br<rows;br+=bs)for(var bc=0;bc<cols;bc+=bs){
-    var m=[];for(var r=br;r<br+bs&&r<rows;r++)for(var c=bc;c<bc+bs&&c<cols;c++){var cell=getCell(r,c);if(cell&&cell.on&&cell.name)m.push(cell.name);}
-    if(m.length)groups.push(m);
+  // カスタム班設定があればそれを、なければ2×2デフォルト
+  var groupsList=[];
+  var hasCustomGroups=Object.keys(groups).length>0;
+  if(hasCustomGroups){
+    var gmap={};
+    activeSeats().forEach(function(s){
+      var sid=s.r+'_'+s.c;
+      var g=groups[sid];if(g===undefined)return;
+      if(!gmap[g])gmap[g]=[];
+      if(s.name)gmap[g].push(s.name);
+    });
+    Object.keys(gmap).sort(function(a,b){return a-b;}).forEach(function(g){
+      if(gmap[g].length)groupsList.push({name:GROUP_NAMES[g-1]||('班'+g),members:gmap[g]});
+    });
+  } else {
+    var rows2=maxR()+1,cols2=maxC()+1,bs=2,gi=0;
+    for(var br=0;br<rows2;br+=bs)for(var bc=0;bc<cols2;bc+=bs){
+      var m=[];for(var r=br;r<br+bs&&r<rows2;r++)for(var c=bc;c<bc+bs&&c<cols2;c++){var cell=getCell(r,c);if(cell&&cell.on&&cell.name)m.push(cell.name);}
+      if(m.length)groupsList.push({name:'グループ'+(++gi),members:m});
+    }
   }
   var flagMap={};numList.forEach(function(it){if(it.flags)flagMap[it.name]=it.flags;});
   var TF=FLAGS.map(function(f){return {key:f.key,icon:f.icon,label:f.label};});
@@ -787,9 +928,10 @@ function renderFlagCheck(){
   TF.forEach(function(f){if(!totals[f.key])return;var ch=document.createElement('span');ch.style.cssText='background:#f0eeff;border:1.5px solid #a29bfe;border-radius:10px;padding:3px 8px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px';ch.innerHTML=f.icon+' '+totals[f.key]+'人';sum.appendChild(ch);});
   if(sum.children.length)el.appendChild(sum);
   var bad=0;
-  groups.forEach(function(members,gi){
+  groupsList.forEach(function(grp,gi){
+    var members=grp.members;
     var div=document.createElement('div');div.className='flag-group';
-    div.innerHTML='<div class="flag-group-title">グループ'+(gi+1)+' ('+members.join('・')+')</div>';
+    div.innerHTML='<div class="flag-group-title">'+grp.name+' ('+members.join('・')+')</div>';
     TF.forEach(function(f){
       var cnt=members.filter(function(n){return flagMap[n]&&flagMap[n][f.key];}).length;
       if(!totals[f.key])return;
@@ -826,7 +968,7 @@ function showSave(s){var el=document.getElementById('save-ind');if(s==='saving')
 function scheduleSave(){clearTimeout(saveTimer);showSave('saving');saveTimer=setTimeout(doSave,800);}
 function doSave(){
   try{
-    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,seatHistory:seatHistory,seatingHistory:seatingHistory,currentBgm:currentBgm,currentColorTheme:currentColorTheme,currentFont:currentFont,
+    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,seatHistory:seatHistory,seatingHistory:seatingHistory,currentBgm:currentBgm,currentColorTheme:currentColorTheme,currentFont:currentFont,groups:groups,
       rosterText:document.getElementById('roster-ta').value,
       visionRows:document.getElementById('vision-rows').value,
       sound:document.getElementById('chk-sound').checked};
@@ -875,7 +1017,7 @@ function loadSaved(){
 function resetAll(){
   if(!confirm('⚠️ 全データをリセットしますか？'))return;
   try{localStorage.removeItem('sekigae-v17');}catch(e){}
-  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};
+  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};groups={};
   document.getElementById('roster-ta').value='';document.getElementById('roster-stat').textContent='';
   document.getElementById('num-list-card').style.display='none';document.getElementById('num-list').innerHTML='';
   renderLB();renderVision();renderSeps();updateSels();renderStats();updateRoundDisp();showSave('idle');
@@ -1105,6 +1247,34 @@ function renderLB(){
               // ハイライト
               '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
             d.appendChild(svgEl);
+            d.id='seat_'+r+'_'+c;
+            // 班カラーを反映
+            var sid_g=r+'_'+c;
+            if(groups[sid_g]!==undefined){
+              var gcol=GROUP_COLORS[groups[sid_g]-1]||'#f5d98a';
+              var dtop=svgEl.querySelector('.desk-top');
+              if(dtop)dtop.style.fill=gcol;
+              var gbadge=document.createElement('div');gbadge.className='group-badge';
+              gbadge.style.color='rgba(255,255,255,0.9)';gbadge.style.textShadow='0 1px 2px rgba(0,0,0,0.4)';
+              gbadge.textContent=GROUP_NAMES[groups[sid_g]-1];
+              d.appendChild(gbadge);
+            }
+            // 班設定ドラッグイベント
+            d.addEventListener('mousedown',(function(r,c){return function(e){if(groupMode){e.preventDefault();groupDragStart_fn(r,c);}};})(r,c));
+            d.addEventListener('mouseover',(function(r,c){return function(){if(groupMode)groupDragMove_fn(r,c);}})(r,c));
+            d.addEventListener('mouseup',function(){if(groupMode)groupDragEnd_fn();});
+            d.addEventListener('touchstart',(function(r,c){return function(e){if(groupMode){e.preventDefault();groupDragStart_fn(r,c);}};})(r,c),{passive:false});
+            d.addEventListener('touchmove',(function(){return function(e){
+              if(!groupMode||!dragGroup_active)return;
+              e.preventDefault();
+              var t=e.touches[0];
+              var el=document.elementFromPoint(t.clientX,t.clientY);
+              if(el&&el.closest('.lb-cell')){
+                var cell=el.closest('.lb-cell');
+                var id=cell.id;
+                if(id&&id.startsWith('seat_')){var p=id.replace('seat_','').split('_');groupDragMove_fn(+p[0],+p[1]);}
+              }
+            };})(r,c),{passive:false});
             var num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
             var nm=document.createElement('div');nm.className='lb-cell-name';
             if(cell.name){
@@ -1136,6 +1306,7 @@ function renderLB(){
             }else{
               if(cell.name){
                 var cx=document.createElement('div');cx.className='cancel-x';cx.textContent='✕';cx.title='名前をキャンセル';
+                if(groupMode)cx.style.display='none';
                 cx.addEventListener('click',(function(r,c){return function(e){e.stopPropagation();cancelName(r,c);};})(r,c));
                 d.appendChild(cx);
               }
@@ -1201,7 +1372,7 @@ function renderLB(){
   document.getElementById('lb-stat').textContent=activeSeats().length+'席 / '+named+'名入力済み'+(delMode?' — 🗑 削除モード中（空マスクリックで再追加）':'');
 }
 
-function openPopup(r,c){if(delMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
+function openPopup(r,c){if(delMode||groupMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
 function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
 function hTab(name){
   ['lay','ros','cfg','stat','hist','set'].forEach(function(t){
@@ -1245,34 +1416,49 @@ function adjScore(seatMap){
 function balanceScore(seatMap){
   var seats=activeSeats();
   if(!seats.length)return 0;
-  // フラグ対象キー
   var targetFlags=['leader','high','low'];
-  // 名前→フラグマップ
   var flagMap={};
   numList.forEach(function(it){if(it.flags)flagMap[it.name]=it.flags;});
-
-  // 2×2 ブロックに分けてそれぞれのフラグ集中度を計算
-  var rows=maxR()+1, cols=maxC()+1;
-  var blockSize=2;
   var score=0;
-  for(var br=0;br<rows;br+=blockSize){
-    for(var bc=0;bc<cols;bc+=blockSize){
-      // このブロック内の名前を収集
-      var blockNames=[];
-      for(var r=br;r<br+blockSize&&r<rows;r++){
-        for(var c=bc;c<bc+blockSize&&c<cols;c++){
-          var id=r+'_'+c;
-          var name=seatMap[id];
-          if(name)blockNames.push(name);
-        }
-      }
-      if(blockNames.length<2)continue;
-      // 各フラグのカウント
+
+  // カスタム班設定がある場合はそれを使う
+  var hasGroups=Object.keys(groups).length>0;
+  if(hasGroups){
+    // 班番号ごとにメンバーを集める
+    var groupMap={};
+    activeSeats().forEach(function(s){
+      var sid=s.r+'_'+s.c;
+      var g=groups[sid];
+      if(g===undefined)return;
+      if(!groupMap[g])groupMap[g]=[];
+      var name=seatMap[sid];
+      if(name)groupMap[g].push(name);
+    });
+    Object.values(groupMap).forEach(function(members){
+      if(members.length<2)return;
       targetFlags.forEach(function(fk){
-        var cnt=blockNames.filter(function(n){return flagMap[n]&&flagMap[n][fk];}).length;
-        // 2人以上同じブロックに入ったらペナルティ（cnt²）
+        var cnt=members.filter(function(n){return flagMap[n]&&flagMap[n][fk];}).length;
         if(cnt>=2)score+=cnt*cnt*20;
       });
+    });
+  } else {
+    // デフォルト：2×2ブロック
+    var rows=maxR()+1,cols=maxC()+1,blockSize=2;
+    for(var br=0;br<rows;br+=blockSize){
+      for(var bc=0;bc<cols;bc+=blockSize){
+        var blockNames=[];
+        for(var r=br;r<br+blockSize&&r<rows;r++){
+          for(var c=bc;c<bc+blockSize&&c<cols;c++){
+            var name=seatMap[r+'_'+c];
+            if(name)blockNames.push(name);
+          }
+        }
+        if(blockNames.length<2)continue;
+        targetFlags.forEach(function(fk){
+          var cnt=blockNames.filter(function(n){return flagMap[n]&&flagMap[n][fk];}).length;
+          if(cnt>=2)score+=cnt*cnt*20;
+        });
+      }
     }
   }
   return score;
@@ -1511,6 +1697,17 @@ function renderKidClassHidden(targetId){var el=document.getElementById(targetId)
                 '<rect x="0" y="1" width="130" height="80" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
                 '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
               d.appendChild(ksvg);
+              // 班カラーを子ども画面にも反映
+              var ksid=r+'_'+c;
+              if(groups[ksid]!==undefined){
+                var kgcol=GROUP_COLORS[groups[ksid]-1]||'#f5d98a';
+                var kdtop=ksvg.querySelector('.desk-top');
+                if(kdtop)kdtop.setAttribute('fill',kgcol);
+                var kgbadge=document.createElement('div');
+                kgbadge.style.cssText='position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:15px;font-weight:900;z-index:4;pointer-events:none;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6),0 0 8px rgba(0,0,0,0.3);letter-spacing:1px';
+                kgbadge.textContent=GROUP_NAMES[groups[ksid]-1];
+                d.appendChild(kgbadge);
+              }
               var num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
               var nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
               d.appendChild(num);d.appendChild(nm);}else{d.className='k-no-desk';}rw.appendChild(d);}el.appendChild(rw);}}
