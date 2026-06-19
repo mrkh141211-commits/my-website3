@@ -245,6 +245,9 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 
 .lb-cell-name{font-size:22px;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1;padding:0 6px;position:absolute;top:46px;left:0;right:0;z-index:2}
 
+
+:fullscreen .k-body,:-webkit-full-screen .k-body{min-height:100vh}
+:fullscreen .k-hdr,:-webkit-full-screen .k-hdr{padding:14px 18px}
 /* ===== 班設定 ===== */
 .group-mode-bar{background:linear-gradient(135deg,#fff3e0,#fff8e1);border:2px solid #ffa726;border-radius:12px;padding:8px 12px;margin-bottom:8px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
 .group-mode-bar.on{display:flex}
@@ -398,7 +401,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 <div class="t-panel" id="tp-hist">
   <div class="card">
     <h3>📅 席替え履歴</h3>
-    <div class="hint">席替えを実行するたびに自動で保存されます。クリックで当時の座席表を確認・復元できます。</div>
+    <div class="hint">席替えを実行するたびに自動で保存されます（最大100件）。クリックで当時の座席表を確認・復元できます。</div>
     <div id="hist-list"></div>
   </div>
 </div>
@@ -527,7 +530,19 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 <div class="scr" id="scr-k">
 <div class="k-hdr">
   <div class="k-logo">THE SEKIGAE</div>
-  
+  <div style="display:flex;align-items:center;gap:6px">
+    <div id="k-zoom-controls" style="display:none;align-items:center;gap:6px">
+      <button onclick="kZoomOut()" style="width:26px;height:26px;border-radius:50%;border:none;background:rgba(255,255,255,0.25);font-size:15px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+      <span id="k-zoom-label" style="font-size:10px;color:#fff;min-width:34px;text-align:center;font-weight:700;opacity:0.9">100%</span>
+      <button onclick="kZoomIn()" style="width:26px;height:26px;border-radius:50%;border:none;background:rgba(255,255,255,0.25);font-size:15px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">＋</button>
+    </div>
+    <button onclick="kToggleFullscreen()" title="全画面表示" style="width:28px;height:28px;border-radius:50%;border:none;background:rgba(255,255,255,0.25);font-size:13px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">⛶</button>
+    <button id="k-redo-btn" onclick="resetKid()" title="もういちど" style="display:none;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,0.25);font-size:15px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">🔄</button>
+    <div id="pyon-char-hdr" onclick="pyonTap()" style="cursor:pointer;position:relative;display:flex;align-items:center;opacity:0.75" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+      <span style="font-size:26px;line-height:1">🐰</span>
+      <div id="pyon-hint-hdr" style="display:none;position:absolute;top:34px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:100"></div>
+    </div>
+  </div>
 </div>
 <div class="k-body" id="k-body">
   <div id="k-waiting">
@@ -592,14 +607,9 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <div class="k-class" id="obo-cls" style="margin-top:8px"></div>
   </div>
   <div id="k-class" style="display:none">
-  <div style="display:flex;justify-content:center;gap:10px;padding:10px 0;align-items:center">
-    <button class="btn btn-pp" onclick="resetKid()" style="font-size:14px;padding:9px 22px">🔄 もういちど</button>
-    <div id="pyon-end2" onclick="pyonTap()" style="cursor:pointer;position:relative;opacity:0.7" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
-      <span style="font-size:36px">🐰</span>
-      <div id="pyon-hint-end2" style="display:none;position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:100"></div>
-    </div>
+  <div id="k-class-scroll" style="overflow:auto;width:100%;max-height:84vh;-webkit-overflow-scrolling:touch">
+    <div class="k-class" id="k-cls" style="transform-origin:top center;transition:transform 0.15s"></div>
   </div>
-  <div class="k-class" id="k-cls"></div>
 </div>
 </div>
 </div>
@@ -716,6 +726,31 @@ var dragGroup_active=false;
 
 var GROUP_COLORS=['#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#ffeaa7','#dda0dd','#98d8c8','#f7b2b7'];
 var GROUP_NAMES=['1班','2班','3班','4班','5班','6班','7班','8班'];
+
+
+// ===== 子ども画面：座席表の拡大縮小 =====
+var kZoomLevel=1;
+function applyKZoom(){
+  var el=document.getElementById('k-cls');
+  if(el)el.style.transform='scale('+kZoomLevel+')';
+  var label=document.getElementById('k-zoom-label');
+  if(label)label.textContent=Math.round(kZoomLevel*100)+'%';
+}
+
+function kToggleFullscreen(){
+  var el=document.documentElement;
+  if(!document.fullscreenElement){
+    if(el.requestFullscreen)el.requestFullscreen();
+    else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
+  } else {
+    if(document.exitFullscreen)document.exitFullscreen();
+    else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
+  }
+}
+
+function kZoomIn(){kZoomLevel=Math.min(kZoomLevel+0.1,2);applyKZoom();}
+function kZoomOut(){kZoomLevel=Math.max(kZoomLevel-0.1,0.4);applyKZoom();}
+function kZoomReset(){kZoomLevel=1;applyKZoom();}
 
 function toggleGroupMode(){
   groupMode=!groupMode;
@@ -869,7 +904,7 @@ function saveToHistory(asgn){
   var now=new Date();
   var ds=now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate()+' '+('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
   seatingHistory.unshift({date:ds,assignment:JSON.parse(JSON.stringify(asgn)),round:totalRounds});
-  if(seatingHistory.length>20)seatingHistory.pop();
+  if(seatingHistory.length>100)seatingHistory.pop();
 }
 function renderHistoryPanel(){
   var el=document.getElementById('hist-list');if(!el)return;el.innerHTML='';
@@ -1000,6 +1035,7 @@ function loadSaved(){
     if(d.currentBgm){currentBgm=d.currentBgm;var bgmBtn=document.querySelector('[data-bgm="'+currentBgm+'"]');if(bgmBtn)setBgm(bgmBtn,currentBgm);}
     if(d.currentColorTheme){currentColorTheme=d.currentColorTheme;var ctBtn=document.querySelector('[data-theme="'+currentColorTheme+'"]');if(ctBtn)setColorTheme(ctBtn,currentColorTheme);}
     if(d.currentFont){currentFont=d.currentFont;var ftBtn=document.querySelector('[data-font="'+currentFont+'"]');if(ftBtn)setFont(ftBtn,currentFont);else applyFont(currentFont);}
+    if(d.groups)groups=d.groups;
     // 古いデータに flags/memo がなければ補完
     numList.forEach(function(it){
       if(!it.flags)it.flags={leader:false,high:false,low:false,care:false,vision:false};
@@ -1298,6 +1334,25 @@ function renderLB(){
                   }).join('');
                   d.appendChild(flagEl);
                 }
+              }
+              // ★ 隣同士回数が多い子に目印：天板の枠線色で表現（3回以上のみ強調）
+              var maxAdjCnt=0;
+              [[0,1],[1,0],[0,-1],[-1,0]].forEach(function(dd){
+                var nb=getCell(r+dd[0],c+dd[1]);
+                if(!nb||!nb.on||!nb.name)return;
+                var cnt=(adjMatrix[cell.name]&&adjMatrix[cell.name][nb.name]!==undefined)?adjMatrix[cell.name][nb.name]:0;
+                if(cnt>maxAdjCnt)maxAdjCnt=cnt;
+              });
+              if(maxAdjCnt>=3){
+                var deskTopEl=svgEl.querySelector('.desk-top');
+                if(deskTopEl){
+                  deskTopEl.setAttribute('stroke',maxAdjCnt>=4?'#e53935':'#ff9800');
+                  deskTopEl.setAttribute('stroke-width','4');
+                }
+                var cntBadge=document.createElement('div');
+                cntBadge.style.cssText='position:absolute;top:1px;right:2px;font-size:10px;font-weight:900;line-height:1;z-index:5;pointer-events:none;background:'+(maxAdjCnt>=4?'#e53935':'#ff9800')+';color:#fff;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center';
+                cntBadge.textContent=maxAdjCnt;
+                d.appendChild(cntBadge);
               }
             }
             if(delMode){
@@ -1661,7 +1716,13 @@ function toKid(){
   showKS('waiting');updateRoundDisp();
 }
 function toTeacher(){document.getElementById('scr-k').classList.remove('on');document.getElementById('scr-t').classList.add('on');}
-function showKS(name){['waiting','cd','spin','reveal','obo','class'].forEach(function(s){var el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});}
+function showKS(name){['waiting','cd','spin','reveal','obo','class'].forEach(function(s){var el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});
+  var zc=document.getElementById('k-zoom-controls');var rb=document.getElementById('k-redo-btn');
+  var showCtrl=(name==='class');
+  if(zc)zc.style.display=showCtrl?'flex':'none';
+  if(rb)rb.style.display=showCtrl?'flex':'none';
+  if(name==='class')applyKZoom();
+}
 
 var spinChars=['🌀','🎲','⭐','🎊','🌈','🎯'],cdChars=['🐱','🐶','🐻','🐰'];
 function startAllAtOnce(){AC.resume();var seats=activeSeats();if(!seats.length){alert('座席が設定されていません！');return;}
@@ -1712,7 +1773,7 @@ function renderKidClassHidden(targetId){var el=document.getElementById(targetId)
               var nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
               d.appendChild(num);d.appendChild(nm);}else{d.className='k-no-desk';}rw.appendChild(d);}el.appendChild(rw);}}
 function revealKidClass(targetId){activeSeats().forEach(function(s){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm){nm.textContent=name||'空席';if(name){var kfs2=name.length<=4?22:name.length<=6?18:14;nm.style.fontSize=kfs2+'px';}}});}
-function resetKid(){clearInterval(oboIv);oboSpinning=false;oboQueue=[];oboIndex=0;showKS('waiting');}
+function resetKid(){clearInterval(oboIv);oboSpinning=false;oboQueue=[];oboIndex=0;kZoomLevel=1;showKS('waiting');}
 function spawnConfetti(){var colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];var kb=document.getElementById('k-body');for(var i=0;i<50;i++){var c=document.createElement('div');c.className='confetti-p';var sz=6+Math.random()*10;c.style.cssText='left:'+Math.random()*100+'%;top:-20px;background:'+colors[i%colors.length]+';width:'+sz+'px;height:'+sz+'px;transform:rotate('+Math.random()*360+'deg);animation-duration:'+(1.4+Math.random()*1.4)+'s;animation-delay:'+Math.random()*0.4+'s';kb.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},3200);}}
 
 
@@ -1767,7 +1828,7 @@ function pyonTap(){
   pyonCount++;
   clearTimeout(pyonTimer);
   // すべてのぴょんヒントを更新
-  var hints=['pyon-hint','pyon-hint-end1','pyon-hint-end2'];
+  var hints=['pyon-hint','pyon-hint-end1','pyon-hint-end2','pyon-hint-hdr'];
   var msg=pyonCount===1?'あと2回…':pyonCount===2?'あと1回…':'';
   hints.forEach(function(id){
     var h=document.getElementById(id);
