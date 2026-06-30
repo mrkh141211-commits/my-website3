@@ -152,12 +152,20 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .prog-f{height:100%;background:linear-gradient(90deg,#ffd93d,#ff6b9d);border-radius:8px;transition:width 0.3s}
 .emo-row{font-size:22px;letter-spacing:4px;margin-top:4px}
 .obo-overlay{background:rgba(20,10,60,0.92);border-radius:18px;padding:18px 14px;text-align:center;margin-bottom:12px}
-.obo-progress{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
-.obo-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s;flex-shrink:0}
+.obo-overlay-compact{padding:8px 12px 6px;margin-bottom:6px}
+.obo-turn-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:3px;flex-wrap:wrap}
+.obo-turn-current{display:flex;flex-direction:column;align-items:center;background:rgba(255,217,61,0.12);border:1.5px solid rgba(255,217,61,0.5);border-radius:10px;padding:2px 12px}
+.obo-turn-next{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:2px 10px;opacity:0.8}
+.obo-turn-label{font-size:9px;color:#9fa8da;letter-spacing:1px;margin-bottom:1px}
+.obo-turn-name{font-size:18px;font-weight:700;color:#ffd93d;letter-spacing:0.5px}
+.obo-turn-name-next{font-size:14px;font-weight:700;color:#c8e0ff;letter-spacing:0.5px}
+.obo-progress{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-bottom:4px}
+.obo-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s;flex-shrink:0}
 .obo-dot.done{background:#55efc4}
 .obo-dot.current{background:#ffd93d;box-shadow:0 0 8px rgba(255,220,60,0.9);transform:scale(1.3)}
 .obo-num-big{font-size:22px;font-weight:700;color:#c8e0ff;letter-spacing:1px;margin-bottom:4px}
 .obo-name-display{font-size:52px;font-weight:700;min-height:66px;color:#ffd93d;letter-spacing:1px;padding:6px 0}
+.obo-overlay-compact .obo-name-display{font-size:30px;min-height:36px;padding:0}
 .obo-name-display.spinning{animation:nmFlicker 0.12s ease-in-out infinite alternate}
 @keyframes nmFlicker{from{transform:scale(1)}to{transform:scale(1.04)}}
 .obo-name-display.stopped{color:#fff;animation:namePop 0.4s cubic-bezier(0.34,1.56,0.64,1)}
@@ -165,13 +173,15 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .obo-seat-reveal{font-size:22px;font-weight:700;color:#55efc4;margin:6px 0 2px;animation:cdPop 0.4s ease}
 .obo-seat-label{font-size:15px;color:#9fd88a;margin-bottom:10px;font-weight:500}
 .stop-btn{width:100%;padding:20px 0;border-radius:20px;border:none;cursor:pointer;font-size:24px;font-weight:700;font-family:inherit;letter-spacing:2px;background:linear-gradient(135deg,#ff6b9d,#ffd93d);color:#fff;box-shadow:0 6px 0 rgba(180,60,80,0.4);animation:stopPulse 0.7s ease-in-out infinite alternate;margin:10px 0}
+.stop-btn-compact{padding:9px 0!important;font-size:16px!important;margin:4px 0!important;border-radius:14px!important}
 @keyframes stopPulse{from{transform:scale(1)}to{transform:scale(1.04)}}
 .stop-btn:active{transform:translateY(5px) scale(0.97)}
 .start-spin-btn{width:100%;padding:18px 0;border-radius:20px;border:none;cursor:pointer;font-size:20px;font-weight:700;font-family:inherit;letter-spacing:2px;background:linear-gradient(135deg,#45b7d1,#a29bfe);color:#fff;box-shadow:0 5px 0 rgba(60,80,180,0.3);animation:startPulse 2s ease-in-out infinite;margin:10px 0}
+.start-spin-btn-compact{padding:9px 0!important;font-size:15px!important;margin:4px 0!important;border-radius:14px!important}
 @keyframes startPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .start-spin-btn:active{transform:translateY(4px)}
-.obo-action-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
-.obo-reset-link{font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;margin-top:8px;text-decoration:underline;display:inline-block}
+.obo-action-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+.obo-reset-link{font-size:10px;color:rgba(255,255,255,0.35);cursor:pointer;margin-top:3px;text-decoration:underline;display:inline-block}
 .k-class{display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px 0}
 .k-bb{display:block;margin-bottom:8px;}
 .k-row{display:flex;gap:5px;align-items:center}
@@ -192,6 +202,18 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .reveal-ttl{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;text-shadow:2px 2px 0 #4a3a8a;margin-bottom:10px;letter-spacing:2px}
 .confetti-p{position:absolute;border-radius:2px;animation:cfall linear forwards;pointer-events:none}
 @keyframes cfall{to{transform:translateY(600px) rotate(720deg);opacity:0}}
+@keyframes seatGlow{
+  0%{box-shadow:0 0 0 0 rgba(255,217,61,0.8),0 0 0 0 rgba(255,107,157,0.5)}
+  40%{box-shadow:0 0 0 14px rgba(255,217,61,0.35),0 0 0 26px rgba(255,107,157,0.18)}
+  100%{box-shadow:0 0 0 28px rgba(255,217,61,0),0 0 0 44px rgba(255,107,157,0)}
+}
+.seat-confirmed-glow .desk-top{animation:seatGlow 0.9s ease-out}
+@keyframes sparklePop{
+  0%{transform:scale(0) rotate(0deg);opacity:0}
+  40%{transform:scale(1.3) rotate(90deg);opacity:1}
+  100%{transform:scale(0.6) rotate(180deg);opacity:0}
+}
+.sparkle-star{position:absolute;font-size:22px;pointer-events:none;animation:sparklePop 0.8s ease-out forwards;z-index:50}
 .stat-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:14px}
 .stat-card{background:#f8f8f8;border-radius:12px;padding:10px;text-align:center}
 .stat-card .sc-val{font-size:24px;font-weight:700;color:#5c4a8a;line-height:1}
@@ -330,6 +352,18 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <div id="group-legend" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"></div>
     </div>
 
+    <!-- 向き変更モードバー -->
+    <div style="background:linear-gradient(135deg,#e3f2fd,#e8f5ff);border:2px solid #42a5f5;border-radius:12px;padding:8px 12px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="facing-mode-btn" onclick="toggleFacingMode()" style="font-size:13px;padding:7px 16px;background:#42a5f5;color:#fff;border:none">↻ 机の向きを変更</button>
+        <div id="facing-mode-panel" style="display:none;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:12px;font-weight:700;color:#1565c0">座席をクリックすると「黒板向き」⇄「内向き」が切り替わります</span>
+          <button class="btn btn-rd" onclick="clearFacing()" style="font-size:11px;padding:4px 10px">向きをリセット</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#1565c0;margin-top:6px;opacity:0.85">💡 コの字や教室以外の形も作れます：① グリッドを作る → ② 削除モードで不要な席を消す → ③ この向き変更モードで席ごとに向きを設定</div>
+    </div>
+
     <!-- ★ スマート配置ボタン -->
     <div style="background:linear-gradient(135deg,#f0eeff,#fff0f8);border:2px solid #a29bfe;border-radius:14px;padding:10px 12px;margin-bottom:10px">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -345,7 +379,10 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
         <option value="g5x5">グリッド 5行×5列（25席）</option>
         <option value="g5x6">グリッド 5行×6列（30席）</option>
         <option value="g5x7">グリッド 5行×7列（35席）</option>
+        
       </select>
+      
+      
       <button class="btn btn-rd-wh" id="del-mode-btn" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px">🗑 削除モード</button>
       <button class="btn btn-rd" onclick="clearGrid()" style="font-size:11px;padding:5px 10px">名前だけクリア</button>
     </div>
@@ -353,7 +390,14 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#c0304a">🗑 削除モード ON</div></div>
       <button class="btn btn-wh" onclick="toggleDelMode()" style="font-size:12px;padding:5px 12px;flex-shrink:0">✅ 完了</button>
     </div>
-    <div class="lb-wrap"><div class="lb-inner" id="lb" onmouseup="groupDragEnd_fn()" onmouseleave="groupDragEnd_fn()"></div></div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:6px">
+      <span style="font-size:11px;color:#888">表示サイズ：</span>
+      <button onclick="tZoomOut()" style="width:26px;height:26px;border-radius:50%;border:2px solid #d0d0d0;background:#fff;font-size:15px;font-weight:700;color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+      <span id="t-zoom-label" style="font-size:11px;color:#888;min-width:38px;text-align:center;font-weight:700">100%</span>
+      <button onclick="tZoomIn()" style="width:26px;height:26px;border-radius:50%;border:2px solid #d0d0d0;background:#fff;font-size:15px;font-weight:700;color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center">＋</button>
+      <button onclick="tZoomReset()" style="font-size:10px;padding:4px 10px;border-radius:12px;border:2px solid #d0d0d0;background:#fff;color:#666;cursor:pointer">リセット</button>
+    </div>
+    <div class="lb-wrap" id="lb-wrap"><div class="lb-inner" id="lb" onmouseup="groupDragEnd_fn()" onmouseleave="groupDragEnd_fn()" style="transform-origin:top center;transition:transform 0.15s"></div></div>
     <div id="lb-stat" style="font-size:12px;color:#888;margin-top:4px"></div>
   </div>
 </div>
@@ -457,6 +501,12 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
   </div>
   <div class="card">
     <h3>💾 データ管理</h3>
+    <div class="hint">端末を変えるときは「データを書き出す」でファイルを保存し、新しい端末で「読み込む」を使ってください。</div>
+    <div class="btn-row" style="margin-bottom:10px">
+      <button class="btn btn-pp" onclick="exportData()" style="font-size:13px;padding:8px 16px">📤 データを書き出す（端末移行用）</button>
+      <button class="btn btn-wh" onclick="document.getElementById('import-file-input').click()" style="font-size:13px;padding:8px 16px">📥 ファイルから読み込む</button>
+      <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
     <div class="btn-row">
       <button class="btn btn-rd" onclick="clearAllNames()" style="font-size:12px;padding:5px 12px">全座席の名前をクリア</button>
       <button class="btn btn-rd" onclick="resetAll()">⚠️ 全データをリセット</button>
@@ -577,7 +627,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
   <div id="k-reveal" style="display:none">
     <div class="k-overlay" style="padding:16px 12px">
       <div class="reveal-ttl">🎊 はっぴょう！ 🎊</div>
-      <div id="rv-grid" style="width:100%"></div>
+      <div id="rv-grid" style="width:100%;transform-origin:top center;transition:transform 0.15s"></div>
       <div style="margin-top:12px;display:flex;justify-content:center;gap:10px;align-items:center">
         <button class="btn btn-pp" onclick="resetKid()" style="font-size:15px;padding:10px 24px">🔄 もういちど</button>
         <div id="pyon-end1" onclick="pyonTap()" style="cursor:pointer;position:relative;opacity:0.7" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
@@ -588,23 +638,34 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     </div>
   </div>
   <div id="k-obo" style="display:none">
-    <div class="obo-overlay">
+    <div class="obo-overlay obo-overlay-compact">
       <div class="obo-progress" id="obo-progress"></div>
-      <div class="obo-num-big" id="obo-num-display">？さん</div>
+      <div class="obo-turn-row">
+        <div class="obo-turn-current">
+          <span class="obo-turn-label">いまの番</span>
+          <span class="obo-turn-name" id="obo-num-display">？さん</span>
+        </div>
+        <div class="obo-turn-next" id="obo-next-wrap">
+          <span class="obo-turn-label">つぎ</span>
+          <span class="obo-turn-name-next" id="obo-next-display">？さん</span>
+        </div>
+      </div>
       <div class="obo-name-display" id="obo-name-display">？番</div>
       <div id="obo-seat-area" style="display:none">
         <div class="obo-seat-reveal" id="obo-seat-reveal"></div>
         <div class="obo-seat-label" id="obo-seat-label"></div>
       </div>
-      <button class="stop-btn" id="obo-stop-btn" onclick="oboStop()" style="display:none">ここで　ストップ！✋</button>
-      <button class="start-spin-btn" id="obo-start-btn" onclick="oboStartSpin()">🎯 スタート！</button>
+      <button class="stop-btn stop-btn-compact" id="obo-stop-btn" onclick="oboStop()" style="display:none">ここで　ストップ！✋</button>
+      <button class="start-spin-btn start-spin-btn-compact" id="obo-start-btn" onclick="oboStartSpin()">🎯 スタート！</button>
       <div class="obo-action-btns" id="obo-action-btns" style="display:none">
-        <button class="btn btn-wh" id="obo-next-btn" onclick="oboNext()" style="font-size:16px;padding:12px 28px">次の人 ▶</button>
-        <button class="btn btn-pp" id="obo-finish-btn" onclick="oboFinish()" style="font-size:16px;padding:12px 28px;display:none">🎊 全員発表！</button>
+        <button class="btn btn-wh" id="obo-next-btn" onclick="oboNext()" style="font-size:14px;padding:9px 22px">次の人 ▶</button>
+        <button class="btn btn-pp" id="obo-finish-btn" onclick="oboFinish()" style="font-size:14px;padding:9px 22px;display:none">🎊 全員発表！</button>
       </div>
       <div class="obo-reset-link" onclick="resetKid()">最初からやり直す</div>
     </div>
-    <div class="k-class" id="obo-cls" style="margin-top:8px"></div>
+    <div id="obo-cls-scroll" style="overflow:visible;width:100%">
+      <div class="k-class" id="obo-cls" style="margin-top:4px;transform-origin:top center;transition:transform 0.2s"></div>
+    </div>
   </div>
   <div id="k-class" style="display:none">
   <div id="k-class-scroll" style="overflow:auto;width:100%;max-height:84vh;-webkit-overflow-scrolling:touch">
@@ -717,6 +778,7 @@ function sndReveal(){if(!se())return;tone(660,0.2,'triangle',0.35);setTimeout(fu
 
 var grid=[],students=[],visionStu=[],seps=[],adjMatrix={},totalRounds=0,delMode=false;
 var currentAssignment={},numList=[],saveTimer=null,seatHistory={};
+var facing={};// {seatId: 'down'|'right'|'left'} 机の向き
 var currentBgm='normal',currentColorTheme='purple',seatingHistory=[];
 var groups={};
 var currentGroupNo=1;
@@ -728,11 +790,114 @@ var GROUP_COLORS=['#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#ffeaa7','#dda0dd','#
 var GROUP_NAMES=['1班','2班','3班','4班','5班','6班','7班','8班'];
 
 
+
+// ===== ピンチ操作で拡大縮小（子ども画面・先生画面共通） =====
+function setupPinchZoom(targetElId, getLevel, setLevel, applyFn, minZoom, maxZoom){
+  var el=document.getElementById(targetElId);
+  if(!el)return;
+  var pinchStartDist=null;
+  var pinchStartZoom=1;
+
+  function getDist(touches){
+    var dx=touches[0].clientX-touches[1].clientX;
+    var dy=touches[0].clientY-touches[1].clientY;
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+
+  el.addEventListener('touchstart',function(e){
+    if(e.touches.length===2){
+      e.preventDefault();
+      pinchStartDist=getDist(e.touches);
+      pinchStartZoom=getLevel();
+    }
+  },{passive:false});
+
+  el.addEventListener('touchmove',function(e){
+    if(e.touches.length===2&&pinchStartDist){
+      e.preventDefault();
+      var newDist=getDist(e.touches);
+      var ratio=newDist/pinchStartDist;
+      var newZoom=Math.min(maxZoom,Math.max(minZoom,pinchStartZoom*ratio));
+      setLevel(newZoom);
+      applyFn();
+    }
+  },{passive:false});
+
+  el.addEventListener('touchend',function(e){
+    if(e.touches.length<2)pinchStartDist=null;
+  });
+}
+
+// ===== 先生画面：座席レイアウトの拡大縮小 =====
+var tZoomLevel=1;
+function applyTZoom(){
+  var el=document.getElementById('lb');
+  if(el)el.style.transform='scale('+tZoomLevel+')';
+  var label=document.getElementById('t-zoom-label');
+  if(label)label.textContent=Math.round(tZoomLevel*100)+'%';
+}
+function tZoomIn(){tZoomLevel=Math.min(tZoomLevel+0.1,1.5);applyTZoom();}
+function tZoomOut(){tZoomLevel=Math.max(tZoomLevel-0.1,0.4);applyTZoom();}
+function tZoomReset(){tZoomLevel=1;applyTZoom();}
+
+
+// ===== 席確定エフェクト：机が光って星が飛ぶ =====
+function spawnSeatSparkle(deskEl){
+  if(!deskEl)return;
+  // 光るグロー
+  deskEl.classList.add('seat-confirmed-glow');
+  setTimeout(function(){deskEl.classList.remove('seat-confirmed-glow');},900);
+  // 星を数個飛ばす
+  var stars=['✨','⭐','🌟'];
+  var rect=deskEl.getBoundingClientRect();
+  var parent=deskEl.offsetParent||document.body;
+  var prect=parent.getBoundingClientRect();
+  for(var i=0;i<6;i++){
+    var s=document.createElement('div');
+    s.className='sparkle-star';
+    s.textContent=stars[Math.floor(Math.random()*stars.length)];
+    var angle=(Math.PI*2*i)/6;
+    var dist=30+Math.random()*20;
+    var cx=rect.left-prect.left+rect.width/2+Math.cos(angle)*dist;
+    var cy=rect.top-prect.top+rect.height/2+Math.sin(angle)*dist;
+    s.style.left=cx+'px';s.style.top=cy+'px';
+    s.style.animationDelay=(Math.random()*0.15)+'s';
+    parent.appendChild(s);
+    (function(el){setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},1000);})(s);
+  }
+}
+
+
+// ===== 座席表を画面に自動フィット（はみ出さないよう自動縮小） =====
+function autoFitSeatChart(containerId, wrapId){
+  var container=document.getElementById(containerId);
+  var wrap=document.getElementById(wrapId);
+  if(!container||!wrap)return;
+  // 一旦scaleをリセットして実サイズを取得
+  container.style.transform='scale(1)';
+  var contentW=container.scrollWidth;
+  var contentH=container.scrollHeight;
+  if(!contentW||!contentH)return;
+  var availW=wrap.clientWidth||window.innerWidth;
+  var availH=Math.max(window.innerHeight*0.6,220); // 上部バーがコンパクトになった分、座席表エリアを画面高さの60%程度に拡大
+  var scaleW=availW/contentW;
+  var scaleH=availH/contentH;
+  var scale=Math.min(scaleW,scaleH,1.3); // 座席数が少ない時は最大1.3倍まで拡大して見やすくする
+  container.style.transform='scale('+scale+')';
+  container.dataset.autoScale=scale;
+}
+
 // ===== 子ども画面：座席表の拡大縮小 =====
 var kZoomLevel=1;
 function applyKZoom(){
-  var el=document.getElementById('k-cls');
-  if(el)el.style.transform='scale('+kZoomLevel+')';
+  // 現在表示中の座席表（k-cls / rv-grid / obo-cls）すべてにスケールを適用
+  // 自動フィットの基準スケール × 手動ズーム倍率
+  ['k-cls','rv-grid','obo-cls'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var baseScale=parseFloat(el.dataset.autoScale)||1;
+    el.style.transform='scale('+(baseScale*kZoomLevel)+')';
+  });
   var label=document.getElementById('k-zoom-label');
   if(label)label.textContent=Math.round(kZoomLevel*100)+'%';
 }
@@ -751,6 +916,46 @@ function kToggleFullscreen(){
 function kZoomIn(){kZoomLevel=Math.min(kZoomLevel+0.1,2);applyKZoom();}
 function kZoomOut(){kZoomLevel=Math.max(kZoomLevel-0.1,0.4);applyKZoom();}
 function kZoomReset(){kZoomLevel=1;applyKZoom();}
+
+
+// ===== 机の向き変更モード =====
+var facingMode=false;
+
+function toggleFacingMode(){
+  facingMode=!facingMode;
+  var btn=document.getElementById('facing-mode-btn');
+  var panel=document.getElementById('facing-mode-panel');
+  if(facingMode){
+    btn.textContent='✅ 向き変更中（クリックで終了）';
+    btn.style.background='#1565c0';
+    panel.style.display='flex';
+  } else {
+    btn.textContent='↻ 机の向きを変更';
+    btn.style.background='#42a5f5';
+    panel.style.display='none';
+  }
+}
+
+function clearFacing(){
+  if(!confirm('すべての机の向きを「黒板向き」にリセットしますか？'))return;
+  facing={};renderLB();scheduleSave();
+}
+
+// 座席クリックで向きを循環させる（down→right→left→down...）
+function cycleFacing(r,c){
+  var sid=r+'_'+c;
+  var cur=facing[sid]||'down';
+  if(cur==='down'){
+    // 内向きに反転：グリッド全体の中央より左側なら右向き、右側なら左向き
+    var cols=maxC();
+    var centerCol=cols/2;
+    facing[sid]=(c<=centerCol)?'right':'left';
+  } else {
+    // 黒板向きに戻す
+    delete facing[sid];
+  }
+  renderLB();scheduleSave();
+}
 
 function toggleGroupMode(){
   groupMode=!groupMode;
@@ -1003,7 +1208,7 @@ function showSave(s){var el=document.getElementById('save-ind');if(s==='saving')
 function scheduleSave(){clearTimeout(saveTimer);showSave('saving');saveTimer=setTimeout(doSave,800);}
 function doSave(){
   try{
-    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,seatHistory:seatHistory,seatingHistory:seatingHistory,currentBgm:currentBgm,currentColorTheme:currentColorTheme,currentFont:currentFont,groups:groups,
+    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,seatHistory:seatHistory,seatingHistory:seatingHistory,currentBgm:currentBgm,currentColorTheme:currentColorTheme,currentFont:currentFont,groups:groups,facing:facing,
       rosterText:document.getElementById('roster-ta').value,
       visionRows:document.getElementById('vision-rows').value,
       sound:document.getElementById('chk-sound').checked};
@@ -1036,6 +1241,7 @@ function loadSaved(){
     if(d.currentColorTheme){currentColorTheme=d.currentColorTheme;var ctBtn=document.querySelector('[data-theme="'+currentColorTheme+'"]');if(ctBtn)setColorTheme(ctBtn,currentColorTheme);}
     if(d.currentFont){currentFont=d.currentFont;var ftBtn=document.querySelector('[data-font="'+currentFont+'"]');if(ftBtn)setFont(ftBtn,currentFont);else applyFont(currentFont);}
     if(d.groups)groups=d.groups;
+    if(d.facing)facing=d.facing;
     // 古いデータに flags/memo がなければ補完
     numList.forEach(function(it){
       if(!it.flags)it.flags={leader:false,high:false,low:false,care:false,vision:false};
@@ -1053,7 +1259,7 @@ function loadSaved(){
 function resetAll(){
   if(!confirm('⚠️ 全データをリセットしますか？'))return;
   try{localStorage.removeItem('sekigae-v17');}catch(e){}
-  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};groups={};
+  grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};groups={};facing={};
   document.getElementById('roster-ta').value='';document.getElementById('roster-stat').textContent='';
   document.getElementById('num-list-card').style.display='none';document.getElementById('num-list').innerHTML='';
   renderLB();renderVision();renderSeps();updateSels();renderStats();updateRoundDisp();showSave('idle');
@@ -1189,13 +1395,17 @@ function applyPreset(){
   if(v==='g5x5'){rows=5;cols=5;}
   else if(v==='g5x6'){rows=5;cols=6;}
   else if(v==='g5x7'){rows=5;cols=7;}
-  grid=[];
+  grid=[];facing={};
   for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){grid.push({r:r,c:c,on:true,name:''});}
   document.getElementById('preset-sel').value='';delMode=false;
   document.getElementById('del-mode-bar').style.display='none';
   var btn=document.getElementById('del-mode-btn');btn.style.cssText='';btn.textContent='🗑 削除モード';
   renderLB();scheduleSave();
 }
+
+
+
+
 // 全クリア = 名前だけクリア、座席スタイルはそのまま
 function clearGrid(){
   if(!confirm('全座席の名前をクリアしますか？\n（座席の配置はそのまま残ります）'))return;
@@ -1232,6 +1442,61 @@ function deleteSeat(r,c){
 }
 function cancelName(r,c){var cell=getCell(r,c);if(!cell)return;cell.name='';sndSelect();renderLB();scheduleSave();}
 
+
+// ★ 机SVGを向きに応じて生成
+// down: 通常（黒板正面、縦110×横130、天板が上）
+// right: 天板が左側にある（生徒は右に座り、左＝中央を向く）→ コの字の左の辺に使う
+// left: 天板が右側にある（生徒は左に座り、右＝中央を向く）→ コの字の右の辺に使う
+
+// ★ 机の向きに応じてテキスト要素（番号・名前）の位置を調整
+// down: 天板が上部（既存CSSの位置：番号top4px中央、名前top26px中央）
+// right: 天板が左側（幅80px・高さ130pxの範囲が天板）→ テキストは左半分エリアに、縦に並べる
+// left: 天板が右側 → テキストは右半分エリアに
+function applyTextPositionsByFacing(numEl,nameEl,facingVal){
+  // 統一キャンバス130×110内での天板位置に合わせてテキストを配置
+  if(facingVal==='right'){
+    numEl.style.top='4px';numEl.style.left='11px';numEl.style.right='51px';numEl.style.width='';numEl.style.fontSize='12px';
+    nameEl.style.top='40px';nameEl.style.left='11px';nameEl.style.right='51px';nameEl.style.width='';
+  } else if(facingVal==='left'){
+    numEl.style.top='4px';numEl.style.left='35px';numEl.style.right='27px';numEl.style.width='';numEl.style.fontSize='12px';
+    nameEl.style.top='40px';nameEl.style.left='35px';nameEl.style.right='27px';nameEl.style.width='';
+  } else {
+    numEl.style.top='';numEl.style.left='';numEl.style.right='';numEl.style.width='';numEl.style.fontSize='';
+    nameEl.style.top='';nameEl.style.left='';nameEl.style.right='';nameEl.style.width='';
+  }
+}
+
+function buildDeskSvgInner(facingVal){
+  if(facingVal==='right'){
+    // 統一キャンバス130×110の中に「縦長の机」を縮小して中央配置（天板が左側、脚が右側）
+    // 元の110×130デザインを高さ110に収まるよう0.846倍縮小し、横方向中央(x=10起点)に配置
+    return '<g transform="translate(10,0) scale(0.846)">'+
+      '<rect x="22" y="10" width="20" height="10" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+      '<rect x="22" y="100" width="20" height="10" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+      '<rect x="32" y="12" width="10" height="106" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
+      '<rect x="78" y="0" width="10" height="130" rx="3" fill="#c9903a"/>'+
+      '<rect x="1" y="0" width="80" height="130" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
+      '<rect x="4" y="5" width="16" height="120" rx="8" fill="rgba(255,255,255,0.38)"/>'+
+      '</g>';
+  } else if(facingVal==='left'){
+    return '<g transform="translate(10,0) scale(0.846)">'+
+      '<rect x="68" y="10" width="20" height="10" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+      '<rect x="68" y="100" width="20" height="10" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+      '<rect x="68" y="12" width="10" height="106" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
+      '<rect x="22" y="0" width="10" height="130" rx="3" fill="#c9903a"/>'+
+      '<rect x="29" y="0" width="80" height="130" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
+      '<rect x="90" y="5" width="16" height="120" rx="8" fill="rgba(255,255,255,0.38)"/>'+
+      '</g>';
+  }
+  // down（デフォルト）：130×110。天板は上、脚は下
+  return '<rect x="10" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+    '<rect x="110" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
+    '<rect x="12" y="92" width="106" height="10" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
+    '<rect x="0" y="78" width="130" height="10" rx="3" fill="#c9903a"/>'+
+    '<rect x="0" y="1" width="130" height="80" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
+    '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
+}
+
 function renderLB(){
   var el=document.getElementById('lb');el.innerHTML='';
   var rows=maxR(),cols=maxC();
@@ -1266,23 +1531,14 @@ function renderLB(){
             if(cell.name)d.classList.add('has-name');
             if(delMode)d.classList.add('del-mode');
             // ★ 机SVG
+            var facingVal=facing[r+'_'+c]||'down';
             var svgEl=document.createElementNS('http://www.w3.org/2000/svg','svg');
             svgEl.setAttribute('viewBox','0 0 130 110');svgEl.setAttribute('xmlns','http://www.w3.org/2000/svg');
             svgEl.className='desk-svg';
-            svgEl.innerHTML=
-              // 左脚
-              '<rect x="10" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
-              // 右脚
-              '<rect x="110" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
-              // 荷物入れ横板
-              '<rect x="12" y="92" width="106" height="10" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
-              // 天板前縁（厚み）
-              '<rect x="0" y="78" width="130" height="10" rx="3" fill="#c9903a"/>'+
-              // 天板（大きく）
-              '<rect x="0" y="1" width="130" height="80" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
-              // ハイライト
-              '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
+            svgEl.innerHTML=buildDeskSvgInner(facingVal);
             d.appendChild(svgEl);
+            // 向きに応じてセルサイズを切り替え（縦長 or 横長）
+            
             d.id='seat_'+r+'_'+c;
             // 班カラーを反映
             var sid_g=r+'_'+c;
@@ -1291,7 +1547,9 @@ function renderLB(){
               var dtop=svgEl.querySelector('.desk-top');
               if(dtop)dtop.style.fill=gcol;
               var gbadge=document.createElement('div');gbadge.className='group-badge';
-              gbadge.style.color='rgba(255,255,255,0.9)';gbadge.style.textShadow='0 1px 2px rgba(0,0,0,0.4)';
+              if(facingVal==='right'){gbadge.style.cssText='position:absolute;bottom:2px;left:11px;width:67px;text-align:center;font-size:11px;font-weight:900;z-index:4;pointer-events:none;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)';}
+              else if(facingVal==='left'){gbadge.style.cssText='position:absolute;bottom:2px;left:35px;width:67px;text-align:center;font-size:11px;font-weight:900;z-index:4;pointer-events:none;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)';}
+              else{gbadge.style.color='rgba(255,255,255,0.9)';gbadge.style.textShadow='0 1px 2px rgba(0,0,0,0.4)';}
               gbadge.textContent=GROUP_NAMES[groups[sid_g]-1];
               d.appendChild(gbadge);
             }
@@ -1313,13 +1571,17 @@ function renderLB(){
             };})(r,c),{passive:false});
             var num=document.createElement('div');num.className='lb-cell-num';num.textContent=seatNum(r,c)+'番';
             var nm=document.createElement('div');nm.className='lb-cell-name';
+            // 向きに応じてテキスト位置を調整（天板の位置が異なるため）
+            applyTextPositionsByFacing(num,nm,facingVal);
             if(cell.name){
               nm.textContent=cell.name;
-              // 文字数に応じてフォントサイズを調整
               var fs=cell.name.length<=4?22:cell.name.length<=6?18:14;
               nm.style.fontSize=fs+'px';
             }
-            else{nm.style.cssText='font-size:28px;color:rgba(100,60,0,0.3);top:46px';nm.textContent='＋';}
+            else{
+              nm.style.fontSize='28px';nm.style.color='rgba(100,60,0,0.3)';
+              nm.textContent='＋';
+            }
             d.appendChild(num);d.appendChild(nm);
             // ★ フラグ表示（先生画面のみ）
             if(cell.name){
@@ -1332,6 +1594,8 @@ function renderLB(){
                   flagEl.innerHTML=activeFlags.map(function(f){
                     return '<span style="font-size:18px;line-height:1;display:inline-flex;align-items:center;justify-content:center">'+f.icon+'</span>';
                   }).join('');
+                  if(facingVal==='right'){flagEl.style.cssText='position:absolute;top:21px;left:11px;width:67px;display:flex;align-items:center;justify-content:center;gap:1px;z-index:3;pointer-events:none';}
+                  else if(facingVal==='left'){flagEl.style.cssText='position:absolute;top:21px;left:35px;width:67px;display:flex;align-items:center;justify-content:center;gap:1px;z-index:3;pointer-events:none';}
                   d.appendChild(flagEl);
                 }
               }
@@ -1361,11 +1625,14 @@ function renderLB(){
             }else{
               if(cell.name){
                 var cx=document.createElement('div');cx.className='cancel-x';cx.textContent='✕';cx.title='名前をキャンセル';
-                if(groupMode)cx.style.display='none';
+                if(groupMode||facingMode)cx.style.display='none';
                 cx.addEventListener('click',(function(r,c){return function(e){e.stopPropagation();cancelName(r,c);};})(r,c));
                 d.appendChild(cx);
               }
-              d.addEventListener('click',(function(r,c){return function(){openPopup(r,c);};})(r,c));
+              d.addEventListener('click',(function(r,c){return function(){
+                if(facingMode){cycleFacing(r,c);return;}
+                openPopup(r,c);
+              };})(r,c));
             }
           } else {
             if(delMode){
@@ -1380,6 +1647,7 @@ function renderLB(){
                 renderLB();scheduleSave();
               };})(r,c));
             } else {
+              
               d.innerHTML='<span style="font-size:16px">＋</span>';
               d.addEventListener('click',(function(r,c){return function(){
                 var cell=getCell(r,c);
@@ -1427,7 +1695,7 @@ function renderLB(){
   document.getElementById('lb-stat').textContent=activeSeats().length+'席 / '+named+'名入力済み'+(delMode?' — 🗑 削除モード中（空マスクリックで再追加）':'');
 }
 
-function openPopup(r,c){if(delMode||groupMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
+function openPopup(r,c){if(delMode||groupMode||facingMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
 function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
 function hTab(name){
   ['lay','ros','cfg','stat','hist','set'].forEach(function(t){
@@ -1456,7 +1724,10 @@ function adjScore(seatMap){
   var seats=activeSeats(),score=0;
   seats.forEach(function(s){
     var id=s.r+'_'+s.c,me=seatMap[id];if(!me)return;
-    [[0,1],[1,0]].forEach(function(d){
+    // 机が左右向き（right/left）の場合は横方向の隣接を無視（机を挟んで向かい合う関係なので「隣」ではない）
+    var myFacing=facing[id]||'down';
+    var dirs=(myFacing==='right'||myFacing==='left')?[[1,0]]:[[0,1],[1,0]];
+    dirs.forEach(function(d){
       var nb=seats.find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});if(!nb)return;
       var them=seatMap[nb.r+'_'+nb.c];if(!them)return;
       var cnt=(adjMatrix[me]&&adjMatrix[me][them]!==undefined)?adjMatrix[me][them]:0;
@@ -1583,7 +1854,10 @@ function recordAdjacency(seatIdToName){
   var seats=activeSeats();
   seats.forEach(function(s){
     var id=s.r+'_'+s.c,me=seatIdToName[id];if(!me)return;
-    [[0,1],[1,0]].forEach(function(d){
+    // 机が左右向き（right/left）の場合は横方向の隣接を無視し、縦方向のみを「隣」とみなす
+    var myFacing=facing[id]||'down';
+    var dirs=(myFacing==='right'||myFacing==='left')?[[1,0]]:[[0,1],[1,0]];
+    dirs.forEach(function(d){
       var nb=seats.find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});if(!nb)return;
       var them=seatIdToName[nb.r+'_'+nb.c];if(!them)return;
       if(!adjMatrix[me])adjMatrix[me]={};
@@ -1718,10 +1992,17 @@ function toKid(){
 function toTeacher(){document.getElementById('scr-k').classList.remove('on');document.getElementById('scr-t').classList.add('on');}
 function showKS(name){['waiting','cd','spin','reveal','obo','class'].forEach(function(s){var el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});
   var zc=document.getElementById('k-zoom-controls');var rb=document.getElementById('k-redo-btn');
-  var showCtrl=(name==='class');
+  var showCtrl=(name==='class'||name==='reveal'||name==='obo');
   if(zc)zc.style.display=showCtrl?'flex':'none';
   if(rb)rb.style.display=showCtrl?'flex':'none';
-  if(name==='class')applyKZoom();
+  if(showCtrl){
+    setTimeout(function(){
+      if(name==='class')autoFitSeatChart('k-cls','k-class-scroll');
+      else if(name==='reveal')autoFitSeatChart('rv-grid','k-reveal');
+      else if(name==='obo')autoFitSeatChart('obo-cls','obo-cls-scroll');
+      applyKZoom();
+    },50);
+  }
 }
 
 var spinChars=['🌀','🎲','⭐','🎊','🌈','🎯'],cdChars=['🐱','🐶','🐻','🐰'];
@@ -1738,26 +2019,29 @@ function revealPhaseAll(){showKS('reveal');sndFanfare();spawnConfetti();var seat
 
 var oboQueue=[],oboIndex=0,oboSpinning=false,oboIv=null;
 function startOneByOne(){AC.resume();var seats=activeSeats();if(!seats.length){alert('座席が設定されていません！');return;}oboQueue=buildOboAssignment();if(!oboQueue.length){alert('名簿か座席に名前を登録してください！');return;}oboIndex=0;renderKidClassHidden('obo-cls');showKS('obo');oboShowCurrent();}
-function oboShowCurrent(){var item=oboQueue[oboIndex];if(!item)return;document.getElementById('obo-num-display').textContent=item.name+'さん';var nm=document.getElementById('obo-name-display');nm.textContent='？番の席！';nm.className='obo-name-display';nm.style.color='#ffd93d';document.getElementById('obo-seat-area').style.display='none';document.getElementById('obo-start-btn').style.display='block';document.getElementById('obo-stop-btn').style.display='none';document.getElementById('obo-action-btns').style.display='none';document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';renderOboProgress();}
+function oboShowCurrent(){var item=oboQueue[oboIndex];if(!item)return;document.getElementById('obo-num-display').textContent=item.name+'さん';
+  // 次の人を表示
+  var nextItem=oboQueue[oboIndex+1];
+  var nextWrap=document.getElementById('obo-next-wrap');
+  var nextDisplay=document.getElementById('obo-next-display');
+  if(nextItem){nextWrap.style.display='flex';nextDisplay.textContent=nextItem.name+'さん';}
+  else{nextWrap.style.display='none';}
+  var nm=document.getElementById('obo-name-display');nm.textContent='？番の席！';nm.className='obo-name-display';nm.style.color='#ffd93d';document.getElementById('obo-seat-area').style.display='none';document.getElementById('obo-start-btn').style.display='block';document.getElementById('obo-stop-btn').style.display='none';document.getElementById('obo-action-btns').style.display='none';document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';renderOboProgress();}
 function renderOboProgress(){var el=document.getElementById('obo-progress');el.innerHTML='';oboQueue.forEach(function(_,i){var dot=document.createElement('div');dot.className='obo-dot';if(i<oboIndex)dot.classList.add('done');else if(i===oboIndex)dot.classList.add('current');el.appendChild(dot);});}
 function oboStartSpin(){if(oboSpinning)return;oboSpinning=true;document.getElementById('obo-start-btn').style.display='none';document.getElementById('obo-stop-btn').style.display='block';var nm=document.getElementById('obo-name-display');nm.className='obo-name-display spinning';var totalSeats=activeSeats().length,t=0;var colors=['#ffd93d','#ff6b9d','#55efc4','#a29bfe','#45b7d1','#ff9f43'];oboIv=setInterval(function(){nm.textContent=((t%totalSeats)+1)+'番の席！';nm.style.color=colors[t%colors.length];sndTick();t++;},80);}
-function oboStop(){if(!oboSpinning)return;clearInterval(oboIv);oboSpinning=false;var item=oboQueue[oboIndex];var nm=document.getElementById('obo-name-display');nm.textContent=item.seatNo+'番の席！';nm.style.color='#fff';nm.className='obo-name-display stopped';sndStop();document.getElementById('obo-stop-btn').style.display='none';setTimeout(function(){sndReveal();document.getElementById('obo-seat-area').style.display='block';document.getElementById('obo-seat-reveal').textContent=item.name+'さんの席は…';document.getElementById('obo-seat-label').textContent=item.seatNo+'番！🎉';var p=item.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d){d.classList.remove('hidden');d.classList.add('revealed','pop');var dn=d.querySelector('.k-desk-name');if(dn){dn.textContent=item.name;var kfs=item.name.length<=4?22:item.name.length<=6?18:14;dn.style.fontSize=kfs+'px';}}document.getElementById('obo-action-btns').style.display='flex';if(oboIndex>=oboQueue.length-1){document.getElementById('obo-next-btn').style.display='none';document.getElementById('obo-finish-btn').style.display='inline-flex';}else{document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';}},350);}
+function oboStop(){if(!oboSpinning)return;clearInterval(oboIv);oboSpinning=false;var item=oboQueue[oboIndex];var nm=document.getElementById('obo-name-display');nm.textContent=item.seatNo+'番の席！';nm.style.color='#fff';nm.className='obo-name-display stopped';sndStop();document.getElementById('obo-stop-btn').style.display='none';setTimeout(function(){sndReveal();document.getElementById('obo-seat-area').style.display='block';document.getElementById('obo-seat-reveal').textContent=item.name+'さんの席は…';document.getElementById('obo-seat-label').textContent=item.seatNo+'番！🎉';var p=item.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d){d.classList.remove('hidden');d.classList.add('revealed','pop');var dn=d.querySelector('.k-desk-name');if(dn){dn.textContent=item.name;var kfs=item.name.length<=4?22:item.name.length<=6?18:14;dn.style.fontSize=kfs+'px';}spawnSeatSparkle(d);}document.getElementById('obo-action-btns').style.display='flex';if(oboIndex>=oboQueue.length-1){document.getElementById('obo-next-btn').style.display='none';document.getElementById('obo-finish-btn').style.display='inline-flex';}else{document.getElementById('obo-next-btn').style.display='inline-flex';document.getElementById('obo-finish-btn').style.display='none';}},350);}
 function oboNext(){oboIndex++;oboShowCurrent();}
 function oboFinish(){var asgn={};oboQueue.forEach(function(q){if(q.seatId&&q.name)asgn[q.seatId]=q.name;});recordAdjacency(asgn);sndFanfare();spawnConfetti();oboQueue.forEach(function(q){var p=q.seatId.split('_');var r=+p[0],c=+p[1];var d=document.getElementById('obo-kd-'+r+'_'+c);if(d&&d.classList.contains('hidden')){d.classList.remove('hidden');d.classList.add('pop');var dn=d.querySelector('.k-desk-name');if(dn){dn.textContent=q.name;var kfs3=q.name.length<=4?22:q.name.length<=6?18:14;dn.style.fontSize=kfs3+'px';}}});document.getElementById('k-cls').innerHTML=document.getElementById('obo-cls').innerHTML;showKS('class');}
 
 function renderKidClassHidden(targetId){var el=document.getElementById(targetId);el.innerHTML='';var rows=maxR(),cols=maxC();var kbbW2=(cols)*100+16;var kbbH2=80;var kbbSvg2=document.createElementNS('http://www.w3.org/2000/svg','svg');kbbSvg2.setAttribute('viewBox','0 0 '+kbbW2+' '+kbbH2);kbbSvg2.className='k-bb';kbbSvg2.style.cssText='display:block;width:'+kbbW2+'px;height:'+kbbH2+'px;margin-bottom:8px';kbbSvg2.innerHTML='<rect x="0" y="0" width="'+kbbW2+'" height="'+kbbH2+'" rx="8" fill="#c8922a"/><rect x="8" y="8" width="'+(kbbW2-16)+'" height="'+(kbbH2-16)+'" rx="4" fill="#2d6e2d"/><text x="'+(kbbW2/2)+'" y="48" text-anchor="middle" fill="rgba(200,240,180,0.9)" font-family="sans-serif" font-size="24" font-weight="bold" letter-spacing="8">黒　板</text><rect x="8" y="'+(kbbH2-12)+'" width="'+(kbbW2-16)+'" height="6" rx="2" fill="#b07820"/><rect x="18" y="'+(kbbH2-11)+'" width="24" height="4" rx="2" fill="#f0f0f0"/><rect x="48" y="'+(kbbH2-11)+'" width="18" height="4" rx="2" fill="#ffd93d"/>';el.appendChild(kbbSvg2);for(var r=0;r<=rows;r++){var rw=document.createElement('div');rw.className='k-row';for(var c=0;c<=cols;c++){var cell=getCell(r,c);var d=document.createElement('div');if(cell&&cell.on){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';d.className='k-desk hidden'+(isVR(r)?' vision':'');d.id=pfx+r+'_'+c;
               // SVG机（先生画面と同じスタイル）
+              var kFacingVal=facing[r+'_'+c]||'down';
               var ksvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
               ksvg.setAttribute('viewBox','0 0 130 110');ksvg.className='kdesk-svg';
               ksvg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none';
-              ksvg.innerHTML=
-                '<rect x="10" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
-                '<rect x="110" y="88" width="10" height="20" rx="3" fill="#d0d0d0" stroke="#a0a0a0" stroke-width="1"/>'+
-                '<rect x="12" y="92" width="106" height="10" rx="2" fill="#e0e0e0" stroke="#b0b0b0" stroke-width="1"/>'+
-                '<rect x="0" y="78" width="130" height="10" rx="3" fill="#c9903a"/>'+
-                '<rect x="0" y="1" width="130" height="80" rx="7" fill="#f5d98a" stroke="#b8935a" stroke-width="2" class="desk-top"/>'+
-                '<rect x="5" y="4" width="120" height="16" rx="8" fill="rgba(255,255,255,0.38)"/>';
+              ksvg.innerHTML=buildDeskSvgInner(kFacingVal);
               d.appendChild(ksvg);
+              
               // 班カラーを子ども画面にも反映
               var ksid=r+'_'+c;
               if(groups[ksid]!==undefined){
@@ -1771,8 +2055,9 @@ function renderKidClassHidden(targetId){var el=document.getElementById(targetId)
               }
               var num=document.createElement('div');num.className='k-desk-num';num.textContent=seatNum(r,c)+'番';
               var nm=document.createElement('div');nm.className='k-desk-name';nm.textContent='？';
+              applyTextPositionsByFacing(num,nm,kFacingVal);
               d.appendChild(num);d.appendChild(nm);}else{d.className='k-no-desk';}rw.appendChild(d);}el.appendChild(rw);}}
-function revealKidClass(targetId){activeSeats().forEach(function(s){var pfx=targetId==='obo-cls'?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm){nm.textContent=name||'空席';if(name){var kfs2=name.length<=4?22:name.length<=6?18:14;nm.style.fontSize=kfs2+'px';}}});}
+function revealKidClass(targetId){var isObo=(targetId==='obo-cls');activeSeats().forEach(function(s){var pfx=isObo?'obo-kd-':'kd-';var d=document.getElementById(pfx+s.r+'_'+s.c);if(!d)return;var name=currentAssignment[s.r+'_'+s.c]||'';d.classList.remove('hidden');d.classList.add('pop');var nm=d.querySelector('.k-desk-name');if(nm){nm.textContent=name||'空席';if(name){var kfs2=name.length<=4?22:name.length<=6?18:14;nm.style.fontSize=kfs2+'px';}}});}
 function resetKid(){clearInterval(oboIv);oboSpinning=false;oboQueue=[];oboIndex=0;kZoomLevel=1;showKS('waiting');}
 function spawnConfetti(){var colors=['#ff6b9d','#ffd93d','#55efc4','#a29bfe','#45b7d1','#fd7272','#ff9f43'];var kb=document.getElementById('k-body');for(var i=0;i<50;i++){var c=document.createElement('div');c.className='confetti-p';var sz=6+Math.random()*10;c.style.cssText='left:'+Math.random()*100+'%;top:-20px;background:'+colors[i%colors.length]+';width:'+sz+'px;height:'+sz+'px;transform:rotate('+Math.random()*360+'deg);animation-duration:'+(1.4+Math.random()*1.4)+'s;animation-delay:'+Math.random()*0.4+'s';kb.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},3200);}}
 
@@ -1799,7 +2084,9 @@ function runSmartAssign(){
     var newPairCount=0;
     activeSeats().forEach(function(s){
       var id=s.r+'_'+s.c,me=asgn[id];if(!me)return;
-      [[0,1],[1,0]].forEach(function(d){
+      var myFacing=facing[id]||'down';
+      var pairDirs=(myFacing==='right'||myFacing==='left')?[[1,0]]:[[0,1],[1,0]];
+      pairDirs.forEach(function(d){
         var nb=activeSeats().find(function(x){return x.r===s.r+d[0]&&x.c===s.c+d[1];});
         if(!nb)return;
         var them=asgn[nb.r+'_'+nb.c];if(!them)return;
@@ -1821,6 +2108,49 @@ function runSmartAssign(){
 
 
 
+
+
+// ===== データのエクスポート／インポート（端末移行用） =====
+function exportData(){
+  try{
+    var json=localStorage.getItem('sekigae-v17');
+    if(!json){alert('保存されているデータがありません。');return;}
+    var blob=new Blob([json],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var now=new Date();
+    var ds=now.getFullYear()+''+('0'+(now.getMonth()+1)).slice(-2)+('0'+now.getDate()).slice(-2);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='sekigae-backup-'+ds+'.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert('✅ データを書き出しました！\n\nダウンロードされたファイルを新しい端末に送り、新しい端末のアプリで「ファイルから読み込む」を使ってください。');
+  }catch(e){
+    alert('書き出しに失敗しました：'+e.message);
+  }
+}
+
+function importData(event){
+  var file=event.target.files[0];
+  if(!file)return;
+  if(!confirm('現在のデータを上書きして読み込みます。よろしいですか？\n（念のため今のデータも先に「書き出す」でバックアップすることをおすすめします）')){
+    event.target.value='';return;
+  }
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var json=e.target.result;
+      var data=JSON.parse(json); // 形式チェック
+      localStorage.setItem('sekigae-v17',json);
+      alert('✅ データを読み込みました！ページを再読み込みします。');
+      location.reload();
+    }catch(err){
+      alert('読み込みに失敗しました。正しいバックアップファイルか確認してください。\n'+err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value='';
+}
 
 // ===== ぴょん隠しボタン（3回タップで先生画面へ）=====
 var pyonCount=0,pyonTimer=null;
@@ -1858,6 +2188,9 @@ function pyonTap(){
     renderLB();showSave('idle');
   }
   updateRoundDisp();
+  // ピンチ操作での拡大縮小を設定
+  setupPinchZoom('lb-wrap',function(){return tZoomLevel;},function(v){tZoomLevel=v;},applyTZoom,0.4,1.5);
+  setupPinchZoom('k-body',function(){return kZoomLevel;},function(v){kZoomLevel=v;},applyKZoom,0.4,2);
 })();
 </script>
 </body>
