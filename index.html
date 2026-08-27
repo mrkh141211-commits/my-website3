@@ -278,8 +278,49 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 .lb-cell.seat.group-selecting{outline:3px solid #ff9800;outline-offset:2px}
 .group-badge{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;z-index:4;pointer-events:none;line-height:1}
 .lb-cell.seat .desk-top{transition:fill 0.2s}
-/* ===== フォントボタン ===== */
-.font-btn{padding:7px 13px;border-radius:14px;border:2px solid #e0d8ff;background:#f8f8ff;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all 0.15s;color:#555}
+/* ===== クラス選択画面 ===== */
+#scr-class-select{background:linear-gradient(135deg,#5c4a8a,#8b5cf6,#ff6b9d);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px}
+.cs-logo{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.2);margin-bottom:4px}
+.cs-sub{font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:2px;margin-bottom:20px}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;width:100%;max-width:640px;margin-bottom:16px}
+.cs-card{background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:16px;padding:12px 10px;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;min-height:80px;justify-content:center}
+.cs-card:hover{background:rgba(255,255,255,0.28);border-color:rgba(255,255,255,0.7);transform:scale(1.03)}
+.cs-card.has-data{background:rgba(255,255,255,0.22);border-color:rgba(255,217,61,0.7)}
+.cs-card-name{font-size:15px;font-weight:700;color:#fff;text-align:center;word-break:break-all}
+.cs-card-meta{font-size:10px;color:rgba(255,255,255,0.65)}
+.cs-card-del{position:absolute;top:4px;right:6px;font-size:11px;color:rgba(255,255,255,0.4);cursor:pointer;background:none;border:none;line-height:1;padding:2px}
+.cs-card-del:hover{color:#ff6b9d}
+.cs-add-btn{background:rgba(255,255,255,0.1);border:2px dashed rgba(255,255,255,0.4);color:rgba(255,255,255,0.7);font-size:24px}
+.cs-add-btn:hover{background:rgba(255,255,255,0.2);color:#fff;border-color:rgba(255,255,255,0.9)}
+.cs-tip{font-size:11px;color:rgba(255,255,255,0.5);text-align:center;max-width:320px}
+
+/* ===== 印刷・スケジュール ===== */
+.sched-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f8f8ff;border:1.5px solid #e0d8ff;border-radius:10px;margin-bottom:6px}
+.sched-date{font-size:14px;font-weight:700;color:#5c4a8a;min-width:100px}
+.sched-memo{flex:1;font-size:12px;color:#666}
+.sched-del{background:none;border:none;color:#fd7272;cursor:pointer;font-size:16px;padding:2px 6px}
+.sched-done{opacity:0.5;text-decoration:line-through}
+.sched-soon{background:linear-gradient(135deg,#fff3e0,#fff8e1);border-color:#ffa726}
+.sched-today{background:linear-gradient(135deg,#e8f5e9,#f0fff4);border-color:#66bb6a}
+
+@media print{
+  body > *{display:none!important}
+  #print-root{display:block!important}
+  @page{margin:10mm}
+}
+#print-root{display:none}
+.print-page{font-family:inherit;padding:8mm;width:100%}
+.print-title{font-size:18pt;font-weight:700;text-align:center;margin-bottom:4mm;color:#333}
+.print-meta{font-size:9pt;text-align:center;color:#888;margin-bottom:6mm}
+.print-grid{display:flex;flex-direction:column;align-items:center;gap:2mm}
+.print-row{display:flex;gap:2mm;justify-content:center}
+.print-bb{background:#2d6e2d;color:rgba(200,240,180,0.9);border-radius:4px;padding:3mm 0;text-align:center;font-size:10pt;font-weight:700;letter-spacing:4px;margin-bottom:4mm;border:3px solid #c8922a}
+.print-desk{width:22mm;height:18mm;border:1.5px solid #b8935a;border-radius:3mm;background:#fffbf0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border-bottom:4px solid #c9903a;box-shadow:0 2px 0 #b8935a}
+.print-desk-num{font-size:7pt;color:#b8935a;position:absolute;top:1mm;left:2mm}
+.print-desk-name{font-size:10pt;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1.2;padding:0 1mm}
+.print-empty{width:22mm;height:18mm;visibility:hidden}
+
+/* ===== フォントボタン =====
 .font-btn.on{background:#5c4a8a;color:#fff;border-color:#5c4a8a}
 .font-btn:hover{border-color:#a29bfe;background:#f0eeff}
 /* ===== テーマ・BGMボタン ===== */
@@ -315,13 +356,23 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
 </style>
 </head>
 <body>
+<!-- クラス選択画面 -->
+<div class="scr" id="scr-class-select" style="display:none">
+  <div class="cs-logo">THE SEKIGAE</div>
+  <div class="cs-sub">クラスを選んでください</div>
+  <div class="cs-grid" id="cs-grid"></div>
+  <div class="cs-tip">💡 最大15クラスまで登録できます<br>クラス名は後から変更できません（データを引き継ぐため）</div>
+</div>
 <div class="app">
-<div class="scr on" id="scr-t">
+<div class="scr" id="scr-t" style="display:none">
 <div class="hdr">
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
     <div><div class="logo-text">THE SEKIGAE</div><div class="logo-sub">先生専用モード</div></div>
     <span class="teacher-badge">TEACHER</span>
     <span class="round-badge" id="round-disp" style="display:none">0回目</span>
+    <button onclick="goToClassSelect()" style="background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.4);border-radius:10px;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:4px">
+      🏫 <span id="current-class-label">クラス</span> ▼
+    </button>
     <div class="save-ind" id="save-ind">💾 読み込み中...</div>
   </div>
   <div class="hdr-tabs">
@@ -330,6 +381,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <button class="hdr-tab" id="ht-cfg" onclick="hTab('cfg')">③ 配慮</button>
     <button class="hdr-tab" id="ht-stat" onclick="hTab('stat')">📊 統計</button>
     <button class="hdr-tab" id="ht-hist" onclick="hTab('hist')">📅 履歴</button>
+    <button class="hdr-tab" id="ht-print" onclick="hTab('print')">🖨️ 印刷</button>
     <button class="hdr-tab" id="ht-set" onclick="hTab('set')">🎨 設定</button>
   </div>
 </div>
@@ -450,6 +502,35 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
   </div>
 </div>
 
+<!-- 🖨️ 印刷タブ -->
+<div class="t-panel" id="tp-print">
+  <div class="card">
+    <h3>🖨️ 座席表を印刷・PDF出力</h3>
+    <div class="hint">現在の座席配置をA4サイズで印刷できます。「PDF として保存」を選ぶとPDF出力になります。</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px">用紙の向き</div>
+        <select class="sel" id="print-orient">
+          <option value="portrait">縦（ポートレート）</option>
+          <option value="landscape">横（ランドスケープ）</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px">タイトル</div>
+        <input type="text" class="sel" id="print-title" placeholder="例：5年1組 席替え" style="width:160px">
+      </div>
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px">日付を表示</div>
+        <input type="checkbox" id="print-date" checked style="width:16px;height:16px">
+      </div>
+    </div>
+    <button class="btn btn-pp" onclick="printSeatChart()" style="font-size:14px;padding:10px 24px">🖨️ 印刷 / PDFとして保存</button>
+    <div id="print-preview-area" style="margin-top:14px;border:2px solid #e0d8ff;border-radius:12px;padding:10px;background:#f8f8ff;min-height:100px;overflow:auto">
+      <div style="color:#aaa;text-align:center;padding:20px;font-size:12px">「印刷タブ」を開くと座席表のプレビューが表示されます</div>
+    </div>
+  </div>
+</div>
+
 <!-- 🎨 設定タブ -->
 <div class="t-panel" id="tp-set">
   <div class="card">
@@ -480,12 +561,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       <button class="color-theme-btn" data-theme="candy" onclick="setColorTheme(this,'candy')" style="background:linear-gradient(135deg,#ff6eb4,#ffcc00)">🍭 キャンディ</button>
     </div>
   </div>
-  <div class="card">
-    <h3>📊 フラグ分布チェック</h3>
-    <div class="hint">現在の座席配置でフラグがどのグループに分散されているか確認できます。</div>
-    <button class="btn btn-pp" onclick="renderFlagCheck()" style="margin-bottom:10px">🔍 今の配置を分析</button>
-    <div id="flag-check-result"></div>
-  </div>
+
   <div class="card">
     <h3>🎭 演出・サウンド設定</h3>
     <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:10px"><input type="checkbox" id="chk-sound" checked style="width:16px;height:16px"> 効果音あり</label>
@@ -680,10 +756,31 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <div class="popup-list" id="popup-list"></div>
     <button class="popup-cancel" onclick="closePopup()">キャンセル</button>
   </div>
+  <div class="card">
+    <h3>📊 フラグ分布チェック＆改善提案</h3>
+    <div class="hint">現在の配置のスコアを分析し、2人を入れ替えるだけで改善できる案を最大5つ提案します。</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <button class="btn btn-pp" onclick="renderFlagCheck()">🔍 今の配置を分析</button>
+      <button class="btn btn-yw" onclick="renderSwapSuggestions()">💡 入れ替え案を提案</button>
+    </div>
+    <div id="flag-check-result"></div>
+    <div id="swap-suggestions"></div>
+  </div>
 </div>
 </div>
 <script>
 const AC=new(window.AudioContext||window.webkitAudioContext)();
+
+// ===== セキュリティ: HTML特殊文字をエスケープ =====
+function esc(str){
+  if(!str)return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
 function tone(f,d,t,v){t=t||'sine';v=v||0.3;try{var o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d);}catch(e){}}
 function drum(){try{var b=AC.createBuffer(1,AC.sampleRate*0.1,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2)*0.7;var s=AC.createBufferSource(),g=AC.createGain();s.buffer=b;s.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(0.4,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.1);s.start();}catch(e){}}
 function se(){return document.getElementById('chk-sound').checked;}
@@ -1213,20 +1310,34 @@ function doSave(){
       visionRows:document.getElementById('vision-rows').value,
       sound:document.getElementById('chk-sound').checked};
     var json=JSON.stringify(data);
-    localStorage.setItem('sekigae-v17',json);
+    var key=currentClass?getStorageKey(currentClass):'sekigae-v17';
+    localStorage.setItem(key,json);
     showSave('saved');setTimeout(function(){showSave('idle');},2000);
   }catch(e){showSave('idle');}
 }
 function loadSaved(){
   try{
-    // 新キーがなければ古いキーから順番に探してマイグレーション
-    var json=localStorage.getItem('sekigae-v17');
+    var key=currentClass?getStorageKey(currentClass):'sekigae-v17';
+    var json=localStorage.getItem(key);
     if(!json){
+      // クラスが選択されている場合は旧キーを探さない（新クラスは空の状態で開始）
+      if(currentClass){
+        // 新規クラス：データをリセットして空の状態にする
+        grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;
+        numList=[];seatHistory={};seatingHistory={};currentAssignment={};
+        groups={};facing={};
+        var rows=5,cols=6;
+        for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){grid.push({r:r,c:c,on:true,name:''});}
+        if(document.getElementById('roster-ta'))document.getElementById('roster-ta').value='';
+        updateSels();renderLB();renderVision();renderSeps();updateRoundDisp();
+        showSave('idle');
+        return false;
+      }
+      // クラス未選択の場合のみ旧キーを探す（後方互換）
       var oldKeys=['sekigae-v16','sekigae-v15','sekigae-v14','sekigae-v13','sekigae-v12','sekigae-v11','sekigae-v10','sekigae-v9'];
       for(var ki=0;ki<oldKeys.length;ki++){
         json=localStorage.getItem(oldKeys[ki]);
         if(json){
-          // 旧データを新キーに移行して保存
           localStorage.setItem('sekigae-v17',json);
           break;
         }
@@ -1258,7 +1369,8 @@ function loadSaved(){
 }
 function resetAll(){
   if(!confirm('⚠️ 全データをリセットしますか？'))return;
-  try{localStorage.removeItem('sekigae-v17');}catch(e){}
+  var rkey=currentClass?getStorageKey(currentClass):'sekigae-v17';
+  try{localStorage.removeItem(rkey);}catch(e){}
   grid=[];students=[];visionStu=[];seps=[];adjMatrix={};totalRounds=0;numList=[];seatHistory={};seatingHistory={};currentAssignment={};groups={};facing={};
   document.getElementById('roster-ta').value='';document.getElementById('roster-stat').textContent='';
   document.getElementById('num-list-card').style.display='none';document.getElementById('num-list').innerHTML='';
@@ -1698,13 +1810,14 @@ function renderLB(){
 function openPopup(r,c){if(delMode||groupMode||facingMode)return;sndClick();var cell=getCell(r,c);var avail=availableStudents();var hasCur=cell&&cell.name;document.getElementById('popup-title').textContent=seatNum(r,c)+'番席 — だれにする？';var list=document.getElementById('popup-list');list.innerHTML='';if(hasCur){var d=document.createElement('div');d.className='popup-item';d.style.cssText='background:#fff0f5;border-color:#ff6b9d;color:#c0304a';d.innerHTML='<div class="pi-av" style="background:#ffe0ec;font-size:16px">✕</div><span>「'+cell.name+'」をキャンセル</span>';d.addEventListener('click',(function(r,c){return function(){var cell=getCell(r,c);cell.name='';closePopup();renderLB();sndSelect();scheduleSave();};})(r,c));list.appendChild(d);}if(!avail.length&&!hasCur){var d2=document.createElement('div');d2.className='popup-item';d2.style.color='#aaa';d2.textContent='名簿を読み込んでください';list.appendChild(d2);}avail.forEach(function(s,i){var d=document.createElement('div');d.className='popup-item';d.innerHTML='<div class="pi-av" style="background:'+avatarColors[i%avatarColors.length]+';font-size:16px">'+avatarEmoji[i%avatarEmoji.length]+'</div><span style="font-weight:700">'+s+'</span>';d.addEventListener('click',(function(r,c,s){return function(){var cell=getCell(r,c);cell.name=s;closePopup();renderLB();sndSelect();scheduleSave();};})(r,c,s));list.appendChild(d);});document.getElementById('popup').style.display='flex';}
 function closePopup(e){if(e&&e.target!==document.getElementById('popup'))return;document.getElementById('popup').style.display='none';}
 function hTab(name){
-  ['lay','ros','cfg','stat','hist','set'].forEach(function(t){
+  ['lay','ros','cfg','stat','hist','print','set'].forEach(function(t){
     var tp=document.getElementById('tp-'+t),ht=document.getElementById('ht-'+t);
     if(tp)tp.classList.toggle('on',t===name);
     if(ht)ht.classList.toggle('on',t===name);
   });
   if(name==='stat')renderStats();
   if(name==='hist')renderHistoryPanel();
+  if(name==='print')renderPrintPreview();
 }
 function updateSels(){['vision-sel','sep-a','sep-b'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var cur=el.value;el.innerHTML=students.map(function(s){return '<option>'+s+'</option>';}).join('');if(students.includes(cur))el.value=cur;});}
 function addVision(){var s=document.getElementById('vision-sel').value;if(s&&!visionStu.includes(s)){visionStu.push(s);renderVision();scheduleSave();}}
@@ -2113,7 +2226,8 @@ function runSmartAssign(){
 // ===== データのエクスポート／インポート（端末移行用） =====
 function exportData(){
   try{
-    var json=localStorage.getItem('sekigae-v17');
+    var key=currentClass?getStorageKey(currentClass):'sekigae-v17';
+    var json=localStorage.getItem(key);
     if(!json){alert('保存されているデータがありません。');return;}
     var blob=new Blob([json],{type:'application/json'});
     var url=URL.createObjectURL(blob);
@@ -2121,7 +2235,7 @@ function exportData(){
     var ds=now.getFullYear()+''+('0'+(now.getMonth()+1)).slice(-2)+('0'+now.getDate()).slice(-2);
     var a=document.createElement('a');
     a.href=url;
-    a.download='sekigae-backup-'+ds+'.json';
+    a.download='sekigae-backup-'+(currentClass?currentClass+'-':'')+ds+'.json';
     document.body.appendChild(a);a.click();document.body.removeChild(a);
     URL.revokeObjectURL(url);
     alert('✅ データを書き出しました！\n\nダウンロードされたファイルを新しい端末に送り、新しい端末のアプリで「ファイルから読み込む」を使ってください。');
@@ -2180,18 +2294,334 @@ function pyonTap(){
   },2000);
 }
 
-(function(){
-  var loaded=loadSaved();
-  if(!loaded){
-    var rows=5,cols=6;grid=[];
-    for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){var on=r===0||c===0||c===cols-1;grid.push({r:r,c:c,on:on,name:''});}
-    renderLB();showSave('idle');
+
+
+
+// ===== 入れ替え改善提案 =====
+// 現在の配置の総合スコアを計算（低いほど良い）
+function calcCurrentScore(){
+  var seats=activeSeats();
+  var seatMap={};
+  seats.forEach(function(s){if(s.name)seatMap[s.r+'_'+s.c]=s.name;});
+  return balanceScore(seatMap)+adjScore(seatMap)+seatRepeatScore(seatMap);
+}
+
+// 2人を入れ替えた場合のスコアを計算
+function calcSwapScore(s1, s2){
+  var seats=activeSeats();
+  var seatMap={};
+  seats.forEach(function(s){if(s.name)seatMap[s.r+'_'+s.c]=s.name;});
+  // 入れ替え
+  var tmp=seatMap[s1];
+  seatMap[s1]=seatMap[s2];
+  seatMap[s2]=tmp;
+  return balanceScore(seatMap)+adjScore(seatMap)+seatRepeatScore(seatMap);
+}
+
+function renderSwapSuggestions(){
+  var el=document.getElementById('swap-suggestions');
+  if(!el)return;
+  el.innerHTML='<div style="color:#888;font-size:12px;text-align:center;padding:8px">⏳ 計算中...</div>';
+
+  setTimeout(function(){
+    var seats=activeSeats().filter(function(s){return s.name;});
+    if(seats.length<2){
+      el.innerHTML='<div style="color:#aaa;font-size:12px;padding:8px">名前が入っている座席が2席以上必要です</div>';
+      return;
+    }
+
+    var currentScore=calcCurrentScore();
+    var improvements=[];
+
+    // 全ての2人の組み合わせを試す
+    for(var i=0;i<seats.length;i++){
+      for(var j=i+1;j<seats.length;j++){
+        var s1=seats[i].r+'_'+seats[i].c;
+        var s2=seats[j].r+'_'+seats[j].c;
+        var newScore=calcSwapScore(s1,s2);
+        var improvement=currentScore-newScore;
+        if(improvement>0){
+          improvements.push({
+            s1:s1,s2:s2,
+            name1:seats[i].name,name2:seats[j].name,
+            improvement:improvement,
+            newScore:newScore
+          });
+        }
+      }
+    }
+
+    // 改善幅が大きい順にソートして上位5案
+    improvements.sort(function(a,b){return b.improvement-a.improvement;});
+    var top5=improvements.slice(0,5);
+
+    if(!top5.length){
+      el.innerHTML='<div style="background:#e8f5e9;border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:#2e7d32;font-weight:700">✅ 現在の配置はすでに最適です！入れ替えで改善できる組み合わせが見つかりませんでした。</div>';
+      return;
+    }
+
+    var html='<div style="margin-top:12px">';
+    html+='<div style="font-size:13px;font-weight:700;color:#5c4a8a;margin-bottom:8px">💡 入れ替え提案（現在スコア：'+currentScore+'点）</div>';
+    html+='<div style="font-size:11px;color:#888;margin-bottom:8px">スコアは低いほど良い配置です。数字が大きく改善するほど効果的な入れ替えです。</div>';
+
+    top5.forEach(function(item,idx){
+      html+='<div style="background:linear-gradient(135deg,#f0eeff,#fff0f8);border:2px solid #a29bfe;border-radius:12px;padding:10px 12px;margin-bottom:8px">';
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">';
+      html+='<div>';
+      html+='<span style="font-size:12px;color:#888">案'+(idx+1)+'　</span>';
+      html+='<strong style="font-size:14px;color:#5c4a8a">'+item.name1+'</strong>';
+      html+='<span style="font-size:16px;margin:0 6px">⇄</span>';
+      html+='<strong style="font-size:14px;color:#5c4a8a">'+item.name2+'</strong>';
+      html+='<span style="font-size:11px;color:#ff6b9d;font-weight:700;margin-left:8px">▼'+item.improvement+'点改善</span>';
+      html+='</div>';
+    });
+    el.innerHTML=html+'</div>';
+  },50);
+}
+
+
+// ===== 入れ替えを実際に適用する =====
+function applySwap(s1id, s2id){
+  var p1=s1id.split('_'),p2=s2id.split('_');
+  var cell1=getCell(+p1[0],+p1[1]);
+  var cell2=getCell(+p2[0],+p2[1]);
+  if(!cell1||!cell2)return;
+  var n1=cell1.name,n2=cell2.name;
+  cell1.name=n2;cell2.name=n1;
+  renderLB();scheduleSave();
+  renderFlagCheck();
+  renderSwapSuggestions();
+  hTab('lay');
+  var status=document.getElementById('smart-status');
+  if(status){status.style.display='block';status.innerHTML='✅ 入れ替え適用済み！'+n2+'さん ⇄ '+n1+'さん';}
+}
+
+// ===== 🖨️ 印刷・PDF出力 =====
+function renderPrintPreview(){
+  var area=document.getElementById('print-preview-area');if(!area)return;
+  var seats=activeSeats();
+  if(!seats.length){area.innerHTML='<div style="color:#aaa;text-align:center;padding:20px;font-size:12px">座席を設定してから印刷タブを開いてください</div>';return;}
+  area.innerHTML='<div style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">📋 プレビュー（実際の印刷より大きく表示されています）</div>'+buildPrintHTML(0.55);
+}
+
+function buildPrintHTML(sc){
+  var title=document.getElementById('print-title')?document.getElementById('print-title').value:'';
+  var showDate=document.getElementById('print-date')?document.getElementById('print-date').checked:true;
+  var orient=document.getElementById('print-orient')?document.getElementById('print-orient').value:'portrait';
+  var rows=maxR(),cols=maxC();
+  var now=new Date();
+  var dateStr=showDate?(now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日'):'';
+  sc=sc||1;
+  var usableW=orient==='landscape'?277*3.78:190*3.78;
+  var usableH=orient==='landscape'?170*3.78:257*3.78;
+  var numCols=cols+1,numRows=rows+2,gap=4;
+  var maxDeskW=Math.floor((usableW-gap*(numCols-1))/numCols);
+  var maxDeskH=Math.floor((usableH-gap*(numRows-1))/numRows);
+  var deskW=Math.min(maxDeskW,Math.floor(maxDeskH*130/110));
+  var deskH=Math.floor(deskW*110/130);
+  var dw=Math.floor(deskW*sc),dh=Math.floor(deskH*sc),g=Math.floor(gap*sc);
+  var nfb=Math.max(7,Math.floor(deskH*sc*0.22));
+  var html='<div style="background:#fff;padding:'+Math.floor(10*sc)+'px;font-family:inherit">';
+  if(title||currentClass)html+='<div style="font-size:'+Math.floor(16*sc)+'px;font-weight:700;text-align:center;margin-bottom:'+Math.floor(4*sc)+'px;color:#333">'+(title||currentClass)+'</div>';
+  if(dateStr)html+='<div style="font-size:'+Math.floor(10*sc)+'px;text-align:center;color:#888;margin-bottom:'+Math.floor(6*sc)+'px">'+dateStr+'</div>';
+  html+='<div style="display:flex;flex-direction:column;align-items:center;gap:'+g+'px">';
+  var bbW=(dw+g)*numCols-g;
+  html+='<div style="width:'+bbW+'px;background:#2d6e2d;color:rgba(200,240,180,0.9);border-radius:'+Math.floor(4*sc)+'px;padding:'+Math.floor(5*sc)+'px 0;text-align:center;font-size:'+Math.floor(12*sc)+'px;font-weight:700;letter-spacing:4px;border:'+Math.ceil(2*sc)+'px solid #c8922a;margin-bottom:'+g+'px">黒　板</div>';
+  for(var r=0;r<=rows;r++){
+    html+='<div style="display:flex;gap:'+g+'px;justify-content:center">';
+    for(var cc=0;cc<=cols;cc++){
+      var cell=getCell(r,cc);
+      if(cell&&cell.on){
+        var sno=seatNum(r,cc);var name=cell.name||'';
+        var fs=name.length<=4?nfb:name.length<=6?Math.floor(nfb*0.85):Math.floor(nfb*0.72);
+        html+='<div style="width:'+dw+'px;height:'+dh+'px;border:'+Math.ceil(1.5*sc)+'px solid #b8935a;border-radius:'+Math.floor(3*sc)+'px;background:#fffbf0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border-bottom:'+Math.ceil(3*sc)+'px solid #c9903a">';
+        html+='<span style="font-size:'+Math.floor(7*sc)+'px;color:#b8935a;position:absolute;top:1px;left:2px">'+sno+'番</span>';
+        html+='<span style="font-size:'+fs+'px;font-weight:700;color:#3a2000;text-align:center;word-break:break-all;line-height:1.1;padding:0 2px">'+name+'</span>';
+        html+='</div>';
+      } else {html+='<div style="width:'+dw+'px;height:'+dh+'px;visibility:hidden"></div>';}
+    }
+    html+='</div>';
   }
+  html+='</div></div>';
+  return html;
+}
+
+function printSeatChart(){
+  var seats=activeSeats();if(!seats.length){alert('座席が設定されていません。');return;}
+  var orient=document.getElementById('print-orient')?document.getElementById('print-orient').value:'portrait';
+  var root=document.getElementById('print-root');
+  if(!root){root=document.createElement('div');root.id='print-root';document.body.appendChild(root);}
+  root.innerHTML=buildPrintHTML(1);
+  var sid='print-orient-style';var ex=document.getElementById(sid);if(ex)ex.remove();
+  var st=document.createElement('style');st.id=sid;
+  st.textContent='@media print{@page{size:A4 '+orient+';margin:10mm}}';
+  document.head.appendChild(st);
+  window.print();
+}
+
+// ===== 📅 スケジュール（互換性維持用） =====
+var schedList=[];
+function loadSchedule(){try{var k=currentClass?'sekigae-sched-'+currentClass:'sekigae-sched';var s=localStorage.getItem(k);schedList=s?JSON.parse(s):[];}catch(e){schedList=[];}}
+function saveSchedule(){localStorage.setItem(currentClass?'sekigae-sched-'+currentClass:'sekigae-sched',JSON.stringify(schedList));}
+function renderSchedule(){}
+function checkScheduleAlert(){}
+
+// ===== クラス管理システム =====
+var CLASS_LIST_KEY='sekigae-classes'; // クラス名一覧
+var currentClass=''; // 現在のクラス名
+
+function getStorageKey(className){
+  return 'sekigae-v17-'+className;
+}
+
+function loadClassList(){
+  try{
+    var s=localStorage.getItem(CLASS_LIST_KEY);
+    return s?JSON.parse(s):[];
+  }catch(e){return [];}
+}
+
+function saveClassList(list){
+  localStorage.setItem(CLASS_LIST_KEY,JSON.stringify(list));
+}
+
+function addNewClass(){
+  var list=loadClassList();
+  if(list.length>=15){alert('クラスは最大15クラスまでです。');return;}
+  var name=prompt('クラス名を入力してください（例：5年1組、音楽A班）');
+  if(!name||!name.trim())return;
+  name=name.trim();
+  if(list.includes(name)){alert('そのクラス名はすでに存在します。');return;}
+  list.push(name);
+  saveClassList(list);
+  renderClassSelect();
+}
+
+function deleteClass(name){
+  if(!confirm('「'+name+'」のデータをすべて削除しますか？\nこの操作は取り消せません！')){return;}
+  var list=loadClassList();
+  list=list.filter(function(n){return n!==name;});
+  saveClassList(list);
+  try{localStorage.removeItem(getStorageKey(name));}catch(e){}
+  renderClassSelect();
+}
+
+function selectClass(name){
+  // 現在のデータを先にセーブ
+  if(currentClass)doSaveSync();
+  currentClass=name;
+  // 画面切り替え
+  document.getElementById('scr-class-select').style.display='none';
+  document.getElementById('scr-t').style.display='block';
+  // クラスラベル更新
+  var label=document.getElementById('current-class-label');
+  if(label)label.textContent=name;
+  // そのクラスのデータを読み込む
+  loadSaved();
+  loadSchedule();
+  renderLB();
   updateRoundDisp();
-  // ピンチ操作での拡大縮小を設定
+  checkScheduleAlert();
+}
+
+function goToClassSelect(){
+  doSaveSync();
+  // 先生画面を閉じてクラス選択に戻る
+  document.getElementById('scr-t').style.display='none';
+  document.getElementById('scr-class-select').style.display='flex';
+  renderClassSelect();
+}
+
+function doSaveSync(){
+  if(!currentClass)return;
+  try{
+    var data={grid:grid,students:students,visionStu:visionStu,seps:seps,
+      adjMatrix:adjMatrix,totalRounds:totalRounds,numList:numList,
+      seatHistory:seatHistory,seatingHistory:seatingHistory,
+      currentBgm:currentBgm,currentColorTheme:currentColorTheme,
+      currentFont:currentFont,groups:groups,facing:facing,
+      rosterText:document.getElementById('roster-ta')?document.getElementById('roster-ta').value:'',
+      visionRows:document.getElementById('vision-rows')?document.getElementById('vision-rows').value:'1',
+      sound:document.getElementById('chk-sound')?document.getElementById('chk-sound').checked:true};
+    localStorage.setItem(getStorageKey(currentClass),JSON.stringify(data));
+  }catch(e){}
+}
+
+function renderClassSelect(){
+  var el=document.getElementById('cs-grid');if(!el)return;
+  el.innerHTML='';
+  var list=loadClassList();
+  list.forEach(function(name){
+    var card=document.createElement('div');card.className='cs-card';
+    // データがあるか確認
+    var raw=localStorage.getItem(getStorageKey(name));
+    var meta='';
+    if(raw){
+      card.classList.add('has-data');
+      try{
+        var d=JSON.parse(raw);
+        var studentCount=d.students?d.students.length:0;
+        var rounds=d.totalRounds||0;
+        meta=studentCount+'名・'+rounds+'回実施';
+      }catch(e){}
+    } else {
+      meta='未設定';
+    }
+    var nameEl=document.createElement('div');nameEl.className='cs-card-name';nameEl.textContent=name;
+    var metaEl=document.createElement('div');metaEl.className='cs-card-meta';metaEl.textContent=meta;
+    var delBtn=document.createElement('button');delBtn.className='cs-card-del';delBtn.textContent='✕';
+    delBtn.title='削除';
+    delBtn.addEventListener('click',function(e){e.stopPropagation();deleteClass(name);});
+    card.appendChild(delBtn);card.appendChild(nameEl);card.appendChild(metaEl);
+    card.addEventListener('click',function(){selectClass(name);});
+    el.appendChild(card);
+  });
+  // 追加ボタン
+  if(list.length<15){
+    var addCard=document.createElement('div');addCard.className='cs-card cs-add-btn';
+    addCard.innerHTML='＋<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:4px">クラスを追加</div>';
+    addCard.addEventListener('click',addNewClass);
+    el.appendChild(addCard);
+  }
+}
+
+// 既存のsekigae-v17データを引き継ぐ（初回起動時のみ）
+function migrateOldData(){
+  var old=localStorage.getItem('sekigae-v17');
+  if(!old)return;
+  var list=loadClassList();
+  if(list.length>0)return; // すでにクラスが設定されていれば移行不要
+  // 旧データがある場合、そのクラス名を入力させて引き継ぐ
+  var name=prompt('以前のデータが見つかりました！\nそのデータをどのクラス名で引き継ぎますか？\n\n例：5年1組、音楽A班など');
+  if(!name||!name.trim()){
+    // キャンセルした場合は何もしない（旧データはそのまま残る）
+    return;
+  }
+  name=name.trim();
+  list=[name];
+  saveClassList(list);
+  localStorage.setItem(getStorageKey(name),old);
+}
+
+(function(){
+  // 旧データの移行チェック
+  migrateOldData();
+  var classList=loadClassList();
+  if(classList.length===0){
+    document.getElementById('scr-class-select').style.display='flex';
+    document.getElementById('scr-t').style.display='none';
+    renderClassSelect();
+  } else if(classList.length===1){
+    selectClass(classList[0]);
+  } else {
+    document.getElementById('scr-class-select').style.display='flex';
+    document.getElementById('scr-t').style.display='none';
+    renderClassSelect();
+  }
   setupPinchZoom('lb-wrap',function(){return tZoomLevel;},function(v){tZoomLevel=v;},applyTZoom,0.4,1.5);
   setupPinchZoom('k-body',function(){return kZoomLevel;},function(v){kZoomLevel=v;},applyKZoom,0.4,2);
 })();
 </script>
 </body>
+</html>>
 </html>
