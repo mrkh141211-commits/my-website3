@@ -364,7 +364,7 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
   <div class="cs-tip">💡 最大15クラスまで登録できます<br>クラス名は後から変更できません（データを引き継ぐため）</div>
 </div>
 <div class="app">
-<div class="scr" id="scr-t" style="display:none">
+<div class="scr" id="scr-t">
 <div class="hdr">
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
     <div><div class="logo-text">THE SEKIGAE</div><div class="logo-sub">先生専用モード</div></div>
@@ -640,9 +640,21 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
       </div>
       <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span style="font-size:12px;color:#666">児童を選択：</span>
-        <select class="filter-sel" id="seat-filter-sel" onchange="renderSeatHeatmap()"><option value="">全員の合計</option></select>
+        <select class="filter-sel" id="seat-filter-sel" onchange="renderSeatHeatmap()"></select>
       </div>
       <div id="seat-heatmap-wrap" style="overflow-x:auto"></div>
+    </div>
+
+    <!-- 📊 フラグ分布チェック＆改善提案 -->
+    <div class="card" style="margin-top:12px">
+      <h3>📊 フラグ分布チェック＆改善提案</h3>
+      <div class="hint">現在の配置のスコアを分析し、2人を入れ替えるだけで改善できる案を最大5つ提案します。</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="btn btn-pp" onclick="renderFlagCheck()">🔍 今の配置を分析</button>
+        <button class="btn btn-yw" onclick="renderSwapSuggestions()">💡 入れ替え案を提案</button>
+      </div>
+      <div id="flag-check-result"></div>
+      <div id="swap-suggestions"></div>
     </div>
   </div>
 </div>
@@ -755,16 +767,6 @@ body{font-family:'Hiragino Maru Gothic ProN','Meiryo',sans-serif;background:#fff
     <div class="popup-title" id="popup-title">だれをここに座らせる？</div>
     <div class="popup-list" id="popup-list"></div>
     <button class="popup-cancel" onclick="closePopup()">キャンセル</button>
-  </div>
-  <div class="card">
-    <h3>📊 フラグ分布チェック＆改善提案</h3>
-    <div class="hint">現在の配置のスコアを分析し、2人を入れ替えるだけで改善できる案を最大5つ提案します。</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      <button class="btn btn-pp" onclick="renderFlagCheck()">🔍 今の配置を分析</button>
-      <button class="btn btn-yw" onclick="renderSwapSuggestions()">💡 入れ替え案を提案</button>
-    </div>
-    <div id="flag-check-result"></div>
-    <div id="swap-suggestions"></div>
   </div>
 </div>
 </div>
@@ -2026,22 +2028,20 @@ function renderSeatHeatmap(){
   var sel=document.getElementById('seat-filter-sel');
   var selVal=sel.value;
   var allNames=Object.keys(seatHistory);
-  sel.innerHTML='<option value="">全員の合計</option>'+allNames.map(function(n){return '<option>'+n+'</option>';}).join('');
+  sel.innerHTML=allNames.map(function(n){return '<option>'+n+'</option>';}).join('');
   if(allNames.includes(selVal))sel.value=selVal;
+  else if(allNames.length)sel.value=allNames[0];
 
   var rows=maxR(),cols=maxC();
   var filterName=sel.value;
 
+  if(!filterName){
+    wrap.innerHTML='<div class="empty-state" style="padding:16px"><div>児童を選択してください</div></div>';return;
+  }
+
   // seatId -> count のマップを作成
   function getCount(sid){
-    if(filterName){
-      return (seatHistory[filterName]&&seatHistory[filterName][sid])||0;
-    } else {
-      // 全員合計
-      var total=0;
-      allNames.forEach(function(n){total+=(seatHistory[n]&&seatHistory[n][sid])||0;});
-      return total;
-    }
+    return (seatHistory[filterName]&&seatHistory[filterName][sid])||0;
   }
 
   // 最大値
@@ -2096,13 +2096,18 @@ function renderSeatHeatmap(){
 
 
 function toKid(){
-  // プレビューから採用した場合は currentAssignment を保持、
-  // 直接 GO した場合はリセット（startAllAtOnce 内で生成）
-  document.getElementById('scr-t').classList.remove('on');
-  document.getElementById('scr-k').classList.add('on');
+  var st=document.getElementById('scr-t');
+  var sk=document.getElementById('scr-k');
+  if(st){st.classList.remove('on');st.style.display='none';}
+  if(sk){sk.classList.add('on');sk.style.display='block';}
   showKS('waiting');updateRoundDisp();
 }
-function toTeacher(){document.getElementById('scr-k').classList.remove('on');document.getElementById('scr-t').classList.add('on');}
+function toTeacher(){
+  var st=document.getElementById('scr-t');
+  var sk=document.getElementById('scr-k');
+  if(sk){sk.classList.remove('on');sk.style.display='none';}
+  if(st){st.classList.add('on');st.style.display='block';}
+}
 function showKS(name){['waiting','cd','spin','reveal','obo','class'].forEach(function(s){var el=document.getElementById('k-'+s);if(el)el.style.display=s===name?'block':'none';});
   var zc=document.getElementById('k-zoom-controls');var rb=document.getElementById('k-redo-btn');
   var showCtrl=(name==='class'||name==='reveal'||name==='obo');
@@ -2507,12 +2512,15 @@ function deleteClass(name){
 }
 
 function selectClass(name){
-  // 現在のデータを先にセーブ
   if(currentClass)doSaveSync();
   currentClass=name;
-  // 画面切り替え
-  document.getElementById('scr-class-select').style.display='none';
-  document.getElementById('scr-t').style.display='block';
+  // 画面切り替え（class と style の両方で確実に制御）
+  var cs=document.getElementById('scr-class-select');
+  var st=document.getElementById('scr-t');
+  var sk=document.getElementById('scr-k');
+  if(cs)cs.style.display='none';
+  if(sk){sk.classList.remove('on');sk.style.display='none';}
+  if(st){st.classList.add('on');st.style.display='block';}
   // クラスラベル更新
   var label=document.getElementById('current-class-label');
   if(label)label.textContent=name;
